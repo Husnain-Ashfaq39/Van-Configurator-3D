@@ -2,7 +2,7 @@
 import { useEffect } from 'react';
 import * as THREE from 'three';
 
-const useHighlightOnDrag = (object, isDragging, outlineColor = 0xffff00) => { // Default to yellow
+const useHighlightOnDrag = (object, isDragging) => { // Default to yellow
   useEffect(() => {
     if (object) {
       // Traverse and update emissive properties

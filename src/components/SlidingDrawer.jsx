@@ -43,7 +43,7 @@ const SlidingDrawer = ({ view }) => {
   };
 
   // Apply highlighting during dragging
-  useHighlightOnDrag(scene, isDragging, 0xffff00); // Yellow outline; change to 0x0000ff for blue
+  useHighlightOnDrag(scene, isDragging); // Yellow outline; change to 0x0000ff for blue
 
   return (
     <>
