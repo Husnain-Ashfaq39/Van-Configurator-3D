@@ -1,8 +1,9 @@
 import { useGLTF } from '@react-three/drei';
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import useDraggable from '../hooks/useDraggable';
 import RotateButton from './RotateButton'; // Import the RotateButton component
 import { a } from '@react-spring/three';
+import useHighlightOnDrag from '../hooks/useHighlightOnDrag';
 
 const CabinetDrawer = ({ view }) => {
   const { scene } = useGLTF('/Cabinet_Drawer.glb'); // Load the cabinet drawer model
@@ -17,12 +18,13 @@ const CabinetDrawer = ({ view }) => {
   };
 
   // Initialize useDraggable with the initial position, bounds, and onChange callback
-  const { bind, position } = useDraggable(
+  const { bind, position, isDragging } = useDraggable(
     [0, -0.8, 0], 
     VAN_BOUNDS, 
     handlePositionChange,
     { enabled: view !== 'default' }
   );
+
   const [rotation, setRotation] = useState([0, 0, 0]);
   const [showRotateButton, setShowRotateButton] = useState(false);
 
@@ -38,6 +40,9 @@ const CabinetDrawer = ({ view }) => {
   const handleCloseMenu = () => {
     setShowRotateButton(false);
   };
+
+  // Apply highlighting during dragging
+  useHighlightOnDrag(scene, isDragging); // Yellow outline; change to 0x0000ff for blue
 
   return (
     <>

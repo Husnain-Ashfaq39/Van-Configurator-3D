@@ -1,8 +1,9 @@
 import { useGLTF } from '@react-three/drei';
-import { useState, } from 'react';
+import { useState } from 'react';
 import { a } from '@react-spring/three';
 import RotateButton from './RotateButton';
 import useDraggable from '../hooks/useDraggable';
+import useHighlightOnDrag from '../hooks/useHighlightOnDrag';
 
 const Washroom = ({ view }) => {
   const { scene } = useGLTF('/washroom2.glb');
@@ -17,12 +18,13 @@ const Washroom = ({ view }) => {
   };
 
   // Initialize useDraggable with the initial position, bounds, and onChange callback
-  const { bind, position } = useDraggable(
+  const { bind, position, isDragging } = useDraggable(
     [0, -0.8, 0], 
     VAN_BOUNDS, 
     handlePositionChange,
     { enabled: view !== 'default' }
   );
+
   const [rotation, setRotation] = useState([0, 0, 0]);
   const [showRotateButton, setShowRotateButton] = useState(false);
 
@@ -38,6 +40,9 @@ const Washroom = ({ view }) => {
   const handleCloseMenu = () => {
     setShowRotateButton(false);
   };
+
+  // Apply highlighting during dragging
+  useHighlightOnDrag(scene, isDragging); // Yellow outline; change to 0x0000ff for blue
 
   return (
     <>

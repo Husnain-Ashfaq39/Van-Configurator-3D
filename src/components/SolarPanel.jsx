@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { a } from '@react-spring/three';
 import useDraggable from '../hooks/useDraggable';
 import RotateButton from './RotateButton';
+import useHighlightOnDrag from '../hooks/useHighlightOnDrag';
 
 const SolarPanel = ({ view }) => {
   const { scene: solarPanelScene } = useGLTF('/solar_panel.glb'); 
@@ -17,12 +18,13 @@ const SolarPanel = ({ view }) => {
     setCurrentPos((prev) => [newX, prev[1], newZ]);
   };
 
-  const { bind, position } = useDraggable(
+  const { bind, position, isDragging } = useDraggable(
     [0, 1.3, 0], 
     VAN_BOUNDS, 
     handlePositionChange,
     { enabled: view !== 'default' }
   );
+
   const [rotation, setRotation] = useState([0, 0, 0]);
   const [showRotateButton, setShowRotateButton] = useState(false);
 
@@ -38,6 +40,9 @@ const SolarPanel = ({ view }) => {
   const handleCloseMenu = () => {
     setShowRotateButton(false);
   };
+
+  // Apply highlighting during dragging
+  useHighlightOnDrag(solarPanelScene, isDragging); // Yellow outline; change to 0x0000ff for blue
 
   return (
     <>

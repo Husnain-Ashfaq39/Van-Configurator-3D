@@ -41,7 +41,7 @@ const useHighlightOnDrag = (object, isDragging) => { // Default to yellow
         });
       }
     };
-  }, [object, isDragging, outlineColor]);
+  }, [object, isDragging]);
 };
 
 export default useHighlightOnDrag;
