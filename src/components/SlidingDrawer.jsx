@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { a } from '@react-spring/three';
 import useDraggable from '../hooks/useDraggable';
 import RotateButton from './RotateButton';
+import useHighlightOnDrag from '../hooks/useHighlightOnDrag';
 
 const SlidingDrawer = ({ view }) => {
   const { scene } = useGLTF('/Sliding_Drawer.glb');
@@ -18,12 +19,13 @@ const SlidingDrawer = ({ view }) => {
   };
 
   // Initialize useDraggable with the initial position, bounds, and onChange callback
-  const { bind, position } = useDraggable(
-    [0, -0.8, 0], 
-    VAN_BOUNDS, 
+  const { bind, position, isDragging } = useDraggable(
+    [0, -0.8, 0],
+    VAN_BOUNDS,
     handlePositionChange,
     { enabled: view !== 'default' }  // Disable dragging in default view
   );
+
   const [rotation, setRotation] = useState([0, 0, 0]);
   const [showRotateButton, setShowRotateButton] = useState(false);
 
@@ -39,6 +41,9 @@ const SlidingDrawer = ({ view }) => {
   const handleCloseMenu = () => {
     setShowRotateButton(false);
   };
+
+  // Apply highlighting during dragging
+  useHighlightOnDrag(scene, isDragging, 0xffff00); // Yellow outline; change to 0x0000ff for blue
 
   return (
     <>

@@ -1,14 +1,11 @@
-import { useState, Suspense } from 'react';
-import { Canvas } from '@react-three/fiber';
-import { OrbitControls } from '@react-three/drei';
+// App.jsx
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiMenu, FiX, FiEye, FiSun } from 'react-icons/fi';
 import { RiArchiveDrawerLine } from "react-icons/ri";
 import { IoBedSharp } from "react-icons/io5";
-import VanModel from './components/VanModel';
 import CameraButtons from './components/CameraButtons';
-import CameraUpdater from './components/CameraUpdater';
-import Washroom from './components/Washroom';
+import Scene from './components/Scene'; // New Scene component
 
 const App = () => {
   const [cameraPosition, setCameraPosition] = useState([5, 2, 5]);
@@ -137,34 +134,18 @@ const App = () => {
           {isSidebarOpen ? <FiX /> : <FiMenu />}
         </button>
 
-        <Canvas
-          shadows
-          gl={{ powerPreference: 'high-performance', antialias: true }}
-          camera={{ position: cameraPosition, fov: 50 }}
-          className="w-full h-full"
-        >
-          <ambientLight intensity={0.8} />
-          <directionalLight position={[5, 5, 5]} intensity={1.5} castShadow />
-          <directionalLight position={[-5, 5, 5]} intensity={0.7} castShadow />
-          <directionalLight position={[0, 5, -5]} intensity={0.5} castShadow />
-
-          <Suspense fallback={null}>
-            <VanModel 
-              hiddenParts={hiddenParts} 
-              isRoof2={view === 'roof2'} 
-              showBed={showBed} 
-              showSolarPanel={showSolarPanel} 
-              showCabinetDrawer={showCabinetDrawer}
-              showSlidingDrawer={showSlidingDrawer}
-              showWashroom={showWashroom}
-              cameraPosition={cameraPosition}
-              view={view}
-            />
-          </Suspense>
-
-          <CameraUpdater cameraPosition={cameraPosition} cameraLookAt={cameraLookAt} />
-          {!hideOrbitControls && <OrbitControls enableZoom={true} />}
-        </Canvas>
+        <Scene
+          hiddenParts={hiddenParts}
+          isRoof2={view === 'roof2'}
+          showBed={showBed}
+          showSolarPanel={showSolarPanel}
+          showCabinetDrawer={showCabinetDrawer}
+          showSlidingDrawer={showSlidingDrawer}
+          showWashroom={showWashroom}
+          cameraPosition={cameraPosition}
+          view={view}
+          hideOrbitControls={hideOrbitControls}
+        />
 
         <CameraButtons
           setCameraPosition={setCameraPosition}
@@ -178,4 +159,3 @@ const App = () => {
 };
 
 export default App;
-

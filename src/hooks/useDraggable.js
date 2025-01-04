@@ -1,11 +1,11 @@
 // hooks/useDraggable.js
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { useGesture } from '@use-gesture/react';
 import { useSpring } from '@react-spring/three';
 import { useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 
-const useDraggable = (initialPosition, bounds, onChange) => {
+const useDraggable = (initialPosition, bounds, onChange, options) => {
   const { camera } = useThree(); // Access the camera from the context
   const [{ x, z }, api] = useSpring(() => ({
     x: initialPosition[0],
@@ -19,10 +19,12 @@ const useDraggable = (initialPosition, bounds, onChange) => {
   }));
 
   const base = useRef([initialPosition[0], initialPosition[2]]);
+  const [isDragging, setIsDragging] = useState(false); // Track dragging state
 
   const bind = useGesture({
     onDrag: ({ active, movement: [mx, my], last }) => {
       if (active) {
+        setIsDragging(true); // Dragging started
         const sensitivity = 0.01;
 
         // Calculate forward and right vectors
@@ -49,9 +51,12 @@ const useDraggable = (initialPosition, bounds, onChange) => {
         api.start({ x: newPosX, z: newPosZ });
       }
 
-      if (last) {
-        // Update the base position when the drag ends
-        base.current = [x.get(), z.get()];
+      if (!active) {
+        setIsDragging(false); // Dragging ended
+        if (last) {
+          // Update the base position when the drag ends
+          base.current = [x.get(), z.get()];
+        }
       }
     },
   });
@@ -59,6 +64,7 @@ const useDraggable = (initialPosition, bounds, onChange) => {
   return {
     bind,
     position: { x, z }, // Return position as an object with x and z
+    isDragging, // Indicate if the object is being dragged
   };
 };
 
