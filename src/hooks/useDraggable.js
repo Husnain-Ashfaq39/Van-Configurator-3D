@@ -1,9 +1,12 @@
 // hooks/useDraggable.js
 import { useRef } from 'react';
 import { useGesture } from '@use-gesture/react';
-import { useSpring } from '@react-spring/three'; // Ensure you're using the three.js version
+import { useSpring } from '@react-spring/three';
+import { useThree } from '@react-three/fiber';
+import * as THREE from 'three';
 
 const useDraggable = (initialPosition, bounds, onChange) => {
+  const { camera } = useThree(); // Access the camera from the context
   const [{ x, z }, api] = useSpring(() => ({
     x: initialPosition[0],
     z: initialPosition[2],
@@ -18,11 +21,25 @@ const useDraggable = (initialPosition, bounds, onChange) => {
   const base = useRef([initialPosition[0], initialPosition[2]]);
 
   const bind = useGesture({
-    onDrag: ({ active, movement: [mx, mz], last }) => {
+    onDrag: ({ active, movement: [mx, my], last }) => {
       if (active) {
         const sensitivity = 0.01;
-        let newPosX = base.current[0] + mx * sensitivity;
-        let newPosZ = base.current[1] + mz * sensitivity;
+
+        // Calculate forward and right vectors
+        const forward = new THREE.Vector3();
+        camera.getWorldDirection(forward);
+        forward.projectOnPlane(new THREE.Vector3(0, 1, 0)).normalize(); // Project onto XZ plane
+
+        const right = new THREE.Vector3();
+        right.crossVectors(forward, camera.up).normalize(); // Corrected Right vector
+
+        // Calculate delta movement based on drag
+        const movementRight = right.clone().multiplyScalar(mx * sensitivity);
+        const movementForward = forward.clone().multiplyScalar(-my * sensitivity);
+        const delta = movementRight.add(movementForward);
+
+        let newPosX = base.current[0] + delta.x;
+        let newPosZ = base.current[1] + delta.z;
 
         // Clamp the positions within the specified bounds
         newPosX = Math.max(bounds.x[0], Math.min(bounds.x[1], newPosX));
