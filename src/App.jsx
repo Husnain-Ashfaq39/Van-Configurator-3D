@@ -1,11 +1,10 @@
 // App.jsx
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FiMenu, FiX, FiEye, FiSun } from 'react-icons/fi';
-import { RiArchiveDrawerLine } from "react-icons/ri";
-import { IoBedSharp } from "react-icons/io5";
+import { FiMenu, FiX } from 'react-icons/fi';
 import CameraButtons from './components/CameraButtons';
 import Scene from './components/Scene'; // New Scene component
+import Sidebar from './components/Sidebar'; // Import the new Sidebar component
 
 const App = () => {
   const [cameraPosition, setCameraPosition] = useState([5, 2, 5]);
@@ -40,99 +39,28 @@ const App = () => {
 
   return (
     <div className="flex h-screen bg-gray-100">
-      <AnimatePresence>
-        {isSidebarOpen && (
-          <motion.div
-            initial={{ x: -300 }}
-            animate={{ x: 0 }}
-            exit={{ x: -300 }}
-            transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="w-72 bg-white shadow-lg p-6 overflow-auto"
-          >
-            <h2 className="text-2xl font-bold mb-6 text-gray-800">Van Configurator</h2>
-            <ul className="space-y-4">
-              <li>
-                <button
-                  onClick={toggleBed}
-                  className={`flex items-center justify-between w-full p-3 rounded-lg transition-colors ${
-                    showBed ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                  }`}
-                >
-                  <span className="flex items-center">
-                    <IoBedSharp className="mr-2" />
-                    Bed
-                  </span>
-                  <FiEye className={showBed ? 'text-white' : 'text-gray-500'} />
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={toggleSolarPanel}
-                  className={`flex items-center justify-between w-full p-3 rounded-lg transition-colors ${
-                    showSolarPanel ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                  }`}
-                >
-                  <span className="flex items-center">
-                    <FiSun className="mr-2" />
-                    Solar Panel
-                  </span>
-                  <FiEye className={showSolarPanel ? 'text-white' : 'text-gray-500'} />
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={toggleCabinetDrawer}
-                  className={`flex items-center justify-between w-full p-3 rounded-lg transition-colors ${
-                    showCabinetDrawer ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                  }`}
-                >
-                  <span className="flex items-center">
-                    <RiArchiveDrawerLine className='mr-2'/>
-                    Cabinet Drawer
-                  </span>
-                  <FiEye className={showCabinetDrawer ? 'text-white' : 'text-gray-500'} />
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={toggleSlidingDrawer}
-                  className={`flex items-center justify-between w-full p-3 rounded-lg transition-colors ${
-                    showSlidingDrawer ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                  }`}
-                >
-                  <span className="flex items-center">
-                    <RiArchiveDrawerLine className='mr-2'/>
-                    Sliding Drawer
-                  </span>
-                  <FiEye className={showSlidingDrawer ? 'text-white' : 'text-gray-500'} />
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={toggleWashroom}
-                  className={`flex items-center justify-between w-full p-3 rounded-lg transition-colors ${
-                    showWashroom ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                  }`}
-                >
-                  <span className="flex items-center">
-                    <RiArchiveDrawerLine className='mr-2'/>
-                    Washroom
-                  </span>
-                  <FiEye className={showWashroom ? 'text-white' : 'text-gray-500'} />
-                </button>
-              </li>
-            </ul>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <Sidebar
+        isOpen={isSidebarOpen}
+        toggleSidebar={toggleSidebar}
+        toggleBed={toggleBed}
+        showBed={showBed}
+        toggleSolarPanel={toggleSolarPanel}
+        showSolarPanel={showSolarPanel}
+        toggleCabinetDrawer={toggleCabinetDrawer}
+        showCabinetDrawer={showCabinetDrawer}
+        toggleSlidingDrawer={toggleSlidingDrawer}
+        showSlidingDrawer={showSlidingDrawer}
+        toggleWashroom={toggleWashroom}
+        showWashroom={showWashroom}
+      />
 
       <div className="flex-grow relative">
-        <button
+        {!isSidebarOpen  && <button
           onClick={toggleSidebar}
           className="absolute top-4 left-4 z-10 p-2 bg-white rounded-full shadow-md hover:bg-gray-100 transition-colors"
         >
-          {isSidebarOpen ? <FiX /> : <FiMenu />}
-        </button>
+           <FiMenu />
+        </button>}
 
         <Scene
           hiddenParts={hiddenParts}
