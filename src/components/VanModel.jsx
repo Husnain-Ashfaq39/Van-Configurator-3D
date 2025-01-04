@@ -6,7 +6,7 @@ import CabinetDrawer from './CabinetDrawer';
 import SlidingDrawer from './SlidingDrawer';
 import Washroom from './Washroom';
 
-const VanModel = ({ hiddenParts, isRoof2, showBed, showSolarPanel, showCabinetDrawer, showSlidingDrawer, showWashroom, cameraPosition }) => {
+const VanModel = ({ hiddenParts, isRoof2, showBed, showSolarPanel, showCabinetDrawer, showSlidingDrawer, showWashroom, cameraPosition, view }) => {
   const { scene: vanScene } = useGLTF('/parent_Setting_van/untitled.gltf');
   const vanRef = useRef();
 
@@ -29,11 +29,11 @@ const VanModel = ({ hiddenParts, isRoof2, showBed, showSolarPanel, showCabinetDr
   return (
     <>
       <primitive ref={vanRef} object={vanScene} />
-      {showBed && <Bed  />}
-      {showSolarPanel && isRoof2 && <SolarPanel />}
-      {showCabinetDrawer && <CabinetDrawer />}
-      {showSlidingDrawer && <SlidingDrawer  />}
-      {showWashroom && <Washroom />}
+      {showBed && <Bed view={view} />}
+      {showSolarPanel && isRoof2 && <SolarPanel view={view} />}
+      {showCabinetDrawer && <CabinetDrawer view={view} />}
+      {showSlidingDrawer && <SlidingDrawer view={view} />}
+      {showWashroom && <Washroom view={view} />}
     </>
   );
 };

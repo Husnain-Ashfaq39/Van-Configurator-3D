@@ -158,6 +158,7 @@ const App = () => {
               showSlidingDrawer={showSlidingDrawer}
               showWashroom={showWashroom}
               cameraPosition={cameraPosition}
+              view={view}
             />
           </Suspense>
 

@@ -4,7 +4,7 @@ import { a } from '@react-spring/three';
 import RotateButton from './RotateButton';
 import useDraggable from '../hooks/useDraggable';
 
-const Washroom = ({ cameraPosition }) => {
+const Washroom = ({ view }) => {
   const { scene } = useGLTF('/washroom2.glb');
   const VAN_BOUNDS = { x: [-0.3, 0.3], y: [0.3, 0.3], z: [-2, 0] };
 
@@ -17,7 +17,12 @@ const Washroom = ({ cameraPosition }) => {
   };
 
   // Initialize useDraggable with the initial position, bounds, and onChange callback
-  const { bind, position } = useDraggable([0, -0.8, 0], VAN_BOUNDS, handlePositionChange);
+  const { bind, position } = useDraggable(
+    [0, -0.8, 0], 
+    VAN_BOUNDS, 
+    handlePositionChange,
+    { enabled: view !== 'default' }
+  );
   const [rotation, setRotation] = useState([0, 0, 0]);
   const [showRotateButton, setShowRotateButton] = useState(false);
 
@@ -25,8 +30,8 @@ const Washroom = ({ cameraPosition }) => {
     setRotation(([x, y, z]) => [x, y + Math.PI / 2, z]);
   };
 
-
   const handleDoubleClick = () => {
+    if (view === 'default') return;  // Prevent double-click in default view
     setShowRotateButton(true);
   };
 
@@ -44,9 +49,9 @@ const Washroom = ({ cameraPosition }) => {
         rotation={rotation}
         scale={[0.85, 0.85, 0.85]}
         onDoubleClick={handleDoubleClick}
-        {...bind()}
+        {...(view !== 'default' ? bind() : {})}  // Only apply bind if not in default view
       />
-      {showRotateButton && (
+      {showRotateButton && view !== 'default' && (
         <RotateButton
           position={[currentPos[0], -0.8, currentPos[2]]}
           onRotate={handleRotate}
