@@ -11,7 +11,22 @@ const CabinetInstance = ({ id, initialPosition, view, onCopy, onRemove }) => {
   const { scene } = useGLTF('/Cabinet_Drawer.glb');
 
   // Clone the scene to ensure each instance is unique
-  const clonedScene = useMemo(() => scene.clone(true), [scene]);
+  const clonedScene = useMemo(() => {
+    const clone = scene.clone(true);
+
+    // Traverse the cloned scene and clone each material to ensure uniqueness
+    clone.traverse((child) => {
+      if (child.isMesh) {
+        if (Array.isArray(child.material)) {
+          child.material = child.material.map((mat) => mat.clone());
+        } else {
+          child.material = child.material.clone();
+        }
+      }
+    });
+
+    return clone;
+  }, [scene]);
 
   const VAN_BOUNDS = { x: [-0.3, 0.3], y: [0.3, 0.3], z: [-2, 0] };
 
