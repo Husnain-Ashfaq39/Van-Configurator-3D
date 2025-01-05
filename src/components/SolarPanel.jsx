@@ -1,70 +1,33 @@
-import { useGLTF } from '@react-three/drei';
-import { useState } from 'react';
-import { a } from '@react-spring/three';
-import useDraggable from '../hooks/useDraggable';
-import RotateButton from './RotateButton';
-import useHighlightOnDrag from '../hooks/useHighlightOnDrag';
+import React, { useState } from 'react';
+import SolarPanelInstance from './instances/SolarPanelInstance'; // Create a separate instance component
+import { v4 as uuidv4 } from 'uuid';
 
 const SolarPanel = ({ view }) => {
-  const { scene: solarPanelScene } = useGLTF('/solar_panel.glb'); 
-  
-  const VAN_BOUNDS = { x: [-0.3, 0.3], y: [0.3, 0.3], z: [-2, 0] };
+  const [solarPanels, setSolarPanels] = useState([{ id: uuidv4(), position: [0, 1.3, 0] }]);
 
-  // State to keep track of the current position for the RotateButton
-  const [currentPos, setCurrentPos] = useState([0, -0.8, 0]);
+  const handleCopy = (id, currentPosition) => {
+    setSolarPanels((prevSolarPanels) => {
+      const solarPanelToCopy = prevSolarPanels.find((panel) => panel.id === id);
+      if (!solarPanelToCopy) return prevSolarPanels;
 
-  // Callback to update currentPos when x or z changes
-  const handlePositionChange = (newX, newZ) => {
-    setCurrentPos((prev) => [newX, prev[1], newZ]);
+      const newPosition = [currentPosition[0] + 1, currentPosition[1], currentPosition[2]];
+      return [...prevSolarPanels, { id: uuidv4(), position: newPosition }];
+    });
   };
-
-  const { bind, position, isDragging } = useDraggable(
-    [0, 1.3, 0], 
-    VAN_BOUNDS, 
-    handlePositionChange,
-    { enabled: view !== 'default' }
-  );
-
-  const [rotation, setRotation] = useState([0, 0, 0]);
-  const [showRotateButton, setShowRotateButton] = useState(false);
-
-  const handleRotate = () => {
-    setRotation(([x, y, z]) => [x, y + Math.PI / 2, z]);
-  };
-
-  const handleDoubleClick = () => {
-    if (view === 'default') return;
-    setShowRotateButton(true);
-  };
-
-  const handleCloseMenu = () => {
-    setShowRotateButton(false);
-  };
-
-  // Apply highlighting during dragging
-  useHighlightOnDrag(solarPanelScene, isDragging); // Yellow outline; change to 0x0000ff for blue
 
   return (
     <>
-      <a.primitive
-        object={solarPanelScene}
-        position-x={position.x}
-        position-z={position.z}
-        position-y={1.3}
-        rotation={rotation}
-        scale={[0.003, 0.003, 0.003]}
-        onDoubleClick={handleDoubleClick}
-        {...(view !== 'default' ? bind() : {})}
-      />
-      {showRotateButton && view !== 'default' && (
-        <RotateButton
-          position={[currentPos[0], 1.3, currentPos[2]]}
-          onRotate={handleRotate}
-          onClose={handleCloseMenu}
+      {solarPanels.map((panel) => (
+        <SolarPanelInstance
+          key={panel.id}
+          id={panel.id}
+          initialPosition={panel.position}
+          view={view}
+          onCopy={handleCopy}
         />
-      )}
+      ))}
     </>
   );
 };
 
-export default SolarPanel; 
+export default SolarPanel;
