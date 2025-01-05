@@ -1,113 +1,69 @@
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Car } from 'lucide-react';
+// src/components/PreLoader.jsx
+import React, { useRef, useEffect } from 'react';
+import { useFrame } from '@react-three/fiber';
+import * as THREE from 'three';
 
-export default function PreLoader() {
-  const [progress, setProgress] = useState(0);
+const PreLoader = ({ progress, vanDimensions = { width: 2, height: 1.5, depth: 4 } }) => {
+  const boxRef = useRef();
+  const fillBoxRef = useRef();
 
+  // Create gradient texture once
+  const textureRef = useRef();
   useEffect(() => {
-    const timer = setInterval(() => {
-      setProgress((oldProgress) => {
-        if (oldProgress === 100) {
-          clearInterval(timer);
-          return 100;
-        }
-        const newProgress = oldProgress + 1;
-        return Math.min(newProgress, 100);
-      });
-    }, 50);
-
-    return () => clearInterval(timer);
+    const canvas = document.createElement('canvas');
+    canvas.width = 256;
+    canvas.height = 256;
+    const context = canvas.getContext('2d');
+    const gradient = context.createLinearGradient(0, 0, 0, 256);
+    gradient.addColorStop(0, '#F5F5F5');
+    gradient.addColorStop(1, '#E0E0E0');
+    context.fillStyle = gradient;
+    context.fillRect(0, 0, 256, 256);
+    textureRef.current = new THREE.CanvasTexture(canvas);
   }, []);
 
-  const progressVariants = {
-    initial: { width: 0 },
-    animate: { width: `${progress}%` },
-  };
-
-  const containerVariants = {
-    initial: { opacity: 0, scale: 0.8 },
-    animate: { opacity: 1, scale: 1 },
-    exit: { opacity: 0, scale: 0.8 },
-  };
-
-  const textVariants = {
-    initial: { opacity: 0, y: 20 },
-    animate: { opacity: 1, y: 0 },
-  };
+  // Animation loop - only animate fill level
+  useFrame((state, delta) => {
+    if (fillBoxRef.current) {
+      // Update only the fill box height smoothly based on progress
+      fillBoxRef.current.scale.y = progress / 100;
+    }
+  });
 
   return (
-    <div className="flex items-center justify-center h-full">
-      <AnimatePresence>
-        <motion.div
-          className="relative w-80 flex flex-col items-center bg-white/20 backdrop-blur-md p-6 rounded-lg shadow-lg border border-white/30"
-          variants={containerVariants}
-          initial="initial"
-          animate="animate"
-          exit="exit"
-          transition={{ duration: 0.5, ease: "easeInOut" }}
-        >
-          <motion.div
-            className="w-full h-2 bg-white/30 rounded-full overflow-hidden mb-4"
-            initial={{ opacity: 0, scale: 0.5 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.2, duration: 0.5 }}
-          >
-            <motion.div
-              className="h-full bg-gradient-to-r from-yellow-300 to-yellow-500"
-              variants={progressVariants}
-              initial="initial"
-              animate="animate"
-              transition={{ duration: 0.5, ease: "easeInOut" }}
-            />
-          </motion.div>
-          <div className="flex justify-between w-full text-white">
-            <motion.span
-              className="text-sm font-medium"
-              variants={textVariants}
-              initial="initial"
-              animate="animate"
-              transition={{ delay: 0.3, duration: 0.5 }}
-            >
-              Loading your perfect holiday home
-            </motion.span>
-            <motion.span
-              className="text-sm font-bold"
-              variants={textVariants}
-              initial="initial"
-              animate="animate"
-              transition={{ delay: 0.4, duration: 0.5 }}
-            >
-              {progress}%
-            </motion.span>
-          </div>
-          <motion.div
-            className="mt-8 flex items-center space-x-2"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5, duration: 0.5 }}
-          >
-            <Car className="text-yellow-400 w-6 h-6" />
-            <div className="flex space-x-1">
-              {[...Array(3)].map((_, i) => (
-                <motion.div
-                  key={i}
-                  className="w-2 h-2 bg-yellow-400 rounded-full"
-                  animate={{
-                    scale: [1, 1.5, 1],
-                    opacity: [0.7, 1, 0.7],
-                  }}
-                  transition={{
-                    duration: 1,
-                    repeat: Infinity,
-                    delay: i * 0.2,
-                  }}
-                />
-              ))}
-            </div>
-          </motion.div>
-        </motion.div>
-      </AnimatePresence>
-    </div>
+    <>
+      {/* Outer Box (Wireframe) - Static */}
+      <lineSegments ref={boxRef}>
+        <edgesGeometry args={[new THREE.BoxGeometry(vanDimensions.width, vanDimensions.height, vanDimensions.depth)]} />
+        <lineBasicMaterial color={0xCCCCCC} linewidth={2} transparent opacity={0.8} />
+      </lineSegments>
+
+      {/* Inner Box (Fill) - Only height changes */}
+      <mesh ref={fillBoxRef} castShadow receiveShadow>
+        <boxGeometry args={[
+          vanDimensions.width * 0.98,
+          vanDimensions.height * 0.98,
+          vanDimensions.depth * 0.98
+        ]} />
+        <meshPhysicalMaterial
+          map={textureRef.current}
+          transparent
+          opacity={0.9}
+          metalness={0.2}
+          roughness={0.1}
+          clearcoat={0.5}
+          clearcoatRoughness={0.2}
+          side={THREE.DoubleSide}
+        />
+      </mesh>
+
+      {/* Lighting Setup */}
+      <ambientLight intensity={0.6} />
+      <directionalLight position={[5, 5, 5]} intensity={0.5} castShadow />
+      <pointLight position={[2, 2, 2]} intensity={0.8} distance={10} />
+      <pointLight position={[-2, -2, -2]} intensity={0.8} distance={10} />
+    </>
   );
-}
+};
+
+export default PreLoader;

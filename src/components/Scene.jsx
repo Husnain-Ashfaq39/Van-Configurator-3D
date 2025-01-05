@@ -5,7 +5,6 @@ import { OrbitControls, Html } from '@react-three/drei';
 import VanModel from './VanModel';
 import CameraUpdater from './CameraUpdater';
 import useSelectionStore from '../store/selectionStore';
-import PreLoader from './preLoader'; // Import the PreLoader component
 
 const Scene = ({
   hiddenParts,
@@ -38,9 +37,7 @@ const Scene = ({
       {/* Suspense with PreLoader as fallback */}
       <Suspense
         fallback={
-          <Html center>
-            <PreLoader />
-          </Html>
+         null
         }
       >
         <VanModel 
