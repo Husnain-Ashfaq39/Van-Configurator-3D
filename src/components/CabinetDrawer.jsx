@@ -1,68 +1,48 @@
-import { useGLTF } from '@react-three/drei';
-import { useState } from 'react';
-import useDraggable from '../hooks/useDraggable';
-import RotateButton from './RotateButton'; // Import the RotateButton component
-import { a } from '@react-spring/three';
-import useHighlightOnDrag from '../hooks/useHighlightOnDrag';
+// src/components/CabinetDrawer.jsx
+import React, { useState } from 'react';
+import CabinetInstance from './instances/CabinetInstance';
+import { v4 as uuidv4 } from 'uuid'; // Import UUID for unique IDs
 
 const CabinetDrawer = ({ view }) => {
-  const { scene } = useGLTF('/Cabinet_Drawer.glb'); // Load the cabinet drawer model
-  const VAN_BOUNDS = { x: [-0.3, 0.3], y: [0.3, 0.3], z: [-2, 0] };
+  // Initialize cabinets with a unique ID
+  const [cabinets, setCabinets] = useState([
+    { id: uuidv4(), position: [0, -0.8, 0] }
+  ]);
 
-  // State to keep track of the current position for the RotateButton
-  const [currentPos, setCurrentPos] = useState([0, -0.8, 0]);
+  // Function to handle copying a cabinet
+  const handleCopy = (id, currentPosition) => {
+    setCabinets((prevCabinets) => {
+      const cabinetToCopy = prevCabinets.find((cab) => cab.id === id);
+      if (!cabinetToCopy) return prevCabinets;
 
-  // Callback to update currentPos when x or z changes
-  const handlePositionChange = (newX, newZ) => {
-    setCurrentPos((prev) => [newX, prev[1], newZ]);
+      // Determine the new position (e.g., offset by 1 unit on the X-axis)
+      const newPosition = [
+        currentPosition[0] + 1, // Adjust as needed
+        currentPosition[1],
+        currentPosition[2]
+      ];
+
+      // Create a new cabinet with a unique ID
+      const newCabinet = {
+        id: uuidv4(), // Use UUID for better uniqueness
+        position: newPosition
+      };
+
+      return [...prevCabinets, newCabinet];
+    });
   };
-
-  // Initialize useDraggable with the initial position, bounds, and onChange callback
-  const { bind, position, isDragging } = useDraggable(
-    [0, -0.8, 0], 
-    VAN_BOUNDS, 
-    handlePositionChange,
-    { enabled: view !== 'default' }
-  );
-
-  const [rotation, setRotation] = useState([0, 0, 0]);
-  const [showRotateButton, setShowRotateButton] = useState(false);
-
-  const handleRotate = () => {
-    setRotation(([x, y, z]) => [x, y + Math.PI / 2, z]);
-  };
-
-  const handleDoubleClick = () => {
-    if (view === 'default') return;  // Prevent double-click in default view
-    setShowRotateButton(true);
-  };
-
-  const handleCloseMenu = () => {
-    setShowRotateButton(false);
-  };
-
-  // Apply highlighting during dragging
-  useHighlightOnDrag(scene, isDragging); // Yellow outline; change to 0x0000ff for blue
 
   return (
     <>
-      <a.primitive
-        object={scene}
-        position-x={position.x}
-        position-z={position.z}
-        position-y={-0.8}
-        rotation={rotation}
-        scale={[0.007, 0.007, 0.007]}
-        onDoubleClick={handleDoubleClick}
-        {...(view !== 'default' ? bind() : {})}  // Only apply bind if not in default view
-      />
-      {showRotateButton && view !== 'default' && (
-        <RotateButton
-          position={[currentPos[0], -0.8, currentPos[2]]}
-          onRotate={handleRotate}
-          onClose={handleCloseMenu}
+      {cabinets.map((cabinet) => (
+        <CabinetInstance
+          key={cabinet.id}
+          id={cabinet.id}
+          initialPosition={cabinet.position}
+          view={view}
+          onCopy={handleCopy}
         />
-      )}
+      ))}
     </>
   );
 };

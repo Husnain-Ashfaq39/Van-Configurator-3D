@@ -17,7 +17,7 @@ const useHighlightOnDrag = (object, isDragging) => { // Default to yellow
           if (isDragging) {
             // Set a very light color for highlighting
             child.material.emissive = new THREE.Color(0xffffff); // Light color
-            child.material.emissiveIntensity = 0.5; // Adjust intensity for transparency effect
+            child.material.emissiveIntensity = 0.2; // Adjust intensity for transparency effect
 
           } else {
             // Reset emissive properties
