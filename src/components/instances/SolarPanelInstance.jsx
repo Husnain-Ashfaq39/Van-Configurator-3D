@@ -4,7 +4,7 @@ import useDraggable from '../../hooks/useDraggable';
 import RotateButton from '../RotateButton';
 import useHighlightOnDrag from '../../hooks/useHighlightOnDrag';
 
-const SolarPanelInstance = ({ id, initialPosition, view, onCopy }) => {
+const SolarPanelInstance = ({ id, initialPosition, view, onCopy, onRemove }) => {
   const { scene } = useGLTF('/solar_panel.glb');
   const clonedScene = useMemo(() => scene.clone(true), [scene]);
 
@@ -37,6 +37,7 @@ const SolarPanelInstance = ({ id, initialPosition, view, onCopy }) => {
           position={position}
           onRotate={handleRotate}
           onCopy={() => onCopy(id, position)}
+          onRemove={() => onRemove(id)}
           onClose={() => setShowRotateButton(false)}
         />
       )}

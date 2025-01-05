@@ -15,6 +15,10 @@ const Washroom = ({ view }) => {
     });
   };
 
+  const handleRemove = (id) => {
+    setWashrooms((prevWashrooms) => prevWashrooms.filter((wash) => wash.id !== id));
+  };
+
   return (
     <>
       {washrooms.map((washroom) => (
@@ -24,6 +28,7 @@ const Washroom = ({ view }) => {
           initialPosition={washroom.position}
           view={view}
           onCopy={handleCopy}
+          onRemove={handleRemove}
         />
       ))}
     </>

@@ -5,7 +5,7 @@ import useDraggable from '../../hooks/useDraggable';
 import RotateButton from '../RotateButton';
 import useHighlightOnDrag from '../../hooks/useHighlightOnDrag';
 
-const SlidingDrawerInstance = ({ id, initialPosition, view, onCopy }) => {
+const SlidingDrawerInstance = ({ id, initialPosition, view, onCopy, onRemove }) => {
   const { scene } = useGLTF('/Sliding_Drawer.glb');
   const clonedScene = useMemo(() => scene.clone(true), [scene]);
 
@@ -38,6 +38,7 @@ const SlidingDrawerInstance = ({ id, initialPosition, view, onCopy }) => {
           position={position}
           onRotate={handleRotate}
           onCopy={() => onCopy(id, position)}
+          onRemove={() => onRemove(id)}
           onClose={() => setShowRotateButton(false)}
         />
       )}

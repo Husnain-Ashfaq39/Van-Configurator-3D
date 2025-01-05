@@ -5,7 +5,7 @@ import useDraggable from '../../hooks/useDraggable';
 import RotateButton from '../RotateButton';
 import useHighlightOnDrag from '../../hooks/useHighlightOnDrag';
 
-const WashroomInstance = ({ id, initialPosition, view, onCopy }) => {
+const WashroomInstance = ({ id, initialPosition, view, onCopy, onRemove }) => {
   const { scene } = useGLTF('/washroom2.glb');
   const clonedScene = useMemo(() => scene.clone(true), [scene]);
 
@@ -38,6 +38,7 @@ const WashroomInstance = ({ id, initialPosition, view, onCopy }) => {
           position={position}
           onRotate={handleRotate}
           onCopy={() => onCopy(id, position)}
+          onRemove={() => onRemove(id)}
           onClose={() => setShowRotateButton(false)}
         />
       )}

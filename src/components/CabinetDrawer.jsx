@@ -32,6 +32,11 @@ const CabinetDrawer = ({ view }) => {
     });
   };
 
+  // Function to handle removing a cabinet
+  const handleRemove = (id) => {
+    setCabinets((prevCabinets) => prevCabinets.filter((cab) => cab.id !== id));
+  };
+
   return (
     <>
       {cabinets.map((cabinet) => (
@@ -41,6 +46,7 @@ const CabinetDrawer = ({ view }) => {
           initialPosition={cabinet.position}
           view={view}
           onCopy={handleCopy}
+          onRemove={handleRemove}
         />
       ))}
     </>

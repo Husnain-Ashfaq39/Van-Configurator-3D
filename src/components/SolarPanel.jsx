@@ -15,6 +15,10 @@ const SolarPanel = ({ view }) => {
     });
   };
 
+  const handleRemove = (id) => {
+    setSolarPanels((prevPanels) => prevPanels.filter((panel) => panel.id !== id));
+  };
+
   return (
     <>
       {solarPanels.map((panel) => (
@@ -24,6 +28,7 @@ const SolarPanel = ({ view }) => {
           initialPosition={panel.position}
           view={view}
           onCopy={handleCopy}
+          onRemove={handleRemove}
         />
       ))}
     </>

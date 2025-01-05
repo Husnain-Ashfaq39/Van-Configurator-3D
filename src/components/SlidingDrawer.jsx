@@ -15,6 +15,10 @@ const SlidingDrawer = ({ view }) => {
     });
   };
 
+  const handleRemove = (id) => {
+    setSlidingDrawers((prevDrawers) => prevDrawers.filter((drawer) => drawer.id !== id));
+  };
+
   return (
     <>
       {slidingDrawers.map((drawer) => (
@@ -24,6 +28,7 @@ const SlidingDrawer = ({ view }) => {
           initialPosition={drawer.position}
           view={view}
           onCopy={handleCopy}
+          onRemove={handleRemove}
         />
       ))}
     </>

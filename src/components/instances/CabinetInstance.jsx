@@ -6,7 +6,7 @@ import useDraggable from '../../hooks/useDraggable';
 import useHighlightOnDrag from '../../hooks/useHighlightOnDrag';
 import RotateButton from '../RotateButton';
 
-const CabinetInstance = ({ id, initialPosition, view, onCopy }) => {
+const CabinetInstance = ({ id, initialPosition, view, onCopy, onRemove }) => {
   // Load the GLTF model
   const { scene } = useGLTF('/Cabinet_Drawer.glb');
 
@@ -63,6 +63,7 @@ const CabinetInstance = ({ id, initialPosition, view, onCopy }) => {
           position={position}
           onRotate={handleRotate}
           onCopy={() => onCopy(id, position)}
+          onRemove={() => onRemove(id)}
           onClose={handleCloseMenu}
         />
       )}

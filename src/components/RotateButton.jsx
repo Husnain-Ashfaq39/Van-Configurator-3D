@@ -5,7 +5,7 @@ import React, { useRef } from 'react';
 import { ShoppingBag, RotateCw, Replace, Grid, Copy, Trash } from 'lucide-react';
 import useClickOutside from '../hooks/useClickOutside'; // Import the custom hook
 
-const RotateButton = ({ position, onRotate, onCopy, onClose }) => { // Added onCopy
+const RotateButton = ({ position, onRotate, onCopy, onRemove, onClose }) => { // Added onRemove
   const buttonRef = useRef(null); // Create a ref for the button
 
   useClickOutside(buttonRef, onClose); // Use the custom hook
@@ -16,7 +16,7 @@ const RotateButton = ({ position, onRotate, onCopy, onClose }) => { // Added onC
     { icon: Replace, label: 'Replace' },
     { icon: Grid, label: 'Goes with' },
     { icon: Copy, label: 'Make copy', onClick: onCopy }, // Assigned onCopy
-    { icon: Trash, label: 'Remove' }
+    { icon: Trash, label: 'Remove', onClick: onRemove } // Assigned onRemove
   ];
   
   return (
