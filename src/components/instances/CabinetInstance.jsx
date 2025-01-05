@@ -31,7 +31,7 @@ const CabinetInstance = ({ id, initialPosition, view, onCopy, onRemove }) => {
   const VAN_BOUNDS = { x: [-0.3, 0.3], y: [0.3, 0.3], z: [-2, 0] };
 
   const [position, setPosition] = useState(initialPosition);
-  const [rotation, setRotation] = useState([0, 0, 0]);
+  const [rotationY, setRotationY] = useState(0); // Rotation in degrees
   const [showRotateButton, setShowRotateButton] = useState(false);
 
   // Initialize useDraggable
@@ -46,11 +46,6 @@ const CabinetInstance = ({ id, initialPosition, view, onCopy, onRemove }) => {
 
   // Apply highlighting during dragging
   useHighlightOnDrag(clonedScene, isDragging); // Yellow outline; change to 0x0000ff for blue
-
-  const handleRotate = () => {
-    setRotation(([x, y, z]) => [x, y + Math.PI / 2, z]);
-    setShowRotateButton(false);
-  };
 
   const handleDoubleClick = () => {
     if (view === 'default') return; // Prevent double-click in default view
@@ -68,7 +63,7 @@ const CabinetInstance = ({ id, initialPosition, view, onCopy, onRemove }) => {
         position-x={position[0]}
         position-y={position[1]}
         position-z={position[2]}
-        rotation={rotation}
+        rotation={[0, (rotationY * Math.PI) / 180, 0]} // Convert degrees to radians
         scale={[0.007, 0.007, 0.007]}
         onDoubleClick={handleDoubleClick}
         {...(view !== 'default' ? bind() : {})} // Only apply bind if not in default view
@@ -76,7 +71,8 @@ const CabinetInstance = ({ id, initialPosition, view, onCopy, onRemove }) => {
       {showRotateButton && view !== 'default' && (
         <RotateButton
           position={position}
-          onRotate={handleRotate}
+          rotationY={rotationY}
+          setRotationY={setRotationY}
           onCopy={() => onCopy(id, position)}
           onRemove={() => onRemove(id)}
           onClose={handleCloseMenu}

@@ -1,3 +1,4 @@
+// components/DiscreteSlider.jsx
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
@@ -9,20 +10,21 @@ function valuetext(value) {
 
 const MotionBox = motion(Box);
 
-export default function DiscreteSlider() {
+const DiscreteSlider = ({ value, onChange, ...props }) => {
   return (
     <MotionBox
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.3, ease: "easeOut" }}
-      sx={{ width: 300 }}
+      sx={{ width: 200 }} // Adjust width as needed
     >
       <Slider
-        aria-label="Angle"
-        defaultValue={0}
+        aria-label="Rotation Angle"
+        value={value}
+        onChange={onChange}
         getAriaValueText={valuetext}
         valueLabelDisplay="auto"
-        step={90}
+        step={1}
         marks={[
           { value: -180, label: '-180°' },
           { value: -90, label: '-90°' },
@@ -58,7 +60,10 @@ export default function DiscreteSlider() {
             transition: 'transform 0.2s ease-in-out',
           }
         }}
+        {...props}
       />
     </MotionBox>
   );
-}
+};
+
+export default DiscreteSlider;
