@@ -7,7 +7,6 @@ import CabinetDrawer from './CabinetDrawer';
 import SlidingDrawer from './SlidingDrawer';
 import Washroom from './Washroom';
 import PreLoader from './preLoader'; // Ensure correct casing
-import { OrbitControls } from '@react-three/drei';
 
 const VanModel = ({
   hiddenParts,
@@ -84,8 +83,6 @@ const VanModel = ({
       {/* Render CabinetDrawer without PreLoader */}
       {showCabinetDrawer && <CabinetDrawer view={view} />}
 
-      {/* Optional: Add OrbitControls for better camera manipulation */}
-      <OrbitControls />
     </>
   );
 };
