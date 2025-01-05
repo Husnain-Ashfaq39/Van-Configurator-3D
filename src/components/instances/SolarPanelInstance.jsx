@@ -1,11 +1,11 @@
 // src/components/instances/SolarPanelInstance.jsx
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { a } from '@react-spring/three'; // Use animated primitive if needed
 import { useGLTF } from '@react-three/drei';
 import useDraggable from '../../hooks/useDraggable';
 import RotateButton from '../RotateButton';
 import useHighlightOnDrag from '../../hooks/useHighlightOnDrag';
-import * as THREE from 'three';
+import '../../assets/style.css'; // Add this import
 
 const SolarPanelInstance = ({ id, initialPosition, view, onCopy, onRemove }) => {
   const { scene } = useGLTF('/solar_panel.glb');
@@ -28,18 +28,36 @@ const SolarPanelInstance = ({ id, initialPosition, view, onCopy, onRemove }) => 
   }, [scene]);
 
   const [position, setPosition] = useState(initialPosition);
-  const [rotation, setRotation] = useState([0, 0, 0]);
+  const [rotationY, setRotationY] = useState(0); // Manage only Y-axis rotation
   const [showRotateButton, setShowRotateButton] = useState(false);
 
   const VAN_BOUNDS = { x: [-0.3, 0.3], z: [-2, 0] };
 
-  const { bind, isDragging } = useDraggable(position, VAN_BOUNDS, (newX, newZ) => {
-    setPosition([newX, position[1], newZ]);
-  }, { enabled: view !== 'default' });
+  const { bind, isDragging } = useDraggable(
+    position,
+    VAN_BOUNDS,
+    (newX, newZ) => {
+      setPosition([newX, position[1], newZ]);
+    },
+    { enabled: view !== 'default' }
+  );
 
   useHighlightOnDrag(clonedScene, isDragging);
 
-  const handleRotate = () => setRotation(([x, y, z]) => [x, y + Math.PI / 2, z]);
+  useEffect(() => {
+    const canvas = document.querySelector('canvas');
+    if (canvas) {
+      if (isDragging) {
+        canvas.classList.add('dragging');
+      } else if (isHovered && view !== 'default') {
+        canvas.classList.add('draggable');
+      } else {
+        canvas.classList.remove('dragging', 'draggable');
+      }
+    }
+  }, [isDragging, view]);
+
+  const [isHovered, setIsHovered] = useState(false);
 
   const handleDoubleClick = () => {
     if (view === 'default') return;
@@ -54,16 +72,21 @@ const SolarPanelInstance = ({ id, initialPosition, view, onCopy, onRemove }) => 
     <>
       <a.primitive // Changed to animated primitive
         object={clonedScene}
-        position={position}
-        rotation={rotation}
+        position-x={position[0]}
+        position-y={position[1]}
+        position-z={position[2]}
+        rotation={[0, (rotationY * Math.PI) / 180, 0]}
         scale={[0.003, 0.003, 0.003]}
         onDoubleClick={handleDoubleClick}
+        onPointerOver={() => setIsHovered(true)}
+        onPointerOut={() => setIsHovered(false)}
         {...(view !== 'default' ? bind() : {})}
       />
       {showRotateButton && view !== 'default' && (
         <RotateButton
           position={position}
-          onRotate={handleRotate}
+          rotationY={rotationY}
+          setRotationY={setRotationY}
           onCopy={() => onCopy(id, position)}
           onRemove={() => onRemove(id)}
           onClose={handleCloseMenu}

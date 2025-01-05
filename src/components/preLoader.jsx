@@ -1,4 +1,4 @@
-import  { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Car } from 'lucide-react';
 
@@ -37,10 +37,10 @@ export default function PreLoader() {
   };
 
   return (
-    <div className="flex items-center justify-center h-screen bg-gradient-to-br from-[#1e3a8a] to-[#0f172a]">
+    <div className="flex items-center justify-center h-full">
       <AnimatePresence>
         <motion.div
-          className="relative w-96 flex flex-col items-center"
+          className="relative w-80 flex flex-col items-center bg-white/20 backdrop-blur-md p-6 rounded-lg shadow-lg border border-white/30"
           variants={containerVariants}
           initial="initial"
           animate="animate"
@@ -48,13 +48,13 @@ export default function PreLoader() {
           transition={{ duration: 0.5, ease: "easeInOut" }}
         >
           <motion.div
-            className="w-full h-2 bg-[#2a4a8a] rounded-full overflow-hidden mb-4"
+            className="w-full h-2 bg-white/30 rounded-full overflow-hidden mb-4"
             initial={{ opacity: 0, scale: 0.5 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.2, duration: 0.5 }}
           >
             <motion.div
-              className="h-full bg-gradient-to-r from-[#f0c14b] to-[#f59e0b]"
+              className="h-full bg-gradient-to-r from-yellow-300 to-yellow-500"
               variants={progressVariants}
               initial="initial"
               animate="animate"
@@ -87,12 +87,12 @@ export default function PreLoader() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5, duration: 0.5 }}
           >
-            <Car className="text-[#f0c14b] w-6 h-6" />
+            <Car className="text-yellow-400 w-6 h-6" />
             <div className="flex space-x-1">
               {[...Array(3)].map((_, i) => (
                 <motion.div
                   key={i}
-                  className="w-2 h-2 bg-[#f0c14b] rounded-full"
+                  className="w-2 h-2 bg-yellow-400 rounded-full"
                   animate={{
                     scale: [1, 1.5, 1],
                     opacity: [0.7, 1, 0.7],

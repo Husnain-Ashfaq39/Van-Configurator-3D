@@ -1,10 +1,11 @@
 // components/Scene.jsx
 import { Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls } from '@react-three/drei';
+import { OrbitControls, Html } from '@react-three/drei';
 import VanModel from './VanModel';
 import CameraUpdater from './CameraUpdater';
 import useSelectionStore from '../store/selectionStore';
+import PreLoader from './preLoader'; // Import the PreLoader component
 
 const Scene = ({
   hiddenParts,
@@ -28,12 +29,20 @@ const Scene = ({
       camera={{ position: cameraPosition, fov: 50 }}
       className="w-full h-full"
     >
+      {/* Lighting Setup */}
       <ambientLight intensity={0.8} />
       <directionalLight position={[5, 5, 5]} intensity={1.5} castShadow />
       <directionalLight position={[-5, 5, 5]} intensity={0.7} castShadow />
       <directionalLight position={[0, 5, -5]} intensity={0.5} castShadow />
 
-      <Suspense fallback={null}>
+      {/* Suspense with PreLoader as fallback */}
+      <Suspense
+        fallback={
+          <Html center>
+            <PreLoader />
+          </Html>
+        }
+      >
         <VanModel 
           hiddenParts={hiddenParts} 
           isRoof2={isRoof2} 
@@ -47,6 +56,7 @@ const Scene = ({
         />
       </Suspense>
 
+      {/* Camera Controls */}
       <CameraUpdater cameraPosition={cameraPosition} cameraLookAt={view === 'roof2' ? [0,0,0] : [0,0,0]} />
       {!hideOrbitControls && <OrbitControls enableZoom={true} />}
     </Canvas>

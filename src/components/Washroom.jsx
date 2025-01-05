@@ -1,5 +1,6 @@
+// src/components/Washroom.jsx
 import React, { useState } from 'react';
-import WashroomInstance from './instances/WashroomInstance'; // Create a separate instance component
+import WashroomInstance from './instances/WashroomInstance'; // Instance component
 import { v4 as uuidv4 } from 'uuid';
 
 const Washroom = ({ view }) => {
