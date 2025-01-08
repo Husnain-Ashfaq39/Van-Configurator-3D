@@ -1,11 +1,13 @@
 // src/components/instances/CabinetInstance.jsx
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { a } from '@react-spring/three';
 import { useGLTF } from '@react-three/drei';
 import useDraggable from '../../hooks/useDraggable';
 import useHighlightOnDrag from '../../hooks/useHighlightOnDrag';
 import RotateButton from '../RotateButton';
-import '../../assets/style.css'; // Add this import
+import BigDot from '../BigDot';
+import '../../assets/style.css';
+import useClickOutside from '../../hooks/useClickOutside';
 
 const CabinetInstance = ({ id, initialPosition, view, onCopy, onRemove }) => {
   const { scene } = useGLTF('/Cabinet_Drawer.glb');
@@ -30,6 +32,8 @@ const CabinetInstance = ({ id, initialPosition, view, onCopy, onRemove }) => {
   const [position, setPosition] = useState(initialPosition);
   const [rotationY, setRotationY] = useState(0);
   const [showRotateButton, setShowRotateButton] = useState(false);
+  const [showBigDot, setShowBigDot] = useState(true);
+  const cabinetRef = useRef();
 
   const { bind, isDragging } = useDraggable(
     position,
@@ -41,6 +45,14 @@ const CabinetInstance = ({ id, initialPosition, view, onCopy, onRemove }) => {
   );
 
   useHighlightOnDrag(clonedScene, isDragging);
+
+  useEffect(() => {
+    setShowBigDot(!isDragging);
+  }, [isDragging]);
+
+  useClickOutside(cabinetRef, () => {
+    setShowBigDot(true);
+  });
 
   useEffect(() => {
     const canvas = document.querySelector('canvas');
@@ -55,29 +67,35 @@ const CabinetInstance = ({ id, initialPosition, view, onCopy, onRemove }) => {
     }
   }, [isHovered, isDragging, view]);
 
-  const handleDoubleClick = () => {
-    if (view === 'default') return;
-    setShowRotateButton(true);
-  };
 
   const handleCloseMenu = () => {
     setShowRotateButton(false);
   };
 
+  const handleClick = () => {
+    if (view !== 'default') {
+      setShowRotateButton(true);
+    }
+  };
+
   return (
     <>
       <a.primitive
+        ref={cabinetRef}
         object={clonedScene}
         position-x={position[0]}
         position-y={position[1]}
         position-z={position[2]}
         rotation={[0, (rotationY * Math.PI) / 180, 0]}
         scale={[0.007, 0.007, 0.007]}
-        onDoubleClick={handleDoubleClick}
+        onClick={handleClick}
         onPointerOver={() => setIsHovered(true)}
         onPointerOut={() => setIsHovered(false)}
         {...(view !== 'default' ? bind() : {})}
       />
+      {showBigDot && (
+        <BigDot position={position} onClick={() => setShowRotateButton(true)} />
+      )}
       {showRotateButton && view !== 'default' && (
         <RotateButton
           position={position}

@@ -6,7 +6,7 @@ import { IoBedSharp } from "react-icons/io5";
 import { FiSun } from 'react-icons/fi';
 
 const products = [
-  { id: 1, name: 'Bed', price: 500, icon: <IoBedSharp />, isFavorite: false },
+//   { id: 1, name: 'Bed', price: 500, icon: <IoBedSharp />, isFavorite: false },
   { id: 2, name: 'Solar Panel', price: 300, icon: <FiSun />, isFavorite: false },
   { id: 3, name: 'Cabinet Drawer', price: 200, icon: <RiArchiveDrawerLine />, isFavorite: false },
   { id: 4, name: 'Sliding Drawer', price: 150, icon: <RiArchiveDrawerLine />, isFavorite: false },

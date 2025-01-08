@@ -6,6 +6,7 @@ import useDraggable from '../../hooks/useDraggable';
 import RotateButton from '../RotateButton';
 import useHighlightOnDrag from '../../hooks/useHighlightOnDrag';
 import '../../assets/style.css'; // Add this import
+import BigDot from '../BigDot'; // Add this import
 
 const WashroomInstance = ({ id, initialPosition, view, onCopy, onRemove }) => {
   const { scene } = useGLTF('/washroom2.glb');
@@ -30,6 +31,7 @@ const WashroomInstance = ({ id, initialPosition, view, onCopy, onRemove }) => {
   const [position, setPosition] = useState(initialPosition);
   const [rotationY, setRotationY] = useState(0); // Manage only Y-axis rotation
   const [showRotateButton, setShowRotateButton] = useState(false);
+  const [showBigDot, setShowBigDot] = useState(true); // Add this state
 
   const VAN_BOUNDS = { x: [-0.3, 0.3], z: [-2, 0] };
 
@@ -68,6 +70,10 @@ const WashroomInstance = ({ id, initialPosition, view, onCopy, onRemove }) => {
     setShowRotateButton(false);
   };
 
+  useEffect(() => {
+    setShowBigDot(!isDragging); // Update BigDot visibility based on dragging
+  }, [isDragging]);
+
   return (
     <>
       <a.primitive // Changed to animated primitive
@@ -82,6 +88,9 @@ const WashroomInstance = ({ id, initialPosition, view, onCopy, onRemove }) => {
         onPointerOut={() => setIsHovered(false)}
         {...(view !== 'default' ? bind() : {})}
       />
+      {showBigDot && (
+        <BigDot position={position} onClick={() => setShowRotateButton(true)} />
+      )}
       {showRotateButton && view !== 'default' && (
         <RotateButton
           position={position}

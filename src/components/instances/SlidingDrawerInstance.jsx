@@ -6,6 +6,7 @@ import useDraggable from '../../hooks/useDraggable';
 import RotateButton from '../RotateButton';
 import useHighlightOnDrag from '../../hooks/useHighlightOnDrag';
 import '../../assets/style.css'; // Add this import
+import BigDot from '../BigDot'; // Add this import
 
 const SlidingDrawerInstance = ({ id, initialPosition, view, onCopy, onRemove }) => {
   const { scene } = useGLTF('/Sliding_Drawer.glb');
@@ -31,6 +32,7 @@ const SlidingDrawerInstance = ({ id, initialPosition, view, onCopy, onRemove }) 
   const [rotationY, setRotationY] = useState(0); // Manage only Y-axis rotation
   const [showRotateButton, setShowRotateButton] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const [showBigDot, setShowBigDot] = useState(true); // Add this state
 
   const VAN_BOUNDS = { x: [-0.3, 0.3], z: [-2, 0] };
 
@@ -58,6 +60,10 @@ const SlidingDrawerInstance = ({ id, initialPosition, view, onCopy, onRemove }) 
     }
   }, [isHovered, isDragging, view]);
 
+  useEffect(() => {
+    setShowBigDot(!isDragging); // Update BigDot visibility based on dragging
+  }, [isDragging]);
+
   const handleDoubleClick = () => {
     if (view === 'default') return;
     setShowRotateButton(true);
@@ -81,6 +87,9 @@ const SlidingDrawerInstance = ({ id, initialPosition, view, onCopy, onRemove }) 
         onPointerOut={() => setIsHovered(false)}
         {...(view !== 'default' ? bind() : {})}
       />
+      {showBigDot && (
+        <BigDot position={position} onClick={() => setShowRotateButton(true)} />
+      )}
       {showRotateButton && view !== 'default' && (
         <RotateButton
           position={position}
