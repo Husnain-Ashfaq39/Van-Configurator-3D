@@ -1,10 +1,11 @@
 // App.jsx
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FiMenu, FiX } from 'react-icons/fi';
+import { FiMenu } from 'react-icons/fi';
 import CameraButtons from './components/CameraButtons';
 import Scene from './components/Scene'; // New Scene component
 import Sidebar from './components/Sidebar'; // Import the new Sidebar component
+import ViewSelector from './components/ViewSelector';
 
 const App = () => {
   const [cameraPosition, setCameraPosition] = useState([5, 2, 5]);
@@ -17,6 +18,9 @@ const App = () => {
   const [showSlidingDrawer, setShowSlidingDrawer] = useState(false);
   const [showWashroom, setShowWashroom] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  
+  // Lifted state for ViewSelector
+  const [isViewSelectorOpen, setIsViewSelectorOpen] = useState(false);
 
   const hiddenParts = [
     'Carrosserie_Carrosserie_0068',
@@ -54,32 +58,51 @@ const App = () => {
         showWashroom={showWashroom}
       />
 
-      <div className="flex-grow relative">
-        {!isSidebarOpen  && <button
-          onClick={toggleSidebar}
-          className="absolute top-4 left-4 z-10 p-2 bg-white rounded-full shadow-md hover:bg-gray-100 transition-colors"
+      <div
+        className={`flex-grow relative transition-all duration-300 ${
+          isSidebarOpen ? 'ml-72' : 'ml-0'
+        }`}
+      >
+        {/* Toggle Sidebar Button */}
+        {!isSidebarOpen && (
+          <button
+            onClick={toggleSidebar}
+            className="absolute top-4 left-4 z-10 p-2 bg-white rounded-full shadow-md hover:bg-gray-100 transition-colors"
+          >
+            <FiMenu />
+          </button>
+        )}
+
+        {/* Scene Container */}
+        <div
+          className={`w-full h-full transition-all duration-300 ${
+            isSidebarOpen || isViewSelectorOpen
+              ? 'p-4' // Reduce padding or apply other styles when Sidebar or ViewSelector is open
+              : 'p-0' // Expand when both are closed
+          }`}
         >
-           <FiMenu />
-        </button>}
+          <Scene
+            hiddenParts={hiddenParts}
+            isRoof2={view === 'roof2'}
+            showBed={showBed}
+            showSolarPanel={showSolarPanel}
+            showCabinetDrawer={showCabinetDrawer}
+            showSlidingDrawer={showSlidingDrawer}
+            showWashroom={showWashroom}
+            cameraPosition={cameraPosition}
+            view={view}
+            hideOrbitControls={hideOrbitControls}
+          />
+        </div>
 
-        <Scene
-          hiddenParts={hiddenParts}
-          isRoof2={view === 'roof2'}
-          showBed={showBed}
-          showSolarPanel={showSolarPanel}
-          showCabinetDrawer={showCabinetDrawer}
-          showSlidingDrawer={showSlidingDrawer}
-          showWashroom={showWashroom}
-          cameraPosition={cameraPosition}
-          view={view}
-          hideOrbitControls={hideOrbitControls}
-        />
-
-        <CameraButtons
+        {/* View Selector */}
+        <ViewSelector
           setCameraPosition={setCameraPosition}
           setCameraLookAt={setCameraLookAt}
           setView={setView}
           setHideOrbitControls={setHideOrbitControls}
+          isOpen={isViewSelectorOpen}
+          setIsOpen={setIsViewSelectorOpen}
         />
       </div>
     </div>
