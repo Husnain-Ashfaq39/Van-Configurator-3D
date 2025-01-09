@@ -81,7 +81,6 @@ const App = () => {
         >
           <Scene
             hiddenParts={hiddenParts}
-            isRoof2={view === 'roof2'}
             showBed={showBed}
             showSolarPanel={showSolarPanel}
             showCabinetDrawer={showCabinetDrawer}

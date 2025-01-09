@@ -19,7 +19,6 @@ const generateFieldPositions = (gridSize, spacing) => {
 
 const Scene = ({
   hiddenParts,
-  isRoof2,
   showBed,
   showSolarPanel,
   showCabinetDrawer,
@@ -71,7 +70,6 @@ const Scene = ({
         
         <VanModel 
           hiddenParts={hiddenParts} 
-          isRoof2={isRoof2} 
           showBed={showBed} 
           showSolarPanel={showSolarPanel} 
           showCabinetDrawer={showCabinetDrawer}

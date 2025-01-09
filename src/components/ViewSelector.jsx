@@ -48,7 +48,14 @@ const ViewSelector = ({
       lookAt: [0, 0, 0],
       view: 'roof2',
       thumbnail: '/Views/Roof.png'
-    }
+    },
+    {
+      name: 'Inner Zoomed View',
+      position: [0, 0, 0.51], 
+      lookAt: [0, 1, 0], 
+      view: 'innerZoom',
+      thumbnail: '/Views/InnerZoom.png' 
+    },
   ];
 
   const handleViewChange = (viewData) => {

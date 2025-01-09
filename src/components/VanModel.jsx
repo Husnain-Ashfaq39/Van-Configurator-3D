@@ -10,13 +10,11 @@ import PreLoader from './preLoader'; // Ensure correct casing
 
 const VanModel = ({
   hiddenParts,
-  isRoof2,
   showBed,
   showSolarPanel,
   showCabinetDrawer,
   showSlidingDrawer,
   showWashroom,
-  cameraPosition,
   view,
 }) => {
   const { scene: vanScene } = useGLTF('/parent_Setting_van/untitled.gltf');
@@ -56,15 +54,20 @@ const VanModel = ({
         if (child.isMesh) {
           const partName = child.name;
 
-          if (!isRoof2 && hiddenParts.includes(partName)) {
+          if (view === 'innerZoom') {
+            // When view is 'innerZoom', ensure all parts are visible
+            child.visible = true;
+          } else if (view !== 'roof2' && hiddenParts.includes(partName)) {
+            // Hide the part if it's in hiddenParts and view === 'roof2' is false
             child.visible = false;
           } else {
+            // Otherwise, make sure the part is visible
             child.visible = true;
           }
         }
       });
     }
-  }, [vanScene, hiddenParts, isRoof2]);
+  }, [vanScene, hiddenParts, view === 'roof2', view]);
 
   // Early Return if Initial Loading is True
   if (isInitialLoading) {
@@ -76,7 +79,7 @@ const VanModel = ({
       <primitive ref={vanRef} object={vanScene} />
 
       {showBed && <Bed view={view} />}
-      {showSolarPanel && isRoof2 && <SolarPanel view={view} />}
+      {showSolarPanel && view === 'roof2' && <SolarPanel view={view} />}
       {showSlidingDrawer && <SlidingDrawer view={view} />}
       {showWashroom && <Washroom view={view} />}
 
