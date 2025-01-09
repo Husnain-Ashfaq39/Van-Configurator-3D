@@ -1,8 +1,6 @@
 // App.jsx
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { FiMenu } from 'react-icons/fi';
-import CameraButtons from './components/CameraButtons';
 import Scene from './components/Scene'; // New Scene component
 import Sidebar from './components/Sidebar'; // Import the new Sidebar component
 import ViewSelector from './components/ViewSelector';
