@@ -1,19 +1,56 @@
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { FiMenu, FiHeart } from 'react-icons/fi';
-import { RiArchiveDrawerLine } from "react-icons/ri";
-import { IoBedSharp } from "react-icons/io5";
-import { FiSun } from 'react-icons/fi';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Menu, Heart, Plus } from 'lucide-react';
 
 const products = [
-//   { id: 1, name: 'Bed', price: 500, icon: <IoBedSharp />, isFavorite: false },
-  { id: 2, name: 'Solar Panel', price: 300, icon: <FiSun />, isFavorite: false },
-  { id: 3, name: 'Cabinet Drawer', price: 200, icon: <RiArchiveDrawerLine />, isFavorite: false },
-  { id: 4, name: 'Sliding Drawer', price: 150, icon: <RiArchiveDrawerLine />, isFavorite: false },
-  { id: 5, name: 'Washroom', price: 400, icon: <RiArchiveDrawerLine />, isFavorite: false },
+  {
+    id: 1,
+    name: 'Solar Panel',
+    price: 300,
+    image: 'https://images.unsplash.com/photo-1509391366360-2e959784a276?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
+    description: 'Solar panel',
+    isFavorite: false
+  },
+  {
+    id: 2,
+    name: 'Cabinet Drawer',
+    price: 200,
+    image: 'https://images.unsplash.com/photo-1595515106969-1ce29566ff1c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
+    description: 'Storage drawer',
+    isFavorite: false
+  },
+  {
+    id: 3,
+    name: 'Sliding Drawer',
+    price: 150,
+    image: 'https://images.unsplash.com/photo-1595515106969-1ce29566ff1c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
+    description: 'Sliding drawer',
+    isFavorite: false
+  },
+  {
+    id: 4,
+    name: 'Washroom',
+    price: 400,
+    image: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
+    description: 'Compact unit',
+    isFavorite: false
+  }
 ];
 
-const Sidebar = ({ isOpen, toggleSidebar, toggleBed, showBed, toggleSolarPanel, showSolarPanel, toggleCabinetDrawer, showCabinetDrawer, toggleSlidingDrawer, showSlidingDrawer, toggleWashroom, showWashroom }) => {
+const Sidebar = ({
+  isOpen,
+  toggleSidebar,
+  toggleBed,
+  showBed,
+  toggleSolarPanel,
+  showSolarPanel,
+  toggleCabinetDrawer,
+  showCabinetDrawer,
+  toggleSlidingDrawer,
+  showSlidingDrawer,
+  toggleWashroom,
+  showWashroom
+}) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [showFavorites, setShowFavorites] = useState(false);
   const [productList, setProductList] = useState(products);
@@ -40,63 +77,81 @@ const Sidebar = ({ isOpen, toggleSidebar, toggleBed, showBed, toggleSolarPanel, 
             animate={{ x: 0 }}
             exit={{ x: -300 }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="w-72 bg-white p-4 overflow-auto border-r border-gray-300 h-full"
+            className="w-[300px] bg-white  overflow-auto border-r border-gray-200 h-full p-4"
           >
-            <h2 className="text-xl font-bold mb-4 text-gray-800">Van Configurator</h2>
-
-            <div className="relative flex items-center mb-4">
-              <FiMenu 
-                className="absolute cursor-pointer left-2 text-gray-500 text-lg" 
+            <div className="flex items-center justify-between mb-2">
+              <h2 className="text-base font-bold text-gray-900">Van Configurator</h2>
+              <Menu 
+                className="cursor-pointer text-gray-500 hover:text-gray-700" 
                 onClick={toggleSidebar}
               />
+            </div>
+
+            <div className="relative mb-2">
               <input
                 type="text"
                 placeholder="Search..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-8 pr-8 p-2 border border-gray-300 rounded focus:outline-none"
+                className="w-full py-1.5 px-2 text-xs border border-gray-300 rounded-full focus:outline-none focus:ring-1 focus:ring-blue-500"
               />
-              <FiHeart 
-                className={`absolute right-2 text-gray-500 text-lg cursor-pointer ${showFavorites ? 'text-red-500' : ''}`} 
-                onClick={() => setShowFavorites(!showFavorites)} 
-              />
+              <button
+                className={`absolute right-2 top-1/2 transform -translate-y-1/2 ${showFavorites ? 'text-red-500' : 'text-gray-400'}`}
+                onClick={() => setShowFavorites(!showFavorites)}
+              >
+                <Heart className="text-sm" />
+              </button>
             </div>
 
             <div className="grid grid-cols-2 gap-2">
               {filteredProducts.map(product => (
-                <div key={product.id} className="border border-gray-300 rounded-lg p-2 bg-white shadow hover:shadow-lg transition-shadow">
-                  <div className="flex justify-center items-center h-16 mb-2 text-yellow-500 text-2xl">
-                    {product.icon}
-                  </div>
-                  <div className="text-center">
-                    <h3 className="text-sm font-semibold text-gray-800">{product.name}</h3>
-                    <p className="text-xs text-gray-600">${product.price}</p>
-                  </div>
-                  <div className="flex justify-between items-center mt-2">
-                    <button
-                      onClick={() => {
-                        if (product.name === 'Bed') toggleBed();
-                        if (product.name === 'Solar Panel') toggleSolarPanel();
-                        if (product.name === 'Cabinet Drawer') toggleCabinetDrawer();
-                        if (product.name === 'Sliding Drawer') toggleSlidingDrawer();
-                        if (product.name === 'Washroom') toggleWashroom();
-                      }}
-                      className={`w-full py-1 rounded text-xs cursor-pointer font-medium ${
-                        (product.name === 'Bed' && showBed) ||
-                        (product.name === 'Solar Panel' && showSolarPanel) ||
-                        (product.name === 'Cabinet Drawer' && showCabinetDrawer) ||
-                        (product.name === 'Sliding Drawer' && showSlidingDrawer) ||
-                        (product.name === 'Washroom' && showWashroom)
-                          ? 'bg-yellow-500 text-white'
-                          : 'bg-gray-200 text-gray-800 hover:bg-yellow-100'
-                      }`}
-                    >
-                      Add
-                    </button>
-                    <FiHeart 
-                      className={`ml-2 cursor-pointer ${product.isFavorite ? 'text-red-500' : 'text-gray-500'}`} 
-                      onClick={() => toggleFavorite(product.id)} 
+                <div key={product.id} className="relative group">
+                  <div className="aspect-[4/3] relative overflow-hidden rounded-lg bg-gray-100">
+                    <img
+                       src={product.image}
+                      alt={product.name}
+                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                     />
+                    {/* Hover overlay with + button */}
+                    <div className="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center">
+                      <button
+                        onClick={() => {
+                          switch (product.name) {
+                            case 'Solar Panel':
+                              toggleSolarPanel();
+                              break;
+                            case 'Cabinet Drawer':
+                              toggleCabinetDrawer();
+                              break;
+                            case 'Sliding Drawer':
+                              toggleSlidingDrawer();
+                              break;
+                            case 'Washroom':
+                              toggleWashroom();
+                              break;
+                            default:
+                              break;
+                          }
+                        }}
+                        className="w-12 h-12 rounded-full bg-white shadow-lg transform transition-transform duration-300 hover:scale-110 flex items-center justify-center group/button"
+                      >
+                        <Plus className="w-6 h-6 text-gray-800 transition-colors group-hover/button:text-[#f5c34b]" />
+                      </button>
+                    </div>
+                  </div>
+                  
+                  <div className="mt-2">
+                    <h3 className="text-xs font-bold text-gray-900 uppercase truncate">{product.name}</h3>
+                    <p className="text-xs text-gray-600 truncate">{product.description}</p>
+                    <div className="flex items-center justify-between mt-1">
+                      <span className="text-xs font-bold">${product.price}</span>
+                      <button
+                        onClick={() => toggleFavorite(product.id)}
+                        className={`p-0.25 rounded-full hover:bg-gray-100 transition-colors ${product.isFavorite ? 'text-red-500' : 'text-gray-400'}`}
+                      >
+                        <Heart className="text-[10px]" />
+                      </button>
+                    </div>
                   </div>
                 </div>
               ))}
