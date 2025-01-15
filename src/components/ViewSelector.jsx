@@ -1,17 +1,16 @@
 // ViewSelector.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight, Video, X } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Video, X, ZoomIn, ZoomOut} from 'lucide-react';
 
 const ViewSelector = ({
   setCameraPosition,
-  setCameraLookAt,
   setView,
   setHideOrbitControls,
   isOpen,
   setIsOpen
 }) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
+
 
   const views = [
     {
@@ -71,12 +70,22 @@ const ViewSelector = ({
       thumbnail: '/Views/InnerZoom.png' 
     },
   ];
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [zoomLevel, setZoomLevel] = useState(1);
+  const [baseCameraPosition, setBaseCameraPosition] = useState(views[0].position);
+  const [baseLookAt, setBaseLookAt] = useState(views[0].lookAt);
+
+  const minZoomLevel = 0.5;
+  const maxZoomLevel = 2;
+
+  
 
   const handleViewChange = (viewData) => {
-    setCameraPosition(viewData.position);
-    setCameraLookAt(viewData.lookAt);
+    setBaseCameraPosition(viewData.position);
+    setBaseLookAt(viewData.lookAt);
     setView(viewData.view);
     setHideOrbitControls(viewData.view !== 'default');
+    setZoomLevel(1); // Reset zoom level when view changes
     setIsOpen(false); // Close the ViewSelector after selecting a view
   };
 
@@ -88,6 +97,41 @@ const ViewSelector = ({
     }
   };
 
+  // Update camera position based on zoom level
+  useEffect(() => {
+    const direction = [
+      baseCameraPosition[0] - baseLookAt[0],
+      baseCameraPosition[1] - baseLookAt[1],
+      baseCameraPosition[2] - baseLookAt[2],
+    ];
+
+    const distance = Math.sqrt(direction[0] ** 2 + direction[1] ** 2 + direction[2] ** 2);
+
+    if (distance === 0) {
+      setCameraPosition(baseCameraPosition);
+      return;
+    }
+
+    const normalized = direction.map(d => d / distance);
+
+    const newCameraPosition = [
+      baseLookAt[0] + normalized[0] * distance * zoomLevel,
+      baseLookAt[1] + normalized[1] * distance * zoomLevel,
+      baseLookAt[2] + normalized[2] * distance * zoomLevel,
+    ];
+
+    setCameraPosition(newCameraPosition);
+  }, [baseCameraPosition, baseLookAt, zoomLevel, setCameraPosition]);
+
+  const zoomIn = () => {
+    setZoomLevel(prev => Math.max(prev * 0.9, minZoomLevel));
+  };
+
+  const zoomOut = () => {
+    setZoomLevel(prev => Math.min(prev * 1.1, maxZoomLevel));
+  };
+
+  // Determine the currently visible views in the slider
   const visibleViews = [...views.slice(currentIndex), ...views.slice(0, currentIndex)].slice(0, 5);
 
   return (
@@ -147,6 +191,24 @@ const ViewSelector = ({
                   className="p-2 rounded-full hover:bg-gray-100"
                 >
                   <ChevronRight className="w-6 h-6" />
+                </button>
+              </div>
+
+              {/* Zoom Controls */}
+              <div className="flex justify-center mt-4 gap-2">
+                <button 
+                  onClick={zoomIn}
+                  className="p-2 rounded-full hover:bg-gray-100"
+                  aria-label="Zoom In"
+                >
+                  <ZoomIn className="w-6 h-6" />
+                </button>
+                <button 
+                  onClick={zoomOut}
+                  className="p-2 rounded-full hover:bg-gray-100"
+                  aria-label="Zoom Out"
+                >
+                  <ZoomOut className="w-6 h-6" />
                 </button>
               </div>
             </div>
