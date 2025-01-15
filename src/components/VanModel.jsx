@@ -1,7 +1,6 @@
 // src/components/VanModel.jsx
 import React, { useRef, useEffect, useState } from 'react';
 import { useGLTF } from '@react-three/drei';
-import Bed from './Bed';
 import SolarPanel from './SolarPanel';
 import CabinetDrawer from './CabinetDrawer';
 import SlidingDrawer from './SlidingDrawer';
