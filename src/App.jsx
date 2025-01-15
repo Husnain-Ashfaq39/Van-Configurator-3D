@@ -7,6 +7,7 @@ import ViewSelector from './components/ViewSelector';
 
 const App = () => {
   const [cameraPosition, setCameraPosition] = useState([5, 2, 5]);
+  const [lookAt, setLookAt] = useState([0, 0, 0]);
   const [view, setView] = useState('default');
   const [showBed, setShowBed] = useState(false);
   const [showSolarPanel, setShowSolarPanel] = useState(false);
@@ -75,6 +76,7 @@ const App = () => {
             showSlidingDrawer={showSlidingDrawer}
             showWashroom={showWashroom}
             cameraPosition={cameraPosition}
+            lookAt={lookAt}
             view={view}
            
           />
@@ -83,7 +85,7 @@ const App = () => {
         {/* View Selector */}
         <ViewSelector
           setCameraPosition={setCameraPosition}
-         
+          setLookAt={setLookAt}
           setView={setView}
          
           isOpen={isViewSelectorOpen}

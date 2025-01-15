@@ -5,6 +5,7 @@ import { ChevronLeft, ChevronRight, Video, X, ZoomIn, ZoomOut} from 'lucide-reac
 
 const ViewSelector = ({
   setCameraPosition,
+  setLookAt,
   setView,
   isOpen,
   setIsOpen
@@ -35,22 +36,23 @@ const ViewSelector = ({
     },
     {
       name: 'Ceiling View',
-      position: [0.2, -0.8, 0.3],
-      lookAt: [0, 0, 0],
+      // position: [0.2, -0.8, 0.3],
+      position: [0, -1, -4],
+      lookAt: [0, 2.7, 1],
       view: 'back',
       thumbnail: '/Views/Back.png'
     },
     {
-      name: 'Side View Right',
-      position: [-4, 0.3, 1],
+      name: 'Side View ',
+      position: [-5, 0.3, 0],
       lookAt: [0, 0, 0],
       view: 'side',
       thumbnail: '/Views/side.png'
     },
     {
-      name: 'Side View Left',
-      position: [-5, 0.3, -1],
-      lookAt: [0, 0, 0],
+      name: 'Side View Zoomed',
+      position: [-3, 0.3, -1],
+      lookAt: [100, 0, 0],
       view: 'side',
       thumbnail: '/Views/side.png'
     },
@@ -64,7 +66,7 @@ const ViewSelector = ({
     {
       name: 'Inner Zoomed View',
       position: [0, 0, 0.51], 
-      lookAt: [0, 1, 0], 
+      lookAt: [0, 0, 0], 
       view: 'innerZoom',
       thumbnail: '/Views/InnerZoom.png' 
     },
@@ -82,6 +84,7 @@ const ViewSelector = ({
   const handleViewChange = (viewData) => {
     setBaseCameraPosition(viewData.position);
     setBaseLookAt(viewData.lookAt);
+    setLookAt(viewData.lookAt);
     setView(viewData.view);
     setZoomLevel(1); // Reset zoom level when view changes
     setIsOpen(false); // Close the ViewSelector after selecting a view

@@ -1,7 +1,6 @@
 // Scene.jsx
 import { Suspense, useRef, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls } from '@react-three/drei';
 import VanModel from './VanModel';
 import CameraUpdater from './CameraUpdater';
 import useSelectionStore from '../store/selectionStore';
@@ -25,6 +24,7 @@ const Scene = ({
   showSlidingDrawer,
   showWashroom,
   cameraPosition,
+  lookAt,
   view,
   gridSize = 4,
   spacing = 15.5
@@ -81,7 +81,7 @@ const Scene = ({
 
       <CameraUpdater 
         cameraPosition={cameraPosition} 
-        cameraLookAt={view === 'roof2' ? [0,0,0] : [0,0,0]} 
+        cameraLookAt={lookAt}
       />
      
     </Canvas>
