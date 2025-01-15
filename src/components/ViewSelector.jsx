@@ -30,7 +30,14 @@ const ViewSelector = ({
     },
     {
       name: 'Back View',
-      position: [0, 0.5, -6],
+      position: [0, 0.5, -5],
+      lookAt: [0, 0, 0],
+      view: 'back',
+      thumbnail: '/Views/Back.png'
+    },
+    {
+      name: 'Ceiling View',
+      position: [0.2, -0.8, 0.3],
       lookAt: [0, 0, 0],
       view: 'back',
       thumbnail: '/Views/Back.png'
@@ -69,7 +76,7 @@ const ViewSelector = ({
     setCameraPosition(viewData.position);
     setCameraLookAt(viewData.lookAt);
     setView(viewData.view);
-    setHideOrbitControls(viewData.view !== 'default');
+    // setHideOrbitControls(viewData.view !== 'default');
     setIsOpen(false); // Close the ViewSelector after selecting a view
   };
 
