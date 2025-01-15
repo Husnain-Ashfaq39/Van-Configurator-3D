@@ -1,6 +1,7 @@
 // Scene.jsx
 import { Suspense, useRef, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
+import { Environment } from '@react-three/drei';
 import VanModel from './VanModel';
 import CameraUpdater from './CameraUpdater';
 import useSelectionStore from '../store/selectionStore';
@@ -17,7 +18,6 @@ const generateFieldPositions = (gridSize, spacing) => {
 };
 
 const Scene = ({
- 
   showBed,
   showSolarPanel,
   showCabinetDrawer,
@@ -27,11 +27,12 @@ const Scene = ({
   lookAt,
   view,
   gridSize = 4,
-  spacing = 15.5
+  spacing = 15.5,
 }) => {
   const setSelectedObject = useSelectionStore(state => state.setSelectedObject);
   const fieldPositions = generateFieldPositions(gridSize, spacing);
   const canvasRef = useRef();
+
 
   useEffect(() => {
     const handleResize = () => {
@@ -57,20 +58,58 @@ const Scene = ({
       className="w-full h-full"
       style={{ position: 'absolute', top: 0, left: 0 }}
     >
-      <ambientLight intensity={0.8} />
-      <directionalLight position={[5, 5, 5]} intensity={1.5} castShadow />
-      <directionalLight position={[-5, 5, 5]} intensity={0.7} castShadow />
-      <directionalLight position={[0, 5, -5]} intensity={0.5} castShadow />
+      {/* Environment Map for realistic reflections */}
+      <Suspense fallback={null}>
+        <Environment preset="sunset" background />
+      </Suspense>
 
+      {/* Hemisphere Light for ambient sky and ground lighting */}
+      <hemisphereLight
+        skyColor="#ffffff"
+        groundColor="#444444"
+        intensity={0.0001}
+      />
+
+      {/* Enhanced Directional Lights */}
+      <directionalLight
+        position={[10, 15, 10]}
+        intensity={2}
+        castShadow
+        shadow-mapSize-width={1024}
+        shadow-mapSize-height={1024}
+        shadow-camera-far={50}
+        shadow-camera-left={-20}
+        shadow-camera-right={20}
+        shadow-camera-top={20}
+        shadow-camera-bottom={-20}
+      />
+      <directionalLight
+        position={[-10, 15, -10]}
+        intensity={1}
+        castShadow
+        shadow-mapSize-width={1024}
+        shadow-mapSize-height={1024}
+        shadow-camera-far={50}
+        shadow-camera-left={-20}
+        shadow-camera-right={20}
+        shadow-camera-top={20}
+        shadow-camera-bottom={-20}
+      />
+
+
+      {/* Ambient Light for subtle illumination */}
+      <ambientLight intensity={0.0003} />
+
+      {/* Green Field */}
       <Suspense fallback={null}>
         {fieldPositions.map((position, index) => (
           <GreenField key={index} position={position} />
         ))}
-        
-        <VanModel 
-         
-          showBed={showBed} 
-          showSolarPanel={showSolarPanel} 
+
+        {/* Van Model with enhanced materials */}
+        <VanModel
+          showBed={showBed}
+          showSolarPanel={showSolarPanel}
           showCabinetDrawer={showCabinetDrawer}
           showSlidingDrawer={showSlidingDrawer}
           showWashroom={showWashroom}
@@ -79,13 +118,13 @@ const Scene = ({
         />
       </Suspense>
 
-      <CameraUpdater 
-        cameraPosition={cameraPosition} 
-        cameraLookAt={lookAt}
-      />
-     
+      {/* Camera Updater */}
+      <CameraUpdater cameraPosition={cameraPosition} cameraLookAt={lookAt} />
+
+      
     </Canvas>
   );
 };
 
 export default Scene;
+
