@@ -8,7 +8,6 @@ import ViewSelector from './components/ViewSelector';
 const App = () => {
   const [cameraPosition, setCameraPosition] = useState([5, 2, 5]);
   const [view, setView] = useState('default');
-  const [hideOrbitControls, setHideOrbitControls] = useState(false);
   const [showBed, setShowBed] = useState(false);
   const [showSolarPanel, setShowSolarPanel] = useState(false);
   const [showCabinetDrawer, setShowCabinetDrawer] = useState(false);
@@ -77,7 +76,7 @@ const App = () => {
             showWashroom={showWashroom}
             cameraPosition={cameraPosition}
             view={view}
-            hideOrbitControls={hideOrbitControls}
+           
           />
         </div>
 
@@ -86,7 +85,7 @@ const App = () => {
           setCameraPosition={setCameraPosition}
          
           setView={setView}
-          setHideOrbitControls={setHideOrbitControls}
+         
           isOpen={isViewSelectorOpen}
           setIsOpen={setIsViewSelectorOpen}
         />

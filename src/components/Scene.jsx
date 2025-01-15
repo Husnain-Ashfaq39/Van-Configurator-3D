@@ -26,7 +26,6 @@ const Scene = ({
   showWashroom,
   cameraPosition,
   view,
-  hideOrbitControls,
   gridSize = 4,
   spacing = 15.5
 }) => {
@@ -84,7 +83,7 @@ const Scene = ({
         cameraPosition={cameraPosition} 
         cameraLookAt={view === 'roof2' ? [0,0,0] : [0,0,0]} 
       />
-      {!hideOrbitControls && <OrbitControls enableZoom={true} />}
+     
     </Canvas>
   );
 };

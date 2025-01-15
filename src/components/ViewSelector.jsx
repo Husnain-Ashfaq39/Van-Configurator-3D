@@ -6,7 +6,6 @@ import { ChevronLeft, ChevronRight, Video, X, ZoomIn, ZoomOut} from 'lucide-reac
 const ViewSelector = ({
   setCameraPosition,
   setView,
-  setHideOrbitControls,
   isOpen,
   setIsOpen
 }) => {
@@ -84,7 +83,6 @@ const ViewSelector = ({
     setBaseCameraPosition(viewData.position);
     setBaseLookAt(viewData.lookAt);
     setView(viewData.view);
-    setHideOrbitControls(viewData.view !== 'default');
     setZoomLevel(1); // Reset zoom level when view changes
     setIsOpen(false); // Close the ViewSelector after selecting a view
   };
