@@ -30,14 +30,21 @@ const ViewSelector = ({
     },
     {
       name: 'Back View',
-      position: [0, 2, -6],
+      position: [0, 0.5, -6],
       lookAt: [0, 0, 0],
       view: 'back',
       thumbnail: '/Views/Back.png'
     },
     {
-      name: 'Side View',
-      position: [-6, 2, 0],
+      name: 'Side View Right',
+      position: [-4, 0.3, 1],
+      lookAt: [0, 0, 0],
+      view: 'side',
+      thumbnail: '/Views/side.png'
+    },
+    {
+      name: 'Side View Left',
+      position: [-5, 0.3, -1],
       lookAt: [0, 0, 0],
       view: 'side',
       thumbnail: '/Views/side.png'

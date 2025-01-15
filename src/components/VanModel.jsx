@@ -9,7 +9,6 @@ import Washroom from './Washroom';
 import PreLoader from './preLoader'; // Ensure correct casing
 
 const VanModel = ({
-  hiddenParts,
   showBed,
   showSolarPanel,
   showCabinetDrawer,
@@ -17,8 +16,33 @@ const VanModel = ({
   showWashroom,
   view,
 }) => {
-  const { scene: vanScene } = useGLTF('/parent_Setting_van/untitled.gltf');
+  const { scene: vanScene } = useGLTF('/parent_Setting_van/untitled2.glb');
   const vanRef = useRef();
+
+  // Define this outside the VanModel component to avoid re-creation on every render
+  const hidePartsByView = {
+    default: [],
+    innerZoom: [], // All parts visible
+    back: ['Porte_1_Carrosserie_0005'], // Hide back doors
+    side: [
+      'Carrosserie_Carrosserie_0068',
+      'Carrosserie_Carrosserie_0049',
+      'Carrosserie_Carrosserie_0001',
+      'Interieur_Interrieur_0006',
+    ],
+    top: [
+      'Interieur_Interrieur_0184',
+      'Interieur_Interrieur_0161',
+      'Carrosserie_Carrosserie_0202',
+      'Carrosserie_Carrosserie_0277',
+      'Interieur_Interrieur_0006',
+      
+     
+      // Add other roof parts as needed
+    ],
+    roof2: [], // Specific handling for roof2 if needed
+  };
+
 
   // State to control Initial Loading
   const [isInitialLoading, setIsInitialLoading] = useState(true);
@@ -47,7 +71,6 @@ const VanModel = ({
     };
   }, []);
 
-  // Visibility Control for Van Parts
   useEffect(() => {
     if (vanScene) {
       vanScene.traverse((child) => {
@@ -55,19 +78,30 @@ const VanModel = ({
           const partName = child.name;
 
           if (view === 'innerZoom') {
-            // When view is 'innerZoom', ensure all parts are visible
+            // In 'innerZoom' view, all parts are visible
             child.visible = true;
-          } else if (view !== 'roof2' && hiddenParts.includes(partName)) {
-            // Hide the part if it's in hiddenParts and view === 'roof2' is false
-            child.visible = false;
           } else {
-            // Otherwise, make sure the part is visible
-            child.visible = true;
+            // Determine parts to hide based on the current view
+            const partsToHide = hidePartsByView[view] || [];
+
+            // Hide the part if it's in the hide list
+            if (partsToHide.includes(partName)) {
+              child.visible = false;
+            }
+            // Additionally, hide 'solar_panel' unless the view is 'roof2'
+            else if (partName === 'solar_panel' && view !== 'roof2') {
+              child.visible = false;
+            }
+            // Otherwise, make the part visible
+            else {
+              child.visible = true;
+            }
           }
         }
       });
     }
-  }, [vanScene, hiddenParts, view === 'roof2', view]);
+  }, [vanScene, view]); // Removed hiddenParts and view === 'roof2' from dependencies
+
 
   // Early Return if Initial Loading is True
   if (isInitialLoading) {

@@ -20,17 +20,7 @@ const App = () => {
   // Lifted state for ViewSelector
   const [isViewSelectorOpen, setIsViewSelectorOpen] = useState(false);
 
-  const hiddenParts = [
-    'Carrosserie_Carrosserie_0068',
-    'Carrosserie_Carrosserie_0049',
-    'Interieur_Interrieur_0006',
-    'Carrosserie_Carrosserie_0202',
-    'Carrosserie_Carrosserie_0277',
-    'Interieur_Interrieur_0184',
-    'Carrosserie_Carrosserie_0001',
-    'Interieur_Interrieur_0161',
-    'solar_panel',
-  ];
+
 
   const toggleBed = () => setShowBed(prev => !prev);
   const toggleSolarPanel = () => setShowSolarPanel(prev => !prev);
@@ -80,7 +70,7 @@ const App = () => {
           }`}
         >
           <Scene
-            hiddenParts={hiddenParts}
+           
             showBed={showBed}
             showSolarPanel={showSolarPanel}
             showCabinetDrawer={showCabinetDrawer}
