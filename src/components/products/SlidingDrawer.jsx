@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import SlidingDrawerInstance from './instances/SlidingDrawerInstance'; // Create a separate instance component
+import SlidingDrawerInstance from '../instances/SlidingDrawerInstance'; // Create a separate instance component
 import { v4 as uuidv4 } from 'uuid';
 
 const SlidingDrawer = ({ view }) => {

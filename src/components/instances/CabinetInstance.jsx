@@ -1,82 +1,26 @@
 // src/components/instances/CabinetInstance.jsx
-import React, { useState, useMemo, useEffect, useRef } from 'react';
+import React from 'react';
 import { a } from '@react-spring/three';
-import { useGLTF } from '@react-three/drei';
-import useDraggable from '../../hooks/useDraggable';
-import useHighlightOnDrag from '../../hooks/useHighlightOnDrag';
 import RotateButton from '../RotateButton';
 import BigDot from '../BigDot';
-import '../../assets/style.css';
-import useClickOutside from '../../hooks/useClickOutside';
+import useInstanceLogic from '../../hooks/useInstanceLogic';
 
 const CabinetInstance = ({ id, initialPosition, view, onCopy, onRemove }) => {
-  const { scene } = useGLTF('/Cabinet_Drawer.glb');
-  const [isHovered, setIsHovered] = useState(false);
-
-  const clonedScene = useMemo(() => {
-    const clone = scene.clone(true);
-    clone.traverse((child) => {
-      if (child.isMesh) {
-        if (Array.isArray(child.material)) {
-          child.material = child.material.map((mat) => mat.clone());
-        } else {
-          child.material = child.material.clone();
-        }
-      }
-    });
-    return clone;
-  }, [scene]);
-
-  const VAN_BOUNDS = { x: [-0.3, 0.3], y: [0.3, 0.3], z: [-2, 0] };
-
-  const [position, setPosition] = useState(initialPosition);
-  const [rotationY, setRotationY] = useState(0);
-  const [showRotateButton, setShowRotateButton] = useState(false);
-  const [showBigDot, setShowBigDot] = useState(true);
-  const cabinetRef = useRef();
-
-  const { bind, isDragging } = useDraggable(
+  const {
+    clonedScene,
     position,
-    VAN_BOUNDS,
-    (newX, newZ) => {
-      setPosition([newX, position[1], newZ]);
-    },
-    { enabled: view !== 'default' }
-  );
-
-  useHighlightOnDrag(clonedScene, isDragging);
-
-  useEffect(() => {
-    setShowBigDot(!isDragging);
-  }, [isDragging]);
-
-  useClickOutside(cabinetRef, () => {
-    setShowBigDot(true);
-  });
-
-  useEffect(() => {
-    const canvas = document.querySelector('canvas');
-    if (canvas) {
-      if (isDragging) {
-        canvas.classList.add('dragging');
-      } else if (isHovered && view !== 'default') {
-        canvas.classList.add('draggable');
-      } else {
-        canvas.classList.remove('dragging', 'draggable');
-      }
-    }
-  }, [isHovered, isDragging, view]);
-
-
-  const handleCloseMenu = () => {
-    setShowRotateButton(false);
-  };
-
-  const handleClick = () => {
-    if (view !== 'default') {
-      setShowRotateButton(true);
-    }
-  };
+    rotationY,
+    setRotationY,
+    showRotateButton,
+    setShowRotateButton,
+    showBigDot,
+    isHovered,
+    setIsHovered,
+    cabinetRef,
+    bind,
+    handleDoubleClick,
+    handleCloseMenu,
+  } = useInstanceLogic('/Cabinet_Drawer.glb', initialPosition, view);
 
   return (
     <>
@@ -88,7 +32,7 @@ const CabinetInstance = ({ id, initialPosition, view, onCopy, onRemove }) => {
         position-z={position[2]}
         rotation={[0, (rotationY * Math.PI) / 180, 0]}
         scale={[0.007, 0.007, 0.007]}
-        onClick={handleClick}
+        onClick={handleDoubleClick}
         onPointerOver={() => setIsHovered(true)}
         onPointerOut={() => setIsHovered(false)}
         {...(view !== 'default' ? bind() : {})}

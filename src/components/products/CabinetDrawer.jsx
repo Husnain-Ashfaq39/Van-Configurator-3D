@@ -1,6 +1,6 @@
 // src/components/CabinetDrawer.jsx
 import React, { useState } from 'react';
-import CabinetInstance from './instances/CabinetInstance';
+import CabinetInstance from '../instances/CabinetInstance';
 import { v4 as uuidv4 } from 'uuid'; // Import UUID for unique IDs
 
 const CabinetDrawer = ({ view }) => {

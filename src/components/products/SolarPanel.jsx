@@ -1,6 +1,6 @@
 // src/components/SolarPanel.jsx
 import React, { useState } from 'react';
-import SolarPanelInstance from './instances/SolarPanelInstance'; // Instance component
+import SolarPanelInstance from '../instances/SolarPanelInstance'; // Instance component
 import { v4 as uuidv4 } from 'uuid';
 
 const SolarPanel = ({ view }) => {

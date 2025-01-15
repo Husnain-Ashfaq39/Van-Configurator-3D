@@ -1,10 +1,10 @@
 // src/components/VanModel.jsx
 import React, { useRef, useEffect, useState } from 'react';
 import { useGLTF } from '@react-three/drei';
-import SolarPanel from './SolarPanel';
-import CabinetDrawer from './CabinetDrawer';
-import SlidingDrawer from './SlidingDrawer';
-import Washroom from './Washroom';
+import SolarPanel from './products/SolarPanel';
+import CabinetDrawer from './products/CabinetDrawer';
+import SlidingDrawer from './products/SlidingDrawer';
+import Washroom from './products/Washroom';
 import PreLoader from './preLoader'; // Ensure correct casing
 
 const VanModel = ({
