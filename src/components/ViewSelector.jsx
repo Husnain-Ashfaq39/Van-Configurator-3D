@@ -76,7 +76,7 @@ const ViewSelector = ({
     setCameraPosition(viewData.position);
     setCameraLookAt(viewData.lookAt);
     setView(viewData.view);
-    // setHideOrbitControls(viewData.view !== 'default');
+    setHideOrbitControls(viewData.view !== 'default');
     setIsOpen(false); // Close the ViewSelector after selecting a view
   };
 
