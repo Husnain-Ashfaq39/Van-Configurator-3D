@@ -18,7 +18,7 @@ const generateFieldPositions = (gridSize, spacing) => {
 };
 
 const Scene = ({
-  visibleProducts,
+  products,
   cameraPosition,
   lookAt,
   view,
@@ -102,7 +102,7 @@ const Scene = ({
 
         {/* Van Model with enhanced materials */}
         <VanModel
-          visibleProducts={visibleProducts}
+          products={products}
           cameraPosition={cameraPosition}
           view={view}
         />

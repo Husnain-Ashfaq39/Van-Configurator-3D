@@ -30,7 +30,7 @@ const FullBedInstance = ({ id, initialPosition, view, onCopy, onRemove }) => {
         position-y={position[1]}
         position-z={position[2]}
         rotation={[0, (rotationY * Math.PI) / 180, 0]}
-        scale={[0.5, 0.5, 0.5]} // Adjust scale as needed
+        scale={[0.57, 0.57, 0.57]} // Adjust scale as needed
         onDoubleClick={handleDoubleClick}
         onPointerOver={() => setIsHovered(true)}
         onPointerOut={() => setIsHovered(false)}

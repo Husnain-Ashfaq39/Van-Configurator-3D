@@ -5,10 +5,11 @@ import SolarPanel from './products/SolarPanel';
 import CabinetDrawer from './products/CabinetDrawer';
 import SlidingDrawer from './products/SlidingDrawer';
 import Washroom from './products/Washroom';
+import FullBed from './products/FullBed'; // Ensure you have this component
 import PreLoader from './PreLoader'; // Ensure correct casing
 
 const VanModel = ({
-  visibleProducts,
+  products,
   view,
 }) => {
   const { scene: vanScene } = useGLTF('/parent_Setting_van/untitled2.glb');
@@ -102,12 +103,23 @@ const VanModel = ({
     <>
       <primitive ref={vanRef} object={vanScene} />
 
-      {/* Dynamically render products based on visibleProducts */}
-      {visibleProducts['full_bed'] && <FullBed view={view} />}
-      {visibleProducts['solar_panel'] && view === 'roof2' && <SolarPanel view={view} />}
-      {visibleProducts['sliding_drawer'] && <SlidingDrawer view={view} />}
-      {visibleProducts['washroom'] && <Washroom view={view} />}
-      {visibleProducts['cabinet_drawer'] && <CabinetDrawer view={view} />}
+      {/* Dynamically render products based on products prop */}
+      {products.map(product => {
+        switch (product.id) {
+          case 'full_bed':
+            return <FullBed key={product.id} view={view} />;
+          case 'solar_panel':
+            return view === 'roof2' ? <SolarPanel key={product.id} view={view} /> : null;
+          case 'sliding_drawer':
+            return <SlidingDrawer key={product.id} view={view} />;
+          case 'washroom':
+            return <Washroom key={product.id} view={view} />;
+          case 'cabinet_drawer':
+            return <CabinetDrawer key={product.id} view={view} />;
+          default:
+            return null;
+        }
+      })}
     </>
   );
 };

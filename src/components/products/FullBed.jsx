@@ -3,7 +3,7 @@ import FullBedInstance from '../instances/FullBedInstance'; // Create a separate
 import { v4 as uuidv4 } from 'uuid';
 
 const FullBed = ({ view }) => {
-  const [fullBeds, setFullBeds] = useState([{ id: uuidv4(), position: [0, -0.8, 0] }]);
+  const [fullBeds, setFullBeds] = useState([{ id: uuidv4(), position: [0, -0.2, 0] }]);
 
   const handleCopy = (id, currentPosition) => {
     setFullBeds((prevBeds) => {

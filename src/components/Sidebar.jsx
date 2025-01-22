@@ -7,7 +7,6 @@ const Sidebar = ({
   isOpen,
   toggleSidebar,
   products,
-  visibleProducts,
   toggleProductVisibility,
   toggleFavorite
 }) => {

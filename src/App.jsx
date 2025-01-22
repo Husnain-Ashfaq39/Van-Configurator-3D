@@ -5,61 +5,59 @@ import Scene from './components/Scene';
 import Sidebar from './components/Sidebar'; 
 import ViewSelector from './components/ViewSelector';
 
-const initialProducts = [
-  {
-    id: 'solar_panel',
-    name: 'Solar Panel',
-    price: 300,
-    image: 'https://images.unsplash.com/photo-1509391366360-2e959784a276?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
-    description: 'Solar panel',
-    isFavorite: false
-  },
-  {
-    id: 'cabinet_drawer',
-    name: 'Cabinet Drawer',
-    price: 200,
-    image: 'https://images.unsplash.com/photo-1595515106969-1ce29566ff1c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
-    description: 'Storage drawer',
-    isFavorite: false
-  },
-  {
-    id: 'sliding_drawer',
-    name: 'Sliding Drawer',
-    price: 150,
-    image: 'https://images.unsplash.com/photo-1595515106969-1ce29566ff1c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
-    description: 'Sliding drawer',
-    isFavorite: false
-  },
-  {
-    id: 'washroom',
-    name: 'Washroom',
-    price: 400,
-    image: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
-    description: 'Compact unit',
-    isFavorite: false
-  },
-  {
-    id: 'full_bed',
-    name: 'Full Bed',
-    price: 500,
-    image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
-    description: 'Comfortable full-size bed',
-    isFavorite: false
-  }
-];
-
 const App = () => {
   const [cameraPosition, setCameraPosition] = useState([5, 2, 5]);
   const [lookAt, setLookAt] = useState([0, 0, 0]);
   const [view, setView] = useState('default');
   
-  // Initialize visibility state for all products
-  const [visibleProducts, setVisibleProducts] = useState(
-    initialProducts.reduce((acc, product) => {
-      acc[product.id] = false;
-      return acc;
-    }, {})
-  );
+  // Initialize products in state with an added 'visible' property
+  const [products, setProducts] = useState([
+    {
+      id: 'solar_panel',
+      name: 'Solar Panel',
+      price: 300,
+      image: 'https://images.unsplash.com/photo-1509391366360-2e959784a276?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
+      description: 'Solar panel',
+      isFavorite: false,
+      visible: false
+    },
+    {
+      id: 'cabinet_drawer',
+      name: 'Cabinet Drawer',
+      price: 200,
+      image: 'https://images.unsplash.com/photo-1595515106969-1ce29566ff1c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
+      description: 'Storage drawer',
+      isFavorite: false,
+      visible: false
+    },
+    {
+      id: 'sliding_drawer',
+      name: 'Sliding Drawer',
+      price: 150,
+      image: 'https://images.unsplash.com/photo-1595515106969-1ce29566ff1c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
+      description: 'Sliding drawer',
+      isFavorite: false,
+      visible: false
+    },
+    {
+      id: 'washroom',
+      name: 'Washroom',
+      price: 400,
+      image: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
+      description: 'Compact unit',
+      isFavorite: false,
+      visible: false
+    },
+    {
+      id: 'full_bed',
+      name: 'Full Bed',
+      price: 500,
+      image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
+      description: 'Comfortable full-size bed',
+      isFavorite: false,
+      visible: false
+    }
+  ]);
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   
@@ -68,22 +66,20 @@ const App = () => {
 
   // Toggle visibility of a product by id
   const toggleProductVisibility = (id) => {
-    setVisibleProducts((prev) => ({
-      ...prev,
-      [id]: !prev[id]
-    }));
+    setProducts((prevProducts) =>
+      prevProducts.map(product =>
+        product.id === id ? { ...product, visible: !product.visible } : product
+      )
+    );
   };
 
   // Toggle favorite status for a product by id
   const toggleFavorite = (id) => {
-    // You might want to manage favorites separately or within the product list
-    // For simplicity, here's how you can toggle it in the initialProducts array
-    // Consider using a separate state if favorites need to persist or be managed differently
-    const updatedProducts = initialProducts.map(product =>
-      product.id === id ? { ...product, isFavorite: !product.isFavorite } : product
+    setProducts((prevProducts) =>
+      prevProducts.map(product =>
+        product.id === id ? { ...product, isFavorite: !product.isFavorite } : product
+      )
     );
-    // If you have initialProducts in state, update them here
-    // For now, this does not persist as initialProducts is a constant
   };
 
   return (
@@ -91,8 +87,7 @@ const App = () => {
       <Sidebar
         isOpen={isSidebarOpen}
         toggleSidebar={() => setIsSidebarOpen((prev) => !prev)}
-        products={initialProducts}
-        visibleProducts={visibleProducts}
+        products={products}
         toggleProductVisibility={toggleProductVisibility}
         toggleFavorite={toggleFavorite}
       />
@@ -121,7 +116,7 @@ const App = () => {
           }`}
         >
           <Scene
-            visibleProducts={visibleProducts}
+            products={products.filter(product => product.visible)}
             cameraPosition={cameraPosition}
             lookAt={lookAt}
             view={view}
