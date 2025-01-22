@@ -7,7 +7,7 @@ import SlidingDrawer from './products/SlidingDrawer';
 import Washroom from './products/Washroom';
 import FullBed from './products/FullBed'; // Ensure you have this component
 import SimpleBed from './products/SingleBed'; // Import SimpleBed
-import PreLoader from './preLoader'; // Ensure correct casing
+import PreLoader from './PreLoader'; // Ensure correct casing
 
 const VanModel = ({
   products,
