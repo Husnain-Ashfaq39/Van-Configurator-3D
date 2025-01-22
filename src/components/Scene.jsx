@@ -18,11 +18,7 @@ const generateFieldPositions = (gridSize, spacing) => {
 };
 
 const Scene = ({
-  showBed,
-  showSolarPanel,
-  showCabinetDrawer,
-  showSlidingDrawer,
-  showWashroom,
+  visibleProducts,
   cameraPosition,
   lookAt,
   view,
@@ -32,7 +28,6 @@ const Scene = ({
   const setSelectedObject = useSelectionStore(state => state.setSelectedObject);
   const fieldPositions = generateFieldPositions(gridSize, spacing);
   const canvasRef = useRef();
-
 
   useEffect(() => {
     const handleResize = () => {
@@ -96,7 +91,6 @@ const Scene = ({
         shadow-camera-bottom={-20}
       />
 
-
       {/* Ambient Light for subtle illumination */}
       <ambientLight intensity={0.0003} />
 
@@ -108,11 +102,7 @@ const Scene = ({
 
         {/* Van Model with enhanced materials */}
         <VanModel
-          showBed={showBed}
-          showSolarPanel={showSolarPanel}
-          showCabinetDrawer={showCabinetDrawer}
-          showSlidingDrawer={showSlidingDrawer}
-          showWashroom={showWashroom}
+          visibleProducts={visibleProducts}
           cameraPosition={cameraPosition}
           view={view}
         />
@@ -120,11 +110,8 @@ const Scene = ({
 
       {/* Camera Updater */}
       <CameraUpdater cameraPosition={cameraPosition} cameraLookAt={lookAt} />
-
-      
     </Canvas>
   );
 };
 
 export default Scene;
-

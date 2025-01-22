@@ -1,24 +1,19 @@
-// src/components/VanModel.jsx
+// VanModel.jsx
 import React, { useRef, useEffect, useState } from 'react';
 import { useGLTF } from '@react-three/drei';
 import SolarPanel from './products/SolarPanel';
 import CabinetDrawer from './products/CabinetDrawer';
 import SlidingDrawer from './products/SlidingDrawer';
 import Washroom from './products/Washroom';
-import PreLoader from './preLoader'; // Ensure correct casing
+import PreLoader from './PreLoader'; // Ensure correct casing
 
 const VanModel = ({
-  showBed,
-  showSolarPanel,
-  showCabinetDrawer,
-  showSlidingDrawer,
-  showWashroom,
+  visibleProducts,
   view,
 }) => {
   const { scene: vanScene } = useGLTF('/parent_Setting_van/untitled2.glb');
   const vanRef = useRef();
 
-  // Define this outside the VanModel component to avoid re-creation on every render
   const hidePartsByView = {
     default: [],
     innerZoom: [], // All parts visible
@@ -35,13 +30,10 @@ const VanModel = ({
       'Carrosserie_Carrosserie_0202',
       'Carrosserie_Carrosserie_0277',
       'Interieur_Interrieur_0006',
-      
-     
       // Add other roof parts as needed
     ],
     roof2: [], // Specific handling for roof2 if needed
   };
-
 
   // State to control Initial Loading
   const [isInitialLoading, setIsInitialLoading] = useState(true);
@@ -49,10 +41,10 @@ const VanModel = ({
 
   // Initial Loading Effect
   useEffect(() => {
-    // Timer to end loading after 3 seconds
+    // Timer to end loading after 4 seconds
     const initialTimer = setTimeout(() => {
       setIsInitialLoading(false);
-    }, 4000); // 3 seconds
+    }, 4000); // 4 seconds
 
     // Simulate PreLoader progress
     let progress = 0;
@@ -61,7 +53,7 @@ const VanModel = ({
       if (progress > 100) progress = 100;
       setPreloaderProgress(progress);
       if (progress === 100) clearInterval(progressInterval);
-    }, 40); // Increment every 300ms
+    }, 40); // Increment every 40ms
 
     // Cleanup timers on unmount
     return () => {
@@ -99,8 +91,7 @@ const VanModel = ({
         }
       });
     }
-  }, [vanScene, view]); // Removed hiddenParts and view === 'roof2' from dependencies
-
+  }, [vanScene, view]);
 
   // Early Return if Initial Loading is True
   if (isInitialLoading) {
@@ -111,14 +102,12 @@ const VanModel = ({
     <>
       <primitive ref={vanRef} object={vanScene} />
 
-      {showBed && <Bed view={view} />}
-      {showSolarPanel && view === 'roof2' && <SolarPanel view={view} />}
-      {showSlidingDrawer && <SlidingDrawer view={view} />}
-      {showWashroom && <Washroom view={view} />}
-
-      {/* Render CabinetDrawer without PreLoader */}
-      {showCabinetDrawer && <CabinetDrawer view={view} />}
-
+      {/* Dynamically render products based on visibleProducts */}
+      {visibleProducts['full_bed'] && <FullBed view={view} />}
+      {visibleProducts['solar_panel'] && view === 'roof2' && <SolarPanel view={view} />}
+      {visibleProducts['sliding_drawer'] && <SlidingDrawer view={view} />}
+      {visibleProducts['washroom'] && <Washroom view={view} />}
+      {visibleProducts['cabinet_drawer'] && <CabinetDrawer view={view} />}
     </>
   );
 };

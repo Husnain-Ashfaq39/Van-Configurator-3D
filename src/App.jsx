@@ -1,48 +1,100 @@
 // App.jsx
 import { useState } from 'react';
 import { FiMenu } from 'react-icons/fi';
-import Scene from './components/Scene'; // New Scene component
-import Sidebar from './components/Sidebar'; // Import the new Sidebar component
+import Scene from './components/Scene';
+import Sidebar from './components/Sidebar'; 
 import ViewSelector from './components/ViewSelector';
+
+const initialProducts = [
+  {
+    id: 'solar_panel',
+    name: 'Solar Panel',
+    price: 300,
+    image: 'https://images.unsplash.com/photo-1509391366360-2e959784a276?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
+    description: 'Solar panel',
+    isFavorite: false
+  },
+  {
+    id: 'cabinet_drawer',
+    name: 'Cabinet Drawer',
+    price: 200,
+    image: 'https://images.unsplash.com/photo-1595515106969-1ce29566ff1c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
+    description: 'Storage drawer',
+    isFavorite: false
+  },
+  {
+    id: 'sliding_drawer',
+    name: 'Sliding Drawer',
+    price: 150,
+    image: 'https://images.unsplash.com/photo-1595515106969-1ce29566ff1c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
+    description: 'Sliding drawer',
+    isFavorite: false
+  },
+  {
+    id: 'washroom',
+    name: 'Washroom',
+    price: 400,
+    image: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
+    description: 'Compact unit',
+    isFavorite: false
+  },
+  {
+    id: 'full_bed',
+    name: 'Full Bed',
+    price: 500,
+    image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
+    description: 'Comfortable full-size bed',
+    isFavorite: false
+  }
+];
 
 const App = () => {
   const [cameraPosition, setCameraPosition] = useState([5, 2, 5]);
   const [lookAt, setLookAt] = useState([0, 0, 0]);
   const [view, setView] = useState('default');
-  const [showBed, setShowBed] = useState(false);
-  const [showSolarPanel, setShowSolarPanel] = useState(false);
-  const [showCabinetDrawer, setShowCabinetDrawer] = useState(false);
-  const [showSlidingDrawer, setShowSlidingDrawer] = useState(false);
-  const [showWashroom, setShowWashroom] = useState(false);
+  
+  // Initialize visibility state for all products
+  const [visibleProducts, setVisibleProducts] = useState(
+    initialProducts.reduce((acc, product) => {
+      acc[product.id] = false;
+      return acc;
+    }, {})
+  );
+
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   
   // Lifted state for ViewSelector
   const [isViewSelectorOpen, setIsViewSelectorOpen] = useState(false);
 
+  // Toggle visibility of a product by id
+  const toggleProductVisibility = (id) => {
+    setVisibleProducts((prev) => ({
+      ...prev,
+      [id]: !prev[id]
+    }));
+  };
 
-
-  const toggleBed = () => setShowBed(prev => !prev);
-  const toggleSolarPanel = () => setShowSolarPanel(prev => !prev);
-  const toggleCabinetDrawer = () => setShowCabinetDrawer(prev => !prev);
-  const toggleSlidingDrawer = () => setShowSlidingDrawer(prev => !prev);
-  const toggleSidebar = () => setIsSidebarOpen(prev => !prev);
-  const toggleWashroom = () => setShowWashroom(prev => !prev);
+  // Toggle favorite status for a product by id
+  const toggleFavorite = (id) => {
+    // You might want to manage favorites separately or within the product list
+    // For simplicity, here's how you can toggle it in the initialProducts array
+    // Consider using a separate state if favorites need to persist or be managed differently
+    const updatedProducts = initialProducts.map(product =>
+      product.id === id ? { ...product, isFavorite: !product.isFavorite } : product
+    );
+    // If you have initialProducts in state, update them here
+    // For now, this does not persist as initialProducts is a constant
+  };
 
   return (
     <div className="flex h-screen bg-gray-100">
       <Sidebar
         isOpen={isSidebarOpen}
-        toggleSidebar={toggleSidebar}
-        toggleBed={toggleBed}
-        showBed={showBed}
-        toggleSolarPanel={toggleSolarPanel}
-        showSolarPanel={showSolarPanel}
-        toggleCabinetDrawer={toggleCabinetDrawer}
-        showCabinetDrawer={showCabinetDrawer}
-        toggleSlidingDrawer={toggleSlidingDrawer}
-        showSlidingDrawer={showSlidingDrawer}
-        toggleWashroom={toggleWashroom}
-        showWashroom={showWashroom}
+        toggleSidebar={() => setIsSidebarOpen((prev) => !prev)}
+        products={initialProducts}
+        visibleProducts={visibleProducts}
+        toggleProductVisibility={toggleProductVisibility}
+        toggleFavorite={toggleFavorite}
       />
 
       <div
@@ -53,7 +105,7 @@ const App = () => {
         {/* Toggle Sidebar Button */}
         {!isSidebarOpen && (
           <button
-            onClick={toggleSidebar}
+            onClick={() => setIsSidebarOpen(true)}
             className="absolute top-4 left-4 z-10 p-2 bg-white rounded-full shadow-md hover:bg-gray-100 transition-colors"
           >
             <FiMenu />
@@ -69,16 +121,10 @@ const App = () => {
           }`}
         >
           <Scene
-           
-            showBed={showBed}
-            showSolarPanel={showSolarPanel}
-            showCabinetDrawer={showCabinetDrawer}
-            showSlidingDrawer={showSlidingDrawer}
-            showWashroom={showWashroom}
+            visibleProducts={visibleProducts}
             cameraPosition={cameraPosition}
             lookAt={lookAt}
             view={view}
-           
           />
         </div>
 
@@ -87,7 +133,6 @@ const App = () => {
           setCameraPosition={setCameraPosition}
           setLookAt={setLookAt}
           setView={setView}
-         
           isOpen={isViewSelectorOpen}
           setIsOpen={setIsViewSelectorOpen}
         />
