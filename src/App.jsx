@@ -56,6 +56,15 @@ const App = () => {
       description: 'Comfortable full-size bed',
       isFavorite: false,
       visible: false
+    },
+    {
+      id: 'simple_bed',
+      name: 'Simple Bed',
+      price: 250,
+      image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
+      description: 'A simple and comfortable bed',
+      isFavorite: false,
+      visible: false
     }
   ]);
 

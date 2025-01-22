@@ -6,6 +6,7 @@ import CabinetDrawer from './products/CabinetDrawer';
 import SlidingDrawer from './products/SlidingDrawer';
 import Washroom from './products/Washroom';
 import FullBed from './products/FullBed'; // Ensure you have this component
+import SimpleBed from './products/SingleBed'; // Import SimpleBed
 import PreLoader from './PreLoader'; // Ensure correct casing
 
 const VanModel = ({
@@ -116,6 +117,8 @@ const VanModel = ({
             return <Washroom key={product.id} view={view} />;
           case 'cabinet_drawer':
             return <CabinetDrawer key={product.id} view={view} />;
+          case 'simple_bed':
+            return <SimpleBed key={product.id} view={view} />; // Show SimpleBed correctly
           default:
             return null;
         }
