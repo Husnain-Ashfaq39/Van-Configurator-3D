@@ -8,6 +8,8 @@ import Washroom from './products/Washroom';
 import FullBed from './products/FullBed'; // Ensure you have this component
 import SimpleBed from './products/SingleBed'; // Import SimpleBed
 import PreLoader from './preLoader'; // Ensure correct casing
+import Bunk from './products/bunk'; // Import Bunk component
+import DoubleTable from './products/DoubleTable'; // Import DoubleTable component
 
 const VanModel = ({
   products,
@@ -119,6 +121,10 @@ const VanModel = ({
             return <CabinetDrawer key={product.id} view={view} />;
           case 'simple_bed':
             return <SimpleBed key={product.id} view={view} />; // Show SimpleBed correctly
+          case 'bunk':
+            return <Bunk key={product.id} view={view} />; // Render Bunk component
+          case 'double_table':
+            return <DoubleTable key={product.id} view={view} />; // Render DoubleTable component
           default:
             return null;
         }

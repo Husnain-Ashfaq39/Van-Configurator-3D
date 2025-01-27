@@ -65,6 +65,24 @@ const App = () => {
       description: 'A simple and comfortable bed',
       isFavorite: false,
       visible: false
+    },
+    {
+      id: 'bunk',
+      name: 'Bunk',
+      price: 350,
+      image: 'https://example.com/bunk-image.jpg', // Replace with actual image URL
+      description: 'A comfortable bunk bed',
+      isFavorite: false,
+      visible: false
+    },
+    {
+      id: 'double_table',
+      name: 'Double Table',
+      price: 250,
+      image: 'https://example.com/double-table-image.jpg', // Replace with actual image URL
+      description: 'A versatile double table',
+      isFavorite: false,
+      visible: false
     }
   ]);
 

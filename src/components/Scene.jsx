@@ -53,10 +53,9 @@ const Scene = ({
       className="w-full h-full"
       style={{ position: 'absolute', top: 0, left: 0 }}
     >
-      {/* Environment Map for realistic reflections */}
-      <Suspense fallback={null}>
-        <Environment preset="sunset" background />
-      </Suspense>
+     
+
+<Environment files="Meadows.hdr" background />
 
       {/* Hemisphere Light for ambient sky and ground lighting */}
       <hemisphereLight
