@@ -72,4 +72,40 @@ export const productConfig = {
       description: 'A simple and comfortable bed',
       isFavorite: false
     },
+    round_table: {
+      modelPath: "/Round-Table.glb",
+      scale: [1, 1, 1],
+      name: 'Round Table',
+      price: 180,
+      image: 'https://example.com/round-table-image.jpg',
+      description: 'A stylish round table',
+      isFavorite: false
+    },
+    sofa_set: {
+      modelPath: "/sofa-set.glb",
+      scale: [0.3, 0.3, 0.3],
+      name: 'Sofa Set',
+      price: 600,
+      image: 'https://example.com/sofa-set-image.jpg',
+      description: 'A luxurious sofa set',
+      isFavorite: false
+    },
+    kitchen: {
+      modelPath: "/kitchen.glb",
+      scale: [0.55, 0.55, 0.55],
+      name: 'Kitchen',
+      price: 800,
+      image: 'https://example.com/kitchen-image.jpg',
+      description: 'A modern kitchen setup',
+      isFavorite: false
+    },
+    sink_with_cabinet: {
+      modelPath: "/SinkwithCabinet.glb",
+      scale: [0.7, 0.7, 0.7],
+      name: 'Sink with Cabinet',
+      price: 350,
+      image: 'https://example.com/sink-with-cabinet-image.jpg',
+      description: 'A sink with a cabinet for storage',
+      isFavorite: false
+    }
 };
