@@ -19,7 +19,7 @@ const DoubleTableInstance = ({ id, initialPosition, view, onCopy, onRemove }) =>
     bind,
     handleDoubleClick,
     handleCloseMenu,
-  } = useInstanceLogic('/Double_Table.glb', initialPosition, view); // Use the correct GLB file path
+  } = useInstanceLogic('/Double_Table.glb', initialPosition, view); 
 
   return (
     <>
