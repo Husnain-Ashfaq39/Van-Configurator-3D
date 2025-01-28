@@ -4,87 +4,21 @@ import { FiMenu } from 'react-icons/fi';
 import Scene from './components/Scene';
 import Sidebar from './components/Sidebar'; 
 import ViewSelector from './components/ViewSelector';
+import { productConfig } from './data/productConfig';
 
 const App = () => {
   const [cameraPosition, setCameraPosition] = useState([5, 2, 5]);
   const [lookAt, setLookAt] = useState([0, 0, 0]);
   const [view, setView] = useState('default');
   
-  // Initialize products in state with an added 'visible' property
-  const [products, setProducts] = useState([
-    {
-      id: 'solar_panel',
-      name: 'Solar Panel',
-      price: 300,
-      image: 'https://images.unsplash.com/photo-1509391366360-2e959784a276?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
-      description: 'Solar panel',
-      isFavorite: false,
-      visible: false
-    },
-    {
-      id: 'cabinet_drawer',
-      name: 'Cabinet Drawer',
-      price: 200,
-      image: 'https://images.unsplash.com/photo-1595515106969-1ce29566ff1c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
-      description: 'Storage drawer',
-      isFavorite: false,
-      visible: false
-    },
-    {
-      id: 'sliding_drawer',
-      name: 'Sliding Drawer',
-      price: 150,
-      image: 'https://images.unsplash.com/photo-1595515106969-1ce29566ff1c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
-      description: 'Sliding drawer',
-      isFavorite: false,
-      visible: false
-    },
-    {
-      id: 'washroom',
-      name: 'Washroom',
-      price: 400,
-      image: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
-      description: 'Compact unit',
-      isFavorite: false,
-      visible: false
-    },
-    {
-      id: 'full_bed',
-      name: 'Full Bed',
-      price: 500,
-      image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
-      description: 'Comfortable full-size bed',
-      isFavorite: false,
-      visible: false
-    },
-    {
-      id: 'simple_bed',
-      name: 'Simple Bed',
-      price: 250,
-      image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
-      description: 'A simple and comfortable bed',
-      isFavorite: false,
-      visible: false
-    },
-    {
-      id: 'bunk',
-      name: 'Bunk',
-      price: 350,
-      image: 'https://example.com/bunk-image.jpg', // Replace with actual image URL
-      description: 'A comfortable bunk bed',
-      isFavorite: false,
-      visible: false
-    },
-    {
-      id: 'double_table',
-      name: 'Double Table',
-      price: 250,
-      image: 'https://example.com/double-table-image.jpg', // Replace with actual image URL
-      description: 'A versatile double table',
-      isFavorite: false,
-      visible: false
-    }
-  ]);
+  // Initialize products in state using productConfig
+  const [products, setProducts] = useState(
+    Object.entries(productConfig).map(([id, config]) => ({
+      id,
+      ...config,
+      visible: false // Add visible property
+    }))
+  );
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   
