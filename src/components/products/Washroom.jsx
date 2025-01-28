@@ -1,39 +1,13 @@
 // src/components/Washroom.jsx
-import React, { useState } from 'react';
-import WashroomInstance from '../instances/WashroomInstance'; // Instance component
-import { v4 as uuidv4 } from 'uuid';
+import React from 'react';
+import Product from './Product';
 
-const Washroom = ({ view }) => {
-  const [washrooms, setWashrooms] = useState([{ id: uuidv4(), position: [0, -0.8, 0] }]);
-
-  const handleCopy = (id, currentPosition) => {
-    setWashrooms((prevWashrooms) => {
-      const washroomToCopy = prevWashrooms.find((wash) => wash.id === id);
-      if (!washroomToCopy) return prevWashrooms;
-
-      const newPosition = [currentPosition[0] + 1, currentPosition[1], currentPosition[2]];
-      return [...prevWashrooms, { id: uuidv4(), position: newPosition }];
-    });
-  };
-
-  const handleRemove = (id) => {
-    setWashrooms((prevWashrooms) => prevWashrooms.filter((wash) => wash.id !== id));
-  };
-
-  return (
-    <>
-      {washrooms.map((washroom) => (
-        <WashroomInstance
-          key={washroom.id}
-          id={washroom.id}
-          initialPosition={washroom.position}
-          view={view}
-          onCopy={handleCopy}
-          onRemove={handleRemove}
-        />
-      ))}
-    </>
-  );
-};
+const Washroom = ({ view }) => (
+  <Product
+    view={view}
+    modelPath="/washroom2.glb"
+    scale={[0.85, 0.85, 0.85]}
+  />
+);
 
 export default Washroom;

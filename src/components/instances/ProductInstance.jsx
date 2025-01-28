@@ -1,11 +1,10 @@
-// src/components/instances/SlidingDrawerInstance.jsx
 import React from 'react';
 import { a } from '@react-spring/three';
 import RotateButton from '../RotateButton';
 import BigDot from '../BigDot';
 import useInstanceLogic from '../../hooks/useInstanceLogic';
 
-const SlidingDrawerInstance = ({ id, initialPosition, view, onCopy, onRemove }) => {
+const ProductInstance = ({ id, initialPosition, view, onCopy, onRemove, modelPath, scale }) => {
   const {
     clonedScene,
     position,
@@ -20,7 +19,7 @@ const SlidingDrawerInstance = ({ id, initialPosition, view, onCopy, onRemove }) 
     bind,
     handleDoubleClick,
     handleCloseMenu,
-  } = useInstanceLogic('/Sliding_Drawer.glb', initialPosition, view);
+  } = useInstanceLogic(modelPath, initialPosition, view);
 
   return (
     <>
@@ -31,7 +30,7 @@ const SlidingDrawerInstance = ({ id, initialPosition, view, onCopy, onRemove }) 
         position-y={position[1]}
         position-z={position[2]}
         rotation={[0, (rotationY * Math.PI) / 180, 0]}
-        scale={[0.35, 0.35, 0.35]}
+        scale={scale}
         onDoubleClick={handleDoubleClick}
         onPointerOver={() => setIsHovered(true)}
         onPointerOut={() => setIsHovered(false)}
@@ -54,4 +53,4 @@ const SlidingDrawerInstance = ({ id, initialPosition, view, onCopy, onRemove }) 
   );
 };
 
-export default SlidingDrawerInstance;
+export default ProductInstance;

@@ -1,15 +1,11 @@
 // VanModel.jsx
 import React, { useRef, useEffect, useState } from 'react';
 import { useGLTF } from '@react-three/drei';
-import SolarPanel from './products/SolarPanel';
-import CabinetDrawer from './products/CabinetDrawer';
-import SlidingDrawer from './products/SlidingDrawer';
-import Washroom from './products/Washroom';
-import FullBed from './products/FullBed'; // Ensure you have this component
-import SimpleBed from './products/SingleBed'; // Import SimpleBed
+
 import PreLoader from './preLoader'; // Ensure correct casing
-import Bunk from './products/bunk'; // Import Bunk component
-import DoubleTable from './products/DoubleTable'; // Import DoubleTable component
+import { productConfig } from '../data/productConfig'; // Import productConfig
+import Product from './products/Product'; // Import Product component
+
 
 const VanModel = ({
   products,
@@ -106,28 +102,18 @@ const VanModel = ({
     <>
       <primitive ref={vanRef} object={vanScene} />
 
-      {/* Dynamically render products based on products prop */}
       {products.map(product => {
-        switch (product.id) {
-          case 'full_bed':
-            return <FullBed key={product.id} view={view} />;
-          case 'solar_panel':
-            return view === 'roof2' ? <SolarPanel key={product.id} view={view} /> : null;
-          case 'sliding_drawer':
-            return <SlidingDrawer key={product.id} view={view} />;
-          case 'washroom':
-            return <Washroom key={product.id} view={view} />;
-          case 'cabinet_drawer':
-            return <CabinetDrawer key={product.id} view={view} />;
-          case 'simple_bed':
-            return <SimpleBed key={product.id} view={view} />; // Show SimpleBed correctly
-          case 'bunk':
-            return <Bunk key={product.id} view={view} />; // Render Bunk component
-          case 'double_table':
-            return <DoubleTable key={product.id} view={view} />; // Render DoubleTable component
-          default:
-            return null;
-        }
+        const config = productConfig[product.id];
+        if (!config) return null;
+        
+        return (
+          <Product
+            key={product.id}
+            view={view}
+            modelPath={config.modelPath}
+            scale={config.scale}
+          />
+        );
       })}
     </>
   );
