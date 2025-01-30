@@ -22,7 +22,7 @@ const ViewSelector = ({
     },
     {
       name: 'Top View',
-      position: [0, 8, 0],
+      position: [0, 5.5, 0],
       lookAt: [0, 0, 0],
       view: 'top',
       thumbnail: '/Views/Top.png'
@@ -36,7 +36,6 @@ const ViewSelector = ({
     },
     {
       name: 'Ceiling View',
-      // position: [0.2, -0.8, 0.3],
       position: [0, -1, -4],
       lookAt: [0, 2.7, 1],
       view: 'back',
