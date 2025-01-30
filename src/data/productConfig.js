@@ -101,11 +101,20 @@ export const productConfig = {
     },
     sink_with_cabinet: {
       modelPath: "/SinkwithCabinet.glb",
-      scale: [0.7, 0.7, 0.7],
+      scale: [0.6, 0.6, 0.6],
       name: 'Sink with Cabinet',
       price: 350,
       image: 'https://example.com/sink-with-cabinet-image.jpg',
       description: 'A sink with a cabinet for storage',
+      isFavorite: false
+    },
+    gas_stove: {
+      modelPath: "/Gas-Stove.glb",
+      scale: [0.75, 0.75, 0.75],
+      name: 'Gas Stove With Oven',
+      price: 400,
+      image: 'https://example.com/gas-stove-image.jpg',
+      description: 'A modern gas stove for cooking',
       isFavorite: false
     }
 };
