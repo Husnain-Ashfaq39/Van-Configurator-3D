@@ -94,18 +94,14 @@ const Scene = ({
       <ambientLight intensity={0.0003} />
 
       {/* Green Field */}
-      <Suspense fallback={null}>
-        {fieldPositions.map((position, index) => (
-          <GreenField key={index} position={position} />
-        ))}
-
-        {/* Van Model with enhanced materials */}
-        <VanModel
-          products={products}
-          cameraPosition={cameraPosition}
-          view={view}
-        />
-      </Suspense>
+      {fieldPositions.map((position, index) => (
+        <GreenField key={index} position={position} />
+      ))}
+      <VanModel
+        products={products}
+        cameraPosition={cameraPosition}
+        view={view}
+      />
 
       {/* Camera Updater */}
       <CameraUpdater cameraPosition={cameraPosition} cameraLookAt={lookAt} />

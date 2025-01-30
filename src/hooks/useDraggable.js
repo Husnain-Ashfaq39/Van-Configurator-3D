@@ -10,7 +10,7 @@ const useDraggable = (initialPosition, bounds, onChange, options) => {
   const [{ x, z }, api] = useSpring(() => ({
     x: initialPosition[0],
     z: initialPosition[2],
-    config: { tension: 400, friction: 30 },
+    config: { tension: 0, friction: 0 },
     onChange: (result) => {
       if (onChange) {
         onChange(result.value.x, result.value.z);

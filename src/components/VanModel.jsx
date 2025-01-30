@@ -113,6 +113,7 @@ const VanModel = ({
             modelPath={config.modelPath}
             scale={config.scale}
             initialPosition={config.initialPosition}
+            dimensions={config.dimensions}
           />
         );
       })}

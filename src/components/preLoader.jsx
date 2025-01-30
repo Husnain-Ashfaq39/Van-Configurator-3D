@@ -3,7 +3,7 @@ import React, { useRef, useEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
-const PreLoader = ({ progress, vanDimensions = { width: 2, height: 1.5, depth: 4 } }) => {
+const PreLoader = ({ progress, vanDimensions = { width: 2, height: 1.5, depth: 4 }, position }) => {
   const boxRef = useRef();
   const fillBoxRef = useRef();
 
@@ -31,14 +31,14 @@ const PreLoader = ({ progress, vanDimensions = { width: 2, height: 1.5, depth: 4
   });
 
   return (
-    <>
-      {/* Outer Box (Wireframe) - Static */}
+    <group position={position}>
+      {/* Outer Box (Wireframe) */}
       <lineSegments ref={boxRef}>
         <edgesGeometry args={[new THREE.BoxGeometry(vanDimensions.width, vanDimensions.height, vanDimensions.depth)]} />
         <lineBasicMaterial color={0xCCCCCC} linewidth={2} transparent opacity={0.8} />
       </lineSegments>
 
-      {/* Inner Box (Fill) - Only height changes */}
+      {/* Inner Box (Fill) */}
       <mesh ref={fillBoxRef} castShadow receiveShadow>
         <boxGeometry args={[
           vanDimensions.width * 0.98,
@@ -62,7 +62,7 @@ const PreLoader = ({ progress, vanDimensions = { width: 2, height: 1.5, depth: 4
       <directionalLight position={[5, 5, 5]} intensity={0.5} castShadow />
       <pointLight position={[2, 2, 2]} intensity={0.8} distance={10} />
       <pointLight position={[-2, -2, -2]} intensity={0.8} distance={10} />
-    </>
+    </group>
   );
 };
 

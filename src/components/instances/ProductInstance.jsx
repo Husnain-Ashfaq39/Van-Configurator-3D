@@ -3,10 +3,12 @@ import { a } from '@react-spring/three';
 import RotateButton from '../RotateButton';
 import BigDot from '../BigDot';
 import useInstanceLogic from '../../hooks/useInstanceLogic';
+import PreLoader from '../preLoader';
 
-const ProductInstance = ({ id, initialPosition, view, onCopy, onRemove, modelPath, scale }) => {
+const ProductInstance = ({ id, initialPosition, view, onCopy, onRemove, modelPath, scale, dimensions }) => {
   const {
     clonedScene,
+    isLoading,
     position,
     rotationY,
     setRotationY,
@@ -20,6 +22,16 @@ const ProductInstance = ({ id, initialPosition, view, onCopy, onRemove, modelPat
     handleDoubleClick,
     handleCloseMenu,
   } = useInstanceLogic(modelPath, initialPosition, view);
+
+  if (isLoading) {
+    return (
+      <PreLoader 
+        progress={100} 
+        vanDimensions={dimensions}
+        position={initialPosition}
+      />
+    );
+  }
 
   return (
     <>

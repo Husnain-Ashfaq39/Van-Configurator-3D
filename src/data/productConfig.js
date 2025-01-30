@@ -1,15 +1,6 @@
 // productConfig.js
 export const productConfig = {
-    cabinet_drawer: {
-      modelPath: "/Cabinet_Drawer.glb",
-      scale: [1, 1, 1],
-      initialPosition: [0, -0.8, 0],
-      name: 'Cabinet Drawer',
-      price: 200,
-      image: 'https://images.unsplash.com/photo-1595515106969-1ce29566ff1c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
-      description: 'Storage drawer',
-      isFavorite: false
-    },
+   
     sliding_drawer: {
       modelPath: "/Sliding_Drawer.glb",
       scale: [0.35, 0.35, 0.35],
@@ -18,7 +9,8 @@ export const productConfig = {
       price: 150,
       image: 'https://images.unsplash.com/photo-1595515106969-1ce29566ff1c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
       description: 'Sliding drawer',
-      isFavorite: false
+      isFavorite: false,
+      dimensions: { width: 0.35, height: 0.35, depth: 0.35 }
     },
     bunk: {
       modelPath: "/Bunk.glb",
@@ -26,9 +18,10 @@ export const productConfig = {
       initialPosition: [0, -0.8, 0],
       name: 'Bunk',
       price: 350,
-      image: 'https://example.com/bunk-image.jpg', // Replace with actual image URL
+      image: 'https://example.com/bunk-image.jpg', 
       description: 'A comfortable bunk bed',
-      isFavorite: false
+      isFavorite: false,
+      dimensions: { width: 0.4, height: 0.4, depth: 0.4 }
     },
     double_table: {
       modelPath: "/Double_Table.glb",
@@ -38,7 +31,8 @@ export const productConfig = {
       price: 250,
       image: 'https://example.com/double-table-image.jpg', // Replace with actual image URL
       description: 'A versatile double table',
-      isFavorite: false
+      isFavorite: false,
+      dimensions: { width: 1, height: 1, depth: 1 }
     },
     full_bed: {
       modelPath: "/Full-Bed.glb",
@@ -48,7 +42,8 @@ export const productConfig = {
       price: 500,
       image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
       description: 'Comfortable full-size bed',
-      isFavorite: false
+      isFavorite: false,
+      dimensions: { width: 0.57, height: 0.57, depth: 0.57 }
     },
     washroom: {
       modelPath: "/washroom2.glb",
@@ -58,7 +53,8 @@ export const productConfig = {
       price: 400,
       image: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
       description: 'Compact unit',
-      isFavorite: false
+      isFavorite: false,
+      dimensions: { width: 0.85, height: 0.85, depth: 0.85 }
     },
     solar_panel: {
       modelPath: "/solar_panel.glb",
@@ -68,7 +64,8 @@ export const productConfig = {
       price: 300,
       image: 'https://images.unsplash.com/photo-1509391366360-2e959784a276?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
       description: 'Solar panel',
-      isFavorite: false
+      isFavorite: false,
+      dimensions: { width: 0.003, height: 0.003, depth: 0.003 }
     },
     simple_bed: {
       modelPath: "/Simple-Bed.glb",
@@ -78,7 +75,8 @@ export const productConfig = {
       price: 250,
       image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
       description: 'A simple and comfortable bed',
-      isFavorite: false
+      isFavorite: false,
+      dimensions: { width: 1.09, height: 1.09, depth: 1.09 }
     },
     round_table: {
       modelPath: "/Round-Table.glb",
@@ -88,7 +86,8 @@ export const productConfig = {
       price: 180,
       image: 'https://example.com/round-table-image.jpg',
       description: 'A stylish round table',
-      isFavorite: false
+      isFavorite: false,
+      dimensions: { width: 1, height: 1, depth: 1 }
     },
     sofa_set: {
       modelPath: "/sofa-set.glb",
@@ -98,7 +97,8 @@ export const productConfig = {
       price: 600,
       image: 'https://example.com/sofa-set-image.jpg',
       description: 'A luxurious sofa set',
-      isFavorite: false
+      isFavorite: false,
+      dimensions: { width: 0.3, height: 0.3, depth: 0.3 }
     },
     kitchen: {
       modelPath: "/kitchen.glb",
@@ -108,7 +108,8 @@ export const productConfig = {
       price: 800,
       image: 'https://example.com/kitchen-image.jpg',
       description: 'A modern kitchen setup',
-      isFavorite: false
+      isFavorite: false,
+      dimensions: { width: 0.55, height: 0.55, depth: 0.55 }
     },
     sink_with_cabinet: {
       modelPath: "/SinkwithCabinet.glb",
@@ -118,7 +119,8 @@ export const productConfig = {
       price: 350,
       image: 'https://example.com/sink-with-cabinet-image.jpg',
       description: 'A sink with a cabinet for storage',
-      isFavorite: false
+      isFavorite: false,
+      dimensions: { width: 0.6, height: 0.6, depth: 0.6 }
     },
     gas_stove: {
       modelPath: "/Gas-Stove.glb",
@@ -128,6 +130,7 @@ export const productConfig = {
       price: 400,
       image: 'https://example.com/gas-stove-image.jpg',
       description: 'A modern gas stove for cooking',
-      isFavorite: false
+      isFavorite: false,
+      dimensions: { width: 0.75, height: 0.75, depth: 0.75 }
     }
 };

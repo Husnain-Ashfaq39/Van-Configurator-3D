@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import ProductInstance from '../instances/ProductInstance';
 import { v4 as uuidv4 } from 'uuid';
 
-const Product = ({ view, modelPath, scale, initialPosition }) => {
+const Product = ({ view, modelPath, scale, initialPosition, dimensions }) => {
   const [instances, setInstances] = useState([{ 
     id: uuidv4(), 
     position: initialPosition
@@ -33,6 +33,7 @@ const Product = ({ view, modelPath, scale, initialPosition }) => {
           onRemove={handleRemove}
           modelPath={modelPath}
           scale={scale}
+          dimensions={dimensions}
         />
       ))}
     </>
