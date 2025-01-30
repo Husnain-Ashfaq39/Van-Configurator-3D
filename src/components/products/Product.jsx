@@ -2,8 +2,11 @@ import React, { useState } from 'react';
 import ProductInstance from '../instances/ProductInstance';
 import { v4 as uuidv4 } from 'uuid';
 
-const Product = ({ view, modelPath, scale }) => {
-  const [instances, setInstances] = useState([{ id: uuidv4(), position: [0, -0.8, 0] }]);
+const Product = ({ view, modelPath, scale, initialPosition }) => {
+  const [instances, setInstances] = useState([{ 
+    id: uuidv4(), 
+    position: initialPosition
+  }]);
 
   const handleCopy = (id, currentPosition) => {
     setInstances((prev) => {
