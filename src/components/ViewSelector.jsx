@@ -18,56 +18,72 @@ const ViewSelector = ({
       position: [5, 2, 5],
       lookAt: [0, 0, 0],
       view: 'default',
-      thumbnail: '/Views/default.png'
+      thumbnail: '/Views/default.png',
+      defaultZoom: 1
     },
     {
       name: 'Top View',
       position: [0, 5.5, 0],
       lookAt: [0, 0, 0],
       view: 'top',
-      thumbnail: '/Views/Top.png'
+      thumbnail: '/Views/Top.png',
+      defaultZoom: 1
     },
     {
       name: 'Back View',
       position: [0, 0.5, -5],
       lookAt: [0, 0, 0],
       view: 'back',
-      thumbnail: '/Views/Back.png'
+      thumbnail: '/Views/Back.png',
+      defaultZoom: 1
     },
     {
       name: 'Ceiling View',
       position: [0, -1, -4],
       lookAt: [0, 2.7, 1],
       view: 'back',
-      thumbnail: '/Views/Back.png'
+      thumbnail: '/Views/Back.png',
+      defaultZoom: 1
     },
     {
       name: 'Side View ',
       position: [-5, 0.3, 0],
       lookAt: [0, 0, 0],
       view: 'side',
-      thumbnail: '/Views/side.png'
+      thumbnail: '/Views/side.png',
+      defaultZoom: 1
     },
     {
       name: 'Side View Zoomed',
       position: [-3, 0.3, -1],
       lookAt: [100, 0, 0],
       view: 'side',
-      thumbnail: '/Views/side.png'
+      thumbnail: '/Views/side.png',
+      defaultZoom: 1
     },
     {
       name: 'Roof View',
       position: [0, 6, 3],
       lookAt: [0, 0, 0],
       view: 'roof2',
-      thumbnail: '/Views/Roof.png'
+      thumbnail: '/Views/Roof.png',
+      defaultZoom: 1
     },
     {
       name: 'Inner Zoomed View',
       position: [0, 0, 0.51], 
       lookAt: [0, 0, 0], 
       view: 'innerZoom',
-      thumbnail: '/Views/InnerZoom.png' 
+      thumbnail: '/Views/InnerZoom.png',
+      defaultZoom: 1
+    },
+    {
+      name: 'Corner View',
+      position: [6, 5, 2],
+      lookAt: [1, 1, 0],
+      view: 'corner',
+      thumbnail: '/Views/Corner.png',
+      defaultZoom: 0.5
     },
   ];
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -85,7 +101,7 @@ const ViewSelector = ({
     setBaseLookAt(viewData.lookAt);
     setLookAt(viewData.lookAt);
     setView(viewData.view);
-    setZoomLevel(1); // Reset zoom level when view changes
+    setZoomLevel(viewData.defaultZoom); // Reset zoom level to default when view changes
     setIsOpen(false); // Close the ViewSelector after selecting a view
   };
 
