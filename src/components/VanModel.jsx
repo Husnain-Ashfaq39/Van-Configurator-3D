@@ -30,6 +30,8 @@ const VanModel = ({
       'Carrosserie_Carrosserie_0202',
       'Carrosserie_Carrosserie_0277',
       'Interieur_Interrieur_0006',
+      'Carrosserie_Carrosserie_0043',
+      'Carrosserie_Carrosserie_0063'
       // Add other roof parts as needed
     ],
     roof2: [], // Specific handling for roof2 if needed
