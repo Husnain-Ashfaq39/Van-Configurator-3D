@@ -10,7 +10,7 @@ const App = () => {
   const [cameraPosition, setCameraPosition] = useState([5, 2, 5]);
   const [lookAt, setLookAt] = useState([0, 0, 0]);
   const [view, setView] = useState('default');
-  
+
   // Initialize products in state using productConfig
   const [products, setProducts] = useState(
     Object.entries(productConfig).map(([id, config]) => ({
@@ -24,6 +24,9 @@ const App = () => {
   
   // Lifted state for ViewSelector
   const [isViewSelectorOpen, setIsViewSelectorOpen] = useState(false);
+
+  // Add fov state
+  const [fov, setFov] = useState(50); // Default FOV
 
   // Toggle visibility of a product by id
   const toggleProductVisibility = (id) => {
@@ -72,7 +75,7 @@ const App = () => {
         <div
           className={`w-full h-full transition-all duration-300 ${
             isSidebarOpen || isViewSelectorOpen
-              ? 'p-4' // Reduce padding or apply other styles when Sidebar or ViewSelector is open
+              ? 'p-4' // Adjust padding when Sidebar or ViewSelector is open
               : 'p-0' // Expand when both are closed
           }`}
         >
@@ -81,6 +84,7 @@ const App = () => {
             cameraPosition={cameraPosition}
             lookAt={lookAt}
             view={view}
+            fov={fov} // Pass fov to Scene
           />
         </div>
 
@@ -89,6 +93,7 @@ const App = () => {
           setCameraPosition={setCameraPosition}
           setLookAt={setLookAt}
           setView={setView}
+          setFov={setFov} // Pass setFov to ViewSelector
           isOpen={isViewSelectorOpen}
           setIsOpen={setIsViewSelectorOpen}
         />

@@ -1,16 +1,16 @@
 // ViewSelector.jsx
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight, Video, X, ZoomIn, ZoomOut} from 'lucide-react';
+import { ChevronLeft, ChevronRight, Video, X, ZoomIn, ZoomOut } from 'lucide-react';
 
 const ViewSelector = ({
   setCameraPosition,
   setLookAt,
   setView,
+  setFov,
   isOpen,
   setIsOpen
 }) => {
-
 
   const views = [
     {
@@ -19,7 +19,8 @@ const ViewSelector = ({
       lookAt: [0, 0, 0],
       view: 'default',
       thumbnail: '/Views/default.png',
-      defaultZoom: 1
+      defaultZoom: 1,
+      fov: 50, // Default FOV
     },
     {
       name: 'Top View',
@@ -27,15 +28,17 @@ const ViewSelector = ({
       lookAt: [0, 0, 0],
       view: 'top',
       thumbnail: '/Views/Top.png',
-      defaultZoom: 1
+      defaultZoom: 1,
+      fov: 50,
     },
     {
       name: 'Back View',
-      position: [0, 0.5, -5],
+      position: [0, 1, -5],
       lookAt: [0, 0, 0],
       view: 'back',
       thumbnail: '/Views/Back.png',
-      defaultZoom: 1
+      defaultZoom: 1,
+      fov: 55,
     },
     {
       name: 'Ceiling View',
@@ -43,7 +46,8 @@ const ViewSelector = ({
       lookAt: [0, 2.7, 1],
       view: 'back',
       thumbnail: '/Views/Back.png',
-      defaultZoom: 1
+      defaultZoom: 1,
+      fov: 50,
     },
     {
       name: 'Side View ',
@@ -51,7 +55,8 @@ const ViewSelector = ({
       lookAt: [0, 0, 0],
       view: 'side',
       thumbnail: '/Views/side.png',
-      defaultZoom: 1
+      defaultZoom: 1,
+      fov: 50,
     },
     {
       name: 'Side View Zoomed',
@@ -59,7 +64,8 @@ const ViewSelector = ({
       lookAt: [100, 0, 0],
       view: 'side',
       thumbnail: '/Views/side.png',
-      defaultZoom: 1
+      defaultZoom: 1,
+      fov: 60,
     },
     {
       name: 'Roof View',
@@ -67,7 +73,8 @@ const ViewSelector = ({
       lookAt: [0, 0, 0],
       view: 'roof2',
       thumbnail: '/Views/Roof.png',
-      defaultZoom: 1
+      defaultZoom: 1,
+      fov: 50,
     },
     {
       name: 'Inner Zoomed View',
@@ -75,7 +82,8 @@ const ViewSelector = ({
       lookAt: [0, 0, 0], 
       view: 'innerZoom',
       thumbnail: '/Views/InnerZoom.png',
-      defaultZoom: 1
+      defaultZoom: 1,
+      fov: 85, // Increased FOV for wide-angle
     },
     {
       name: 'Corner View',
@@ -83,9 +91,11 @@ const ViewSelector = ({
       lookAt: [1, 1, 0],
       view: 'corner',
       thumbnail: '/Views/Corner.png',
-      defaultZoom: 0.5
+      defaultZoom: 0.4,
+      fov: 55,
     },
   ];
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const [zoomLevel, setZoomLevel] = useState(1);
   const [baseCameraPosition, setBaseCameraPosition] = useState(views[0].position);
@@ -94,13 +104,12 @@ const ViewSelector = ({
   const minZoomLevel = 0.5;
   const maxZoomLevel = 2;
 
-  
-
   const handleViewChange = (viewData) => {
     setBaseCameraPosition(viewData.position);
     setBaseLookAt(viewData.lookAt);
     setLookAt(viewData.lookAt);
     setView(viewData.view);
+    setFov(viewData.fov); // Set FOV based on selected view
     setZoomLevel(viewData.defaultZoom); // Reset zoom level to default when view changes
     setIsOpen(false); // Close the ViewSelector after selecting a view
   };

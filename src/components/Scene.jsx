@@ -22,6 +22,7 @@ const Scene = ({
   cameraPosition,
   lookAt,
   view,
+  fov, // Receive fov as a prop
   gridSize = 4,
   spacing = 15.5,
 }) => {
@@ -49,13 +50,13 @@ const Scene = ({
       onPointerMissed={() => setSelectedObject(null)}
       shadows
       gl={{ powerPreference: 'high-performance', antialias: true }}
-      camera={{ position: cameraPosition, fov: 50 }}
+      camera={{ position: cameraPosition, fov: fov }} // Set initial FOV
       className="w-full h-full"
       style={{ position: 'absolute', top: 0, left: 0 }}
     >
-     
-
-<Environment files="Meadows.hdr" background />
+      <Suspense fallback={null}>
+        <Environment files="Meadows.hdr" background />
+      </Suspense>
 
       {/* Hemisphere Light for ambient sky and ground lighting */}
       <hemisphereLight
@@ -103,8 +104,12 @@ const Scene = ({
         view={view}
       />
 
-      {/* Camera Updater */}
-      <CameraUpdater cameraPosition={cameraPosition} cameraLookAt={lookAt} />
+      {/* Camera Updater with FOV */}
+      <CameraUpdater
+        cameraPosition={cameraPosition}
+        cameraLookAt={lookAt}
+        fov={fov} // Pass FOV to CameraUpdater
+      />
     </Canvas>
   );
 };
