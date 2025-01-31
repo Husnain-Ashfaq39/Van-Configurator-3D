@@ -11,7 +11,7 @@ const VanModel = ({
   products,
   view,
 }) => {
-  const { scene: vanScene } = useGLTF('/parent_Setting_van/untitled.glb');
+  const { scene: vanScene } = useGLTF('/parent_Setting_van/Van.glb');
   const vanRef = useRef();
 
   const hidePartsByView = {
@@ -49,7 +49,7 @@ const VanModel = ({
       "Carrosserie_Carrosserie_0040",
      'Autre_Autre_0216',
       "Carrosserie_Carrosserie_0257",
-     "Interieur_Interrieur_0098",
+     "Carrosserie_Carrosserie_0223",
     
 
     ]
