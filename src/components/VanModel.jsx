@@ -11,7 +11,7 @@ const VanModel = ({
   products,
   view,
 }) => {
-  const { scene: vanScene } = useGLTF('/parent_Setting_van/untitled2.glb');
+  const { scene: vanScene } = useGLTF('/parent_Setting_van/untitled.glb');
   const vanRef = useRef();
 
   const hidePartsByView = {
@@ -35,6 +35,24 @@ const VanModel = ({
       // Add other roof parts as needed
     ],
     roof2: [], // Specific handling for roof2 if needed
+    corner:[
+      //top
+      'Interieur_Interrieur_0184',
+      'Interieur_Interrieur_0161',
+      'Carrosserie_Carrosserie_0202',
+      'Carrosserie_Carrosserie_0277',
+      'Interieur_Interrieur_0006',
+      'Carrosserie_Carrosserie_0043',
+      'Carrosserie_Carrosserie_0063',
+
+      // Left side
+      "Carrosserie_Carrosserie_0040",
+     'Autre_Autre_0216',
+      "Carrosserie_Carrosserie_0257",
+     "Interieur_Interrieur_0098",
+    
+
+    ]
   };
 
   // State to control Initial Loading
