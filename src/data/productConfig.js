@@ -144,5 +144,29 @@ export const productConfig = {
       isFavorite: false,
       dimensions: { width: 0.75, height: 0.75, depth: 0.75 },
       vanBounds: { x: [-0.55, 0.55], z: [-2.5, 0.11] }
+    },
+    modular_cabinet: {
+      modelPath: "/Modular_Cabinet.glb",
+      scale: [0.82, 0.82, 0.82],
+      initialPosition: [0, -0.8, 0],
+      name: 'Modular Cabinet',
+      price: 450,
+      image: 'https://example.com/modular-cabinet-image.jpg',
+      description: 'A versatile modular cabinet',
+      isFavorite: false,
+      dimensions: { width: 0.5, height: 0.5, depth: 0.5 },
+      vanBounds: { x: [-0.6, 0.6], z: [-2.5, 0.2] }
+    },
+    cabinet: { // New product added
+      modelPath: "/Cabinet.glb",
+      scale: [3.5, 3.5, 3.5],
+      initialPosition: [0, -0.8, 0],
+      name: 'Cabinet',
+      price: 400,
+      image: 'https://example.com/cabinet-image.jpg',
+      description: 'A spacious cabinet for storage',
+      isFavorite: false,
+      dimensions: { width: 0.5, height: 0.5, depth: 0.5 },
+      vanBounds: { x: [-0.6, 0.6], z: [-2.5, 0.2] }
     }
 };
