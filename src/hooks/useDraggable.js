@@ -1,4 +1,7 @@
 // hooks/useDraggable.js
+// At the top of the file, add a global drag lock variable
+let activeDraggable = null;
+
 import { useRef, useState } from 'react';
 import { useGesture } from '@use-gesture/react';
 import { useSpring } from '@react-spring/three';
@@ -20,10 +23,20 @@ const useDraggable = (initialPosition, bounds, onChange, options = {}) => {
 
   const base = useRef([initialPosition[0], initialPosition[2]]);
   const [isDragging, setIsDragging] = useState(false);
+  const instanceId = useRef(Math.random());
 
   const bind = useGesture({
     onDrag: ({ active, movement: [mx, my], last }) => {
       if (active) {
+        // If another draggable is active, skip dragging
+        if (activeDraggable !== null && activeDraggable !== instanceId.current) {
+          return;
+        }
+        // If none is active, claim the lock
+        if (activeDraggable === null) {
+          activeDraggable = instanceId.current;
+        }
+
         setIsDragging(true);
         const sensitivity = 0.01;
         let delta = new THREE.Vector3();
@@ -32,7 +45,7 @@ const useDraggable = (initialPosition, bounds, onChange, options = {}) => {
           // For top view, directly map horizontal and vertical movements
           delta.set(-mx * sensitivity, 0, -my * sensitivity);
         } else {
-          // Calculate forward and right vectors from the camera’s perspective
+          // Calculate forward and right vectors from the camera's perspective
           const forward = new THREE.Vector3();
           camera.getWorldDirection(forward);
           forward.projectOnPlane(new THREE.Vector3(0, 1, 0)).normalize();
@@ -58,6 +71,10 @@ const useDraggable = (initialPosition, bounds, onChange, options = {}) => {
       }
 
       if (!active) {
+        // Only release the lock if this instance held it
+        if (activeDraggable === instanceId.current) {
+          activeDraggable = null;
+        }
         setIsDragging(false);
         if (last) {
           // Update the base position when the drag ends
