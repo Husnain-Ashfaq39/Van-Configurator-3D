@@ -64,14 +64,14 @@ export const productConfig = {
     solar_panel: {
       modelPath: "/solar_panel.glb",
       scale: [0.003, 0.003, 0.003],
-      initialPosition: [0, -0.8, 0],
+      initialPosition: [0, 1.27, 0],
       name: 'Solar Panel',
       price: 300,
       image: 'https://images.unsplash.com/photo-1509391366360-2e959784a276?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
       description: 'Solar panel',
       isFavorite: false,
       dimensions: { width: 0.003, height: 0.003, depth: 0.003 },
-      vanBounds: { x: [-0.1, 0.1], z: [-0.5, 0.5] }
+      vanBounds: { x: [-0.1, 0.1], z: [-2.2, 0.2] }
     },
     simple_bed: {
       modelPath: "/Simple-Bed.glb",
