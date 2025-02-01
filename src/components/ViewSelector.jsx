@@ -24,8 +24,8 @@ const ViewSelector = ({
     },
     {
       name: 'Top View',
-      position: [0, 5.5, 0],
-      lookAt: [0, 0, 0],
+      position: [0, 5, -2.5],
+      lookAt: [0, -1, -1],
       view: 'top',
       thumbnail: '/Views/Top.png',
       defaultZoom: 1,
@@ -105,13 +105,35 @@ const ViewSelector = ({
   const maxZoomLevel = 2;
 
   const handleViewChange = (viewData) => {
-    setBaseCameraPosition(viewData.position);
-    setBaseLookAt(viewData.lookAt);
-    setLookAt(viewData.lookAt);
-    setView(viewData.view);
-    setFov(viewData.fov); // Set FOV based on selected view
-    setZoomLevel(viewData.defaultZoom); // Reset zoom level to default when view changes
-    setIsOpen(false); // Close the ViewSelector after selecting a view
+    if (viewData.view === 'top') {
+      // First, set to 'Back View'
+      const backView = views.find(view => view.view === 'back');
+      setBaseCameraPosition(backView.position);
+      setBaseLookAt(backView.lookAt);
+      setLookAt(backView.lookAt);
+      setView(backView.view);
+      setFov(backView.fov);
+      setZoomLevel(backView.defaultZoom);
+      setIsOpen(false);
+
+      // After a short delay, transition to 'Top View'
+      setTimeout(() => {
+        setBaseCameraPosition(viewData.position);
+        setBaseLookAt(viewData.lookAt);
+        setLookAt(viewData.lookAt);
+        setView(viewData.view);
+        setFov(viewData.fov);
+        setZoomLevel(viewData.defaultZoom);
+      }, 1000); // 500ms delay
+    } else {
+      setBaseCameraPosition(viewData.position);
+      setBaseLookAt(viewData.lookAt);
+      setLookAt(viewData.lookAt);
+      setView(viewData.view);
+      setFov(viewData.fov);
+      setZoomLevel(viewData.defaultZoom);
+      setIsOpen(false);
+    }
   };
 
   const navigateSlider = (direction) => {

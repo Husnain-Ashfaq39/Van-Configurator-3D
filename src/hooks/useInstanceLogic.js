@@ -22,7 +22,7 @@ const useInstanceLogic = (gltfPath, initialPosition, view) => {
     (newX, newZ) => {
       setPosition([newX, position[1], newZ]);
     },
-    { enabled: view !== 'default' }
+    { enabled: view !== 'default', view }  // Pass the view option here
   );
 
   useHighlightOnDrag(clonedScene, isDragging);
