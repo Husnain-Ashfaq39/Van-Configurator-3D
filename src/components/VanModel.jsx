@@ -134,6 +134,7 @@ const VanModel = ({
             scale={config.scale}
             initialPosition={config.initialPosition}
             dimensions={config.dimensions}
+            vanBounds={config.vanBounds}
           />
         );
       })}

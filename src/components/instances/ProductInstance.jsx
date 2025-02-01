@@ -5,7 +5,7 @@ import BigDot from '../BigDot';
 import useInstanceLogic from '../../hooks/useInstanceLogic';
 import PreLoader from '../preLoader';
 
-const ProductInstance = ({ id, initialPosition, view, onCopy, onRemove, modelPath, scale, dimensions }) => {
+const ProductInstance = ({ id, initialPosition, view, onCopy, onRemove, modelPath, scale, dimensions, vanBounds }) => {
   const {
     clonedScene,
     isLoading,
@@ -21,7 +21,7 @@ const ProductInstance = ({ id, initialPosition, view, onCopy, onRemove, modelPat
     bind,
     handleDoubleClick,
     handleCloseMenu,
-  } = useInstanceLogic(modelPath, initialPosition, view);
+  } = useInstanceLogic(modelPath, initialPosition, view, vanBounds);
 
   if (isLoading) {
     return (

@@ -4,7 +4,7 @@ import useDraggable from './useDraggable';
 import useHighlightOnDrag from './useHighlightOnDrag';
 import useClickOutside from './useClickOutside';
 
-const useInstanceLogic = (gltfPath, initialPosition, view) => {
+const useInstanceLogic = (gltfPath, initialPosition, view, vanBounds) => {
   const { scene, loading } = useGLTF(gltfPath, true, true);
   const [position, setPosition] = useState(initialPosition);
   const [rotationY, setRotationY] = useState(0);
@@ -14,15 +14,13 @@ const useInstanceLogic = (gltfPath, initialPosition, view) => {
   const cabinetRef = useRef();
   const [clonedScene, setClonedScene] = useState(null);
 
-  const VAN_BOUNDS = { x: [-0.3, 0.3], z: [-2, 0] };
-
   const { bind, isDragging } = useDraggable(
     position,
-    VAN_BOUNDS,
+    vanBounds,
     (newX, newZ) => {
       setPosition([newX, position[1], newZ]);
     },
-    { enabled: view !== 'default', view }  // Pass the view option here
+    { enabled: view !== 'default' }
   );
 
   useHighlightOnDrag(clonedScene, isDragging);
