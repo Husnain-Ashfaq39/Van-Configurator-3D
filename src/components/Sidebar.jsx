@@ -5,7 +5,7 @@ import { Menu, Heart, Plus } from 'lucide-react';
 
 const Sidebar = ({
   isOpen,
-  toggleSidebar,
+ 
   products,
   toggleProductVisibility,
   toggleFavorite
@@ -19,7 +19,7 @@ const Sidebar = ({
   });
 
   return (
-    <div className="fixed top-0 left-0 h-screen z-10">
+    <div className="fixed top-0 mt-14 left-0 h-screen z-10">
       <AnimatePresence mode="wait">
         {isOpen && (
           <motion.div
@@ -27,16 +27,10 @@ const Sidebar = ({
             initial={{ x: -300 }}
             animate={{ x: 0 }}
             exit={{ x: -300 }}
-            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            transition={{ type: "spring", stiffness: 100, damping: 20, duration: 0.8 }}
             className="w-[300px] bg-white overflow-auto border-r border-gray-200 h-full p-4"
           >
-            <div className="flex items-center justify-between mb-2">
-              <h2 className="text-base font-bold text-gray-900">Van Configurator</h2>
-              <Menu
-                className="cursor-pointer text-gray-500 hover:text-gray-700"
-                onClick={toggleSidebar}
-              />
-            </div>
+            
 
             <div className="relative mb-2">
               <input

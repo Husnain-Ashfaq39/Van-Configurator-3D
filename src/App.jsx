@@ -2,10 +2,10 @@
 import { useState } from 'react';
 import { FiMenu } from 'react-icons/fi';
 import Scene from './components/Scene';
-import Sidebar from './components/Sidebar'; 
+import Sidebar from './components/Sidebar';
 import ViewSelector from './components/ViewSelector';
 import { productConfig } from './data/productConfig';
-
+import Navbar from './components/Navbar';
 const App = () => {
   const [cameraPosition, setCameraPosition] = useState([5, 2, 5]);
   const [lookAt, setLookAt] = useState([0, 0, 0]);
@@ -21,7 +21,7 @@ const App = () => {
   );
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  
+
   // Lifted state for ViewSelector
   const [isViewSelectorOpen, setIsViewSelectorOpen] = useState(false);
 
@@ -48,18 +48,19 @@ const App = () => {
 
   return (
     <div className="flex h-screen bg-gray-100">
+      <Navbar toggleSidebar={() => setIsSidebarOpen((prev) => !prev)} 
+      isSidebarOpen={isSidebarOpen} />
+
       <Sidebar
         isOpen={isSidebarOpen}
-        toggleSidebar={() => setIsSidebarOpen((prev) => !prev)}
         products={products}
         toggleProductVisibility={toggleProductVisibility}
         toggleFavorite={toggleFavorite}
       />
 
       <div
-        className={`flex-grow relative transition-all duration-300 ${
-          isSidebarOpen ? 'ml-72' : 'ml-0'
-        }`}
+        className={`flex-grow relative transition-all duration-300 ${isSidebarOpen ? 'ml-72' : 'ml-0'
+          }`}
       >
         {/* Toggle Sidebar Button */}
         {!isSidebarOpen && (
@@ -73,11 +74,10 @@ const App = () => {
 
         {/* Scene Container */}
         <div
-          className={`w-full h-full transition-all duration-300 ${
-            isSidebarOpen || isViewSelectorOpen
+          className={`w-full h-full transition-all duration-300 ${isSidebarOpen || isViewSelectorOpen
               ? 'p-4' // Adjust padding when Sidebar or ViewSelector is open
               : 'p-0' // Expand when both are closed
-          }`}
+            }`}
         >
           <Scene
             products={products.filter(product => product.visible)}
