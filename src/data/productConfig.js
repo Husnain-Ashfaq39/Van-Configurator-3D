@@ -1,4 +1,4 @@
-// productConfig.js
+
 export const productConfig = {
    
     sliding_drawer: {
@@ -50,7 +50,7 @@ export const productConfig = {
       vanBounds: { x: [-0.45, 0.25], z: [-2, 0] }
     },
     washroom: {
-      modelPath: "/washroom2.glb",
+      modelPath: "/washroom.glb",
       scale: [0.85, 0.85, 0.85],
       initialPosition: [0, -0.8, 0],
       name: 'Washroom',
@@ -168,5 +168,29 @@ export const productConfig = {
       isFavorite: false,
       dimensions: { width: 0.5, height: 0.5, depth: 0.5 },
       vanBounds: { x: [-0.6, 0.6], z: [-2.5, 0.2] }
+    },
+    toilet: { // New product added
+      modelPath: "/Toilet.glb",
+      scale: [0.9, 0.9, 0.9],
+      initialPosition: [0, -0.8, 0],
+      name: 'Toilet',
+      price: 200,
+      image: 'https://example.com/toilet-image.jpg',
+      description: 'A modern toilet',
+      isFavorite: false,
+      dimensions: { width: 0.5, height: 0.5, depth: 0.5 },
+      vanBounds: { x: [-0.5, 0.5], z: [-2.5, 0.2] }
+    },
+    washroom_with_toilet: { // New product added
+      modelPath: "/Washroom_with_toilet.glb",
+      scale: [0.85, 0.85, 0.85],
+      initialPosition: [0, -0.8, 0],
+      name: 'Washroom with Toilet',
+      price: 550,
+      image: '/images/Toilet.jpg',
+      description: 'A combined washroom and toilet unit',
+      isFavorite: false,
+      dimensions: { width: 0.85, height: 0.85, depth: 0.85 },
+      vanBounds: { x: [-0.3, 0.3], z: [-2.3, 0.2] }
     }
 };
