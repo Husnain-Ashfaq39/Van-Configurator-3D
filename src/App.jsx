@@ -28,6 +28,16 @@ const App = () => {
   // Add fov state
   const [fov, setFov] = useState(50); // Default FOV
 
+  const [vanProducts, setVanProducts] = useState([]);
+
+  // Calculate total price
+  const totalPrice = vanProducts.reduce((total, product) => total + product.price, 0);
+
+  // Function to add product to van
+  const addProductToVan = (product) => {
+    setVanProducts((prevVanProducts) => [...prevVanProducts, product]);
+  };
+
   // Toggle visibility of a product by id
   const toggleProductVisibility = (id) => {
     setProducts((prevProducts) =>
@@ -49,13 +59,15 @@ const App = () => {
   return (
     <div className="flex h-screen bg-gray-100">
       <Navbar toggleSidebar={() => setIsSidebarOpen((prev) => !prev)} 
-      isSidebarOpen={isSidebarOpen} />
+      isSidebarOpen={isSidebarOpen}
+      total={totalPrice} />
 
       <Sidebar
         isOpen={isSidebarOpen}
         products={products}
         toggleProductVisibility={toggleProductVisibility}
         toggleFavorite={toggleFavorite}
+        addProductToVan={addProductToVan}
       />
 
       <div

@@ -8,7 +8,8 @@ const Sidebar = ({
  
   products,
   toggleProductVisibility,
-  toggleFavorite
+  toggleFavorite,
+  addProductToVan
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [showFavorites, setShowFavorites] = useState(false);
@@ -60,7 +61,10 @@ const Sidebar = ({
                     {/* Hover overlay with + button */}
                     <div className="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center">
                       <button
-                        onClick={() => toggleProductVisibility(product.id)}
+                        onClick={() => {
+                          toggleProductVisibility(product.id);
+                          addProductToVan(product);
+                        }}
                         className="w-12 h-12 rounded-full bg-white shadow-lg transform transition-transform duration-300 hover:scale-110 flex items-center justify-center"
                       >
                         <Plus className="w-6 h-6 text-gray-800 transition-colors hover:text-[#f5c34b]" />
