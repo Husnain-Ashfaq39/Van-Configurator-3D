@@ -60,6 +60,12 @@ const useInstanceLogic = (gltfPath, initialPosition, view, vanBounds, isPlaying)
         if (child.isMesh) {
           child.castShadow = true;
           child.receiveShadow = true;
+          // Clone material for each mesh to avoid shared references between copies
+          if (Array.isArray(child.material)) {
+            child.material = child.material.map(material => material.clone());
+          } else {
+            child.material = child.material.clone();
+          }
         }
       });
       setClonedScene(clone);
