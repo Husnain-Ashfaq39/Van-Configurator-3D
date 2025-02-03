@@ -4,7 +4,10 @@ import * as THREE from 'three';  // Importing Three.js for animation control
 import useDraggable from './useDraggable';
 import useHighlightOnDrag from './useHighlightOnDrag';
 import useClickOutside from './useClickOutside';
-import {  useFrame } from '@react-three/fiber';
+import { useFrame } from '@react-three/fiber';
+
+// Global cache for processed GLTF scenes keyed by gltfPath
+const sceneCache = {};
 
 const useInstanceLogic = (gltfPath, initialPosition, view, vanBounds, isPlaying) => {
   const { scene, animations, loading } = useGLTF(gltfPath, true, true);
@@ -17,7 +20,6 @@ const useInstanceLogic = (gltfPath, initialPosition, view, vanBounds, isPlaying)
   const cabinetRef = useRef();
   const [clonedScene, setClonedScene] = useState(null);
   const [isAnimationComplete, setIsAnimationComplete] = useState(false);
-
 
   const { bind, isDragging } = useDraggable(
     position,
@@ -51,32 +53,48 @@ const useInstanceLogic = (gltfPath, initialPosition, view, vanBounds, isPlaying)
     }
   }, [isHovered, isDragging, view]);
 
-  // Animation setup
+  // Animation setup and scene cloning with caching
   useEffect(() => {
     if (scene && !loading) {
-      // Clone the scene and setup animation mixer
-      const clone = scene.clone();
-      clone.traverse((child) => {
-        if (child.isMesh) {
-          child.castShadow = true;
-          child.receiveShadow = true;
-          // Clone material for each mesh to avoid shared references between copies
-          if (Array.isArray(child.material)) {
-            child.material = child.material.map(material => material.clone());
-          } else {
-            child.material = child.material.clone();
+      let baseClone;
+      // Check if we have a cached processed scene for this gltfPath
+      if (sceneCache[gltfPath]) {
+        baseClone = sceneCache[gltfPath];
+      } else {
+        // Clone the entire scene and process each mesh
+        baseClone = scene.clone();
+        baseClone.traverse((child) => {
+          if (child.isMesh) {
+            child.castShadow = true;
+            child.receiveShadow = true;
+            // Clone material for each mesh to avoid shared material references on first load
+            if (Array.isArray(child.material)) {
+              child.material = child.material.map(material => material.clone());
+            } else if (child.material) {
+              child.material = child.material.clone();
+            }
           }
+        });
+        // Cache the processed scene
+        sceneCache[gltfPath] = baseClone;
+      }
+      // For each instance, perform a new clone from the cached template  
+      const instanceClone = baseClone.clone();
+      // NEW: ensure each instance gets its own material copies by re‑cloning them.
+      instanceClone.traverse((child) => {
+        if (child.isMesh && child.material) {
+          child.material = child.material.clone();
         }
       });
-      setClonedScene(clone);
+      setClonedScene(instanceClone);
 
-      mixer.current = new THREE.AnimationMixer(clone);
+      mixer.current = new THREE.AnimationMixer(instanceClone);
       animations.forEach((clip) => {
         const action = mixer.current.clipAction(clip);
-        action.paused = true; // Initialize actions but do not play them
+        action.paused = true; // Initialize actions without playing them
       });
     }
-  }, [scene, loading, animations]);
+  }, [scene, loading, animations, gltfPath]);
 
   // Update animation on every frame
   useFrame((state, delta) => {
@@ -89,15 +107,14 @@ const useInstanceLogic = (gltfPath, initialPosition, view, vanBounds, isPlaying)
     if (isPlaying && mixer.current) {
       animations.forEach((clip) => {
         const action = mixer.current.clipAction(clip);
-        action.paused = false; // Unpause the action to play
+        action.paused = false; // Unpause and play action
         action.reset();
-        action.setLoop(THREE.LoopOnce, 0); // Set the animation to play once
+        action.setLoop(THREE.LoopOnce, 0); // Play animation once
         action.clampWhenFinished = true; // Stop at the last frame
         setIsAnimationComplete(true);
         action.play();
         action.onFinished = () => {
-          setIsPlaying(false); // Reset isPlaying when animation finishes
-         
+          setIsPlaying(false); // Reset isPlaying when finished
         };
       });
     }
