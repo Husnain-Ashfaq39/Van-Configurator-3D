@@ -1,12 +1,11 @@
-// components/RotateButton.jsx
 import { FiRotateCcw } from 'react-icons/fi'; // Import the rotate icon
 import { Html } from '@react-three/drei';
 import React, { useRef, useState } from 'react';
-import { ShoppingBag, Replace, Grid, Copy, Trash } from 'lucide-react';
+import { ShoppingBag, Replace, Grid, Copy, Trash, Play } from 'lucide-react'; // Import Play icon
 import useClickOutside from '../hooks/useClickOutside'; // Import the custom hook
 import DiscreteSlider from './DiscreteSlider'; // Import the DiscreteSlider component
 
-const RotateButton = ({ position, rotationY, setRotationY, onCopy, onRemove, onClose }) => {
+const RotateButton = ({ position, rotationY, setRotationY, onCopy, onRemove, onClose, onPlayAnimation, isAnimationComplete, resetAnimation }) => {
   const buttonRef = useRef(null); // Create a ref for the button container
   const [isSliderVisible, setIsSliderVisible] = useState(false); // State to control slider visibility
 
@@ -22,6 +21,11 @@ const RotateButton = ({ position, rotationY, setRotationY, onCopy, onRemove, onC
     { icon: Replace, label: 'Replace' },
     { icon: Grid, label: 'Goes with' },
     { icon: Copy, label: 'Make copy', onClick: onCopy },
+    { 
+      icon: Play, 
+      label: isAnimationComplete ? 'Reset' : 'Open', // Change label based on animation state
+      onClick: isAnimationComplete ? resetAnimation : onPlayAnimation, // Use resetAnimation if animation is complete
+    },
     { icon: Trash, label: 'Remove', onClick: onRemove },
   ];
 

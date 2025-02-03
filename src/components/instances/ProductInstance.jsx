@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { a } from '@react-spring/three';
 import RotateButton from '../RotateButton';
 import BigDot from '../BigDot';
@@ -6,6 +6,7 @@ import useInstanceLogic from '../../hooks/useInstanceLogic';
 import PreLoader from '../preLoader';
 
 const ProductInstance = ({ id, initialPosition, view, onCopy, onRemove, modelPath, scale, dimensions, vanBounds }) => {
+  const [isPlaying, setIsPlaying] = useState(false);
   const {
     clonedScene,
     isLoading,
@@ -21,7 +22,16 @@ const ProductInstance = ({ id, initialPosition, view, onCopy, onRemove, modelPat
     bind,
     handleDoubleClick,
     handleCloseMenu,
-  } = useInstanceLogic(modelPath, initialPosition, view, vanBounds);
+    isAnimationComplete,
+    resetAnimation,
+  } = useInstanceLogic(modelPath, initialPosition, view, vanBounds, isPlaying);
+
+ 
+
+  const handlePlayAnimation = () => {
+    console.log('Playing animation');
+   setIsPlaying((prevIsPlaying) => !prevIsPlaying);
+  };
 
   if (isLoading) {
     return (
@@ -59,8 +69,12 @@ const ProductInstance = ({ id, initialPosition, view, onCopy, onRemove, modelPat
           onCopy={() => onCopy(id, position)}
           onRemove={() => onRemove(id)}
           onClose={handleCloseMenu}
+          onPlayAnimation={handlePlayAnimation}
+          isAnimationComplete={isAnimationComplete}
+          resetAnimation={resetAnimation}
         />
       )}
+      
     </>
   );
 };
