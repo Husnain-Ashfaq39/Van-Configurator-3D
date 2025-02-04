@@ -3,7 +3,7 @@ import React, { useRef, useEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
-const PreLoader = ({ progress, vanDimensions = { width: 2, height: 1.5, depth: 4 }, position }) => {
+const PreLoader = ({ progress, vanDimensions = { width: 2, height: 2, depth: 5 }, position }) => {
   const boxRef = useRef();
   const fillBoxRef = useRef();
 

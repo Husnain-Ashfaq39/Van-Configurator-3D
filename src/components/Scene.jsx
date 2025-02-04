@@ -1,7 +1,7 @@
 // Scene.jsx
 import { Suspense, useRef, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { Environment } from '@react-three/drei';
+import { Environment, useGLTF } from '@react-three/drei';
 import VanModel from './VanModel';
 import CameraUpdater from './CameraUpdater';
 import useSelectionStore from '../store/selectionStore';
@@ -17,12 +17,17 @@ const generateFieldPositions = (gridSize, spacing) => {
   return positions;
 };
 
+function SceneCG() {
+  const { scene } = useGLTF('/parent_Setting_van/garage.glb')
+  return <primitive object={scene} position={[0, -1.27, -2]} />
+}
+
 const Scene = ({
   products,
   cameraPosition,
   lookAt,
   view,
-  fov, // Receive fov as a prop
+  fov, 
   gridSize = 4,
   spacing = 15.5,
 }) => {
@@ -54,21 +59,17 @@ const Scene = ({
       className="w-full h-full"
       style={{ position: 'absolute', top: 0, left: 0 }}
     >
-      <Suspense fallback={null}>
-        <Environment files="Meadows.hdr" background />
-      </Suspense>
-
       {/* Hemisphere Light for ambient sky and ground lighting */}
       <hemisphereLight
         skyColor="#ffffff"
         groundColor="#444444"
-        intensity={0.0001}
+        intensity={0.5} // Increased intensity for a lighter environment
       />
 
       {/* Enhanced Directional Lights */}
       <directionalLight
         position={[10, 15, 10]}
-        intensity={2}
+        intensity={2.5} // Increased intensity for more light
         castShadow
         shadow-mapSize-width={1024}
         shadow-mapSize-height={1024}
@@ -80,7 +81,7 @@ const Scene = ({
       />
       <directionalLight
         position={[-10, 15, -10]}
-        intensity={1}
+        intensity={1.5} // Increased intensity for more light
         castShadow
         shadow-mapSize-width={1024}
         shadow-mapSize-height={1024}
@@ -92,17 +93,21 @@ const Scene = ({
       />
 
       {/* Ambient Light for subtle illumination */}
-      <ambientLight intensity={0.0003} />
+      <ambientLight intensity={0.1} /> // Increased ambient light for a brighter scene
 
       {/* Green Field */}
-      {fieldPositions.map((position, index) => (
+      {/* {fieldPositions.map((position, index) => (
         <GreenField key={index} position={position} />
-      ))}
-      <VanModel
-        products={products}
-        cameraPosition={cameraPosition}
-        view={view}
-      />
+      ))} */}
+      <Suspense fallback={null}>
+        <SceneCG />
+        <VanModel
+          products={products}
+          cameraPosition={cameraPosition}
+          view={view}
+        />
+        <Environment files="Meadows.hdr" background />
+      </Suspense>
 
       {/* Camera Updater with FOV */}
       <CameraUpdater
@@ -113,5 +118,7 @@ const Scene = ({
     </Canvas>
   );
 };
+
+useGLTF.preload('/scene+cg.glb')
 
 export default Scene;
