@@ -135,6 +135,7 @@ const VanModel = ({
             initialPosition={config.initialPosition}
             dimensions={config.dimensions}
             vanBounds={config.vanBounds}
+            yAxisMove={config.yAxisMove}
           />
         );
       })}

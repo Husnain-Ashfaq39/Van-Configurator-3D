@@ -11,7 +11,8 @@ export const productConfig = {
       description: 'Sliding drawer',
       isFavorite: false,
       dimensions: { width: 0.35, height: 0.35, depth: 0.35 },
-      vanBounds: { x: [-0.72, 0.72], z: [-2.6, 0.3] }
+      vanBounds: { x: [-0.72, 0.72], z: [-2.6, 0.3] },
+      yAxisMove: true
     },
     bunk: {
       modelPath: "/Bunk.glb",
@@ -23,7 +24,8 @@ export const productConfig = {
       description: 'A comfortable bunk bed',
       isFavorite: false,
       dimensions: { width: 0.4, height: 0.4, depth: 0.4 },
-      vanBounds: { x: [-0.4, 0.4], z: [-2, 0] }
+      vanBounds: { x: [-0.4, 0.4], z: [-2, 0] },
+      yAxisMove: false
     },
     double_table: {
       modelPath: "/Double_Table.glb",
@@ -35,7 +37,8 @@ export const productConfig = {
       description: 'A versatile double table',
       isFavorite: false,
       dimensions: { width: 1, height: 1, depth: 1 },
-      vanBounds: { x: [-0.73, 0.65], z: [-2.5, 0.2] }
+      vanBounds: { x: [-0.73, 0.65], z: [-2.5, 0.2] },
+      yAxisMove: false
     },
     full_bed: {
       modelPath: "/Full-Bed.glb",
@@ -47,7 +50,8 @@ export const productConfig = {
       description: 'Comfortable full-size bed',
       isFavorite: false,
       dimensions: { width: 0.57, height: 0.57, depth: 0.57 },
-      vanBounds: { x: [-0.45, 0.25], z: [-2, 0] }
+      vanBounds: { x: [-0.45, 0.25], z: [-2, 0] },
+      yAxisMove: false
     },
     washroom: {
       modelPath: "/washroom.glb",
@@ -59,7 +63,8 @@ export const productConfig = {
       description: 'Compact unit',
       isFavorite: false,
       dimensions: { width: 0.85, height: 0.85, depth: 0.85 },
-      vanBounds: { x: [-0.28, 0.28], z: [-2.3, 0.07] }
+      vanBounds: { x: [-0.28, 0.28], z: [-2.3, 0.07] },
+      yAxisMove: false
     },
     solar_panel: {
       modelPath: "/solar_panel.glb",
@@ -71,7 +76,8 @@ export const productConfig = {
       description: 'Solar panel',
       isFavorite: false,
       dimensions: { width: 0.003, height: 0.003, depth: 0.003 },
-      vanBounds: { x: [-0.1, 0.1], z: [-2.2, 0.2] }
+      vanBounds: { x: [-0.1, 0.1], z: [-2.2, 0.2] },
+      yAxisMove: false
     },
     simple_bed: {
       modelPath: "/Simple-Bed.glb",
@@ -83,7 +89,8 @@ export const productConfig = {
       description: 'A simple and comfortable bed',
       isFavorite: false,
       dimensions: { width: 1.09, height: 1.09, depth: 1.09 },
-      vanBounds: { x: [-0.5, 0.5], z: [-2.3, 0] }
+      vanBounds: { x: [-0.5, 0.5], z: [-2.3, 0] },
+      yAxisMove: false
     },
     round_table: {
       modelPath: "/Round-Table.glb",
@@ -95,7 +102,8 @@ export const productConfig = {
       description: 'A stylish round table',
       isFavorite: false,
       dimensions: { width: 1, height: 1, depth: 1 },
-      vanBounds: { x: [-0.5, 0.5], z: [-2.5, 0.06] }
+      vanBounds: { x: [-0.5, 0.5], z: [-2.5, 0.06] },
+      yAxisMove: false
     },
     sofa_set: {
       modelPath: "/sofa-set.glb",
@@ -107,7 +115,8 @@ export const productConfig = {
       description: 'A luxurious sofa set',
       isFavorite: false,
       dimensions: { width: 0.3, height: 0.3, depth: 0.3 },
-      vanBounds: { x: [-0.35, 0.35], z: [-2, 0] }
+      vanBounds: { x: [-0.35, 0.35], z: [-2, 0] },
+      yAxisMove: false
     },
     kitchen: {
       modelPath: "/kitchen.glb",
@@ -119,7 +128,8 @@ export const productConfig = {
       description: 'A modern kitchen setup',
       isFavorite: false,
       dimensions: { width: 0.55, height: 0.55, depth: 0.55 },
-      vanBounds: { x: [-0.8, 0.8], z: [-2.8, 0.4] }
+      vanBounds: { x: [-0.8, 0.8], z: [-2.8, 0.4] },
+      yAxisMove: false
     },
     sink_with_cabinet: {
       modelPath: "/SinkwithCabinet.glb",
@@ -131,7 +141,8 @@ export const productConfig = {
       description: 'A sink with a cabinet for storage',
       isFavorite: false,
       dimensions: { width: 0.6, height: 0.6, depth: 0.6 },
-      vanBounds: { x: [-0.75, 0.75], z: [-2, 0.1] }
+      vanBounds: { x: [-0.75, 0.75], z: [-2, 0.1] },
+      yAxisMove: false
     },
     gas_stove: {
       modelPath: "/Gas-Stove.glb",
@@ -143,7 +154,8 @@ export const productConfig = {
       description: 'A modern gas stove for cooking',
       isFavorite: false,
       dimensions: { width: 0.75, height: 0.75, depth: 0.75 },
-      vanBounds: { x: [-0.55, 0.55], z: [-2.5, 0.11] }
+      vanBounds: { x: [-0.55, 0.55], z: [-2.5, 0.11] },
+      yAxisMove: false
     },
     modular_cabinet: {
       modelPath: "/Modular_Cabinet.glb",
@@ -155,7 +167,8 @@ export const productConfig = {
       description: 'A versatile modular cabinet',
       isFavorite: false,
       dimensions: { width: 0.5, height: 0.5, depth: 0.5 },
-      vanBounds: { x: [-0.6, 0.6], z: [-2.5, 0.2] }
+      vanBounds: { x: [-0.6, 0.6], z: [-2.5, 0.2] },
+      yAxisMove: false
     },
     cabinet: { // New product added
       modelPath: "/Cabinet.glb",
@@ -167,7 +180,8 @@ export const productConfig = {
       description: 'A spacious cabinet for storage',
       isFavorite: false,
       dimensions: { width: 0.5, height: 0.5, depth: 0.5 },
-      vanBounds: { x: [-0.6, 0.6], z: [-2.5, 0.2] }
+      vanBounds: { x: [-0.6, 0.6], z: [-2.5, 0.2] },
+      yAxisMove: false
     },
     toilet: { // New product added
       modelPath: "/Toilet.glb",
@@ -179,7 +193,8 @@ export const productConfig = {
       description: 'A modern toilet',
       isFavorite: false,
       dimensions: { width: 0.5, height: 0.5, depth: 0.5 },
-      vanBounds: { x: [-0.5, 0.5], z: [-2.5, 0.2] }
+      vanBounds: { x: [-0.5, 0.5], z: [-2.5, 0.2] },
+      yAxisMove: false
     },
     washroom_with_toilet: { // New product added
       modelPath: "/Washroom_with_toilet.glb",
@@ -191,6 +206,7 @@ export const productConfig = {
       description: 'A combined washroom and toilet unit',
       isFavorite: false,
       dimensions: { width: 0.85, height: 0.85, depth: 0.85 },
-      vanBounds: { x: [-0.3, 0.3], z: [-2.3, 0.2] }
+      vanBounds: { x: [-0.3, 0.3], z: [-2.3, 0.2] },
+      yAxisMove: false
     }
 };

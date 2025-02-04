@@ -9,7 +9,7 @@ import { useFrame } from '@react-three/fiber';
 // Global cache for processed GLTF scenes keyed by gltfPath
 const sceneCache = {};
 
-const useInstanceLogic = (gltfPath, initialPosition, view, vanBounds, isPlaying) => {
+const useInstanceLogic = (gltfPath, initialPosition, view, vanBounds, isPlaying, yAxisMove = false) => {
   const { scene, animations, loading } = useGLTF(gltfPath, true, true);
   const mixer = useRef();
   const [position, setPosition] = useState(initialPosition);
@@ -25,7 +25,7 @@ const useInstanceLogic = (gltfPath, initialPosition, view, vanBounds, isPlaying)
     position,
     vanBounds,
     (newX, newZ) => {
-      setPosition([newX, position[1], newZ]);
+      setPosition(prev => [newX, prev[1], newZ]);
     },
     { enabled: view !== 'default' }
   );
@@ -119,6 +119,29 @@ const useInstanceLogic = (gltfPath, initialPosition, view, vanBounds, isPlaying)
       });
     }
   }, [isPlaying, animations]);
+
+  // NEW: Add keyboard control for y-axis movement when the instance is hovered,
+  // only if yAxisMove flag is true.
+  useEffect(() => {
+    // Only add y-axis keyboard control if yAxisMove is enabled for this instance
+    if (!yAxisMove) return;
+
+    const handleKeyDown = (event) => {
+      // Only allow y-axis movement if the instance is hovered
+      if (!isHovered) return; 
+      const moveAmount = 0.01;
+      if (event.key === "ArrowUp") {
+        setPosition((prevPos) => [prevPos[0], prevPos[1] + moveAmount, prevPos[2]]);
+      } else if (event.key === "ArrowDown") {
+        setPosition((prevPos) => [prevPos[0], prevPos[1] - moveAmount, prevPos[2]]);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isHovered, yAxisMove]);
 
   const resetAnimation = () => {
     if (mixer.current) {
