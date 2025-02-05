@@ -9,7 +9,7 @@ const Product = ({ view, modelPath, scale, initialPosition, dimensions, vanBound
     position: initialPosition
   }]);
 
-  const { vanProducts, addProductToVan, removeProductFromVan } = useProductStore();
+  const { vanProducts, addProductToVan, removeProductFromVan,toggleProductVisibility } = useProductStore();
   console.log("vanProducts: " + JSON.stringify(vanProducts));
   
 
@@ -29,6 +29,10 @@ const Product = ({ view, modelPath, scale, initialPosition, dimensions, vanBound
   const handleRemove = (id) => {
     const product = vanProducts.find(p => p.modelPath === modelPath);
       if (product) {
+        if (product.quantity == 1) {
+          toggleProductVisibility(product.id);
+        }
+          
         removeProductFromVan({ ...product, quantity: product.quantity - 1 });
       }
     setInstances(prev => prev.filter(item => item.id !== id));
