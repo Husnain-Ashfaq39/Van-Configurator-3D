@@ -52,7 +52,7 @@ const LoadingScreen = ({ onLoadingComplete }) => {
           </div>
           
           {/* Loading text */}
-          <h2 className="mt-4 text-xl font-semibold">Setting up Environment</h2>
+          <h2 className="mt-4 text-xl font-semibold">Setting up</h2>
           <p className="mt-2 text-sm text-gray-500">{loadingText}</p>
         </div>
       </div>
