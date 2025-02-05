@@ -25,7 +25,7 @@ const LoadingScreen = ({ onLoadingComplete }) => {
     const timer = setTimeout(() => {
       clearInterval(textInterval);
       onLoadingComplete();
-    }, 4000);
+    }, 10000);
 
     return () => {
       clearInterval(textInterval);
