@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { ChevronLeft, Camera, Save, ShoppingCart, X } from 'lucide-react';
 import { motion, useMotionValue, useTransform, animate } from 'framer-motion';
+import {useProductStore} from '../store/productStore';
 
-// Extracted button component for reusability
+// Reusable button component
 const IconButton = ({ icon: Icon, onClick }) => (
-  <button onClick={onClick} className="p-2 rounded-full hover:bg-gray-100">
+  <button onClick={onClick} className="p-2 rounded-full hover:bg-gray-100 relative">
     <Icon className="h-5 w-5 text-gray-700" />
   </button>
 );
@@ -17,9 +18,10 @@ const springConfig = {
   duration: 0.8
 };
 
-const PriceTag = ({ total }) => {
+const PriceTag = () => {
+  const total = useProductStore((state) => state.getTotalPrice());
   const count = useMotionValue(0);
-  const rounded = useTransform(count, latest => latest.toFixed(2));
+  const rounded = useTransform(count, (latest) => latest.toFixed(2));
   
   useEffect(() => {
     const animation = animate(count, total, {
@@ -43,9 +45,12 @@ const PriceTag = ({ total }) => {
   );
 };
 
-const Navbar = ({ total = 0, toggleSidebar, isSidebarOpen }) => {
+const Navbar = ({ toggleSidebar, isSidebarOpen }) => {
   const [title, setTitle] = useState('Untitled Design');
   const [isEditing, setIsEditing] = useState(false);
+
+  // Retrieve the quantity of products in the cart (vanProducts) from the global store.
+  const quantity = useProductStore((state) => state.vanProducts.length);
 
   return (
     <div className="w-full  h-16 bg-white border-b border-gray-200 flex items-center justify-between px-4 fixed top-0 left-0 z-20">
@@ -82,8 +87,15 @@ const Navbar = ({ total = 0, toggleSidebar, isSidebarOpen }) => {
       <div className="flex items-center gap-4">
         <IconButton icon={Camera} />
         <IconButton icon={Save} />
-        <IconButton icon={ShoppingCart} />
-        <PriceTag total={total} />
+        <div className="relative">
+          <IconButton icon={ShoppingCart} />
+          {quantity > 0 && (
+            <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 bg-red-500 text-white rounded-full text-xs w-4 h-4 flex items-center justify-center">
+              {quantity}
+            </div>
+          )}
+        </div>
+        <PriceTag />
         <IconButton icon={X} />
       </div>
     </div>
