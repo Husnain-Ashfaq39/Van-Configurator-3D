@@ -11,6 +11,8 @@ export const useProductStore = create((set, get) => ({
   })),
   // Array for products added to the van with quantity.
   vanProducts: [],
+  // Add action to set vanProducts directly
+  setVanProducts: (newVanProducts) => set({ vanProducts: newVanProducts }),
   
   // Action: Add a product to the van or increase its quantity if already added.
   addProductToVan: (product) =>
@@ -65,11 +67,19 @@ export const useProductStore = create((set, get) => ({
           : product
       ),
     })),
-  
+
+  // Action: Set a product's visibility explicitly
+  setProductVisibility: (id, visible) =>
+    set((state) => ({
+      products: state.products.map((product) =>
+        product.id === id ? { ...product, visible } : product
+      ),
+    })),
+
   // Computed getter for total price.
   getTotalPrice: () =>
     get().vanProducts.reduce((total, product) => total + product.price * product.quantity, 0),
   
   // Computed getter for the quantity of products added.
-  getQuantity: () => get().vanProducts.reduce((total, product) => total + product.quantity, 0),
+  getQuantity: () => get().vanProducts.reduce((total, product) => total + product.quantity, 0)
 }));

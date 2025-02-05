@@ -129,6 +129,7 @@ const VanModel = ({
         return (
           <Product
             key={product.id}
+            productId={product.id}
             view={view}
             modelPath={config.modelPath}
             scale={config.scale}
