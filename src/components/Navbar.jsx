@@ -48,7 +48,7 @@ const Navbar = ({ total = 0, toggleSidebar, isSidebarOpen }) => {
   const [isEditing, setIsEditing] = useState(false);
 
   return (
-    <div className="w-full h-16 bg-white border-b border-gray-200 flex items-center justify-between px-4 fixed top-0 left-0 z-20">
+    <div className="w-full  h-16 bg-white border-b border-gray-200 flex items-center justify-between px-4 fixed top-0 left-0 z-20">
       {/* Left section */}
       <div className="flex items-center gap-6">
         <img src="/Logo/logo.svg" alt="IKEA" className="h-8 w-auto" />

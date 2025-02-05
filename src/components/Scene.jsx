@@ -1,11 +1,12 @@
 // Scene.jsx
-import { Suspense, useRef, useEffect } from 'react';
+import { Suspense, useRef, useEffect, useState } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { Environment, useGLTF } from '@react-three/drei';
+import { Environment, useGLTF, Html } from '@react-three/drei';
 import VanModel from './VanModel';
 import CameraUpdater from './CameraUpdater';
 import useSelectionStore from '../store/selectionStore';
 import GreenField from './GreenField';
+import LoadingScreen from './LoadingScreen';
 
 const generateFieldPositions = (gridSize, spacing) => {
   const positions = [];
@@ -31,6 +32,7 @@ const Scene = ({
   gridSize = 4,
   spacing = 15.5,
 }) => {
+  const [isLoading, setIsLoading] = useState(true);
   const setSelectedObject = useSelectionStore(state => state.setSelectedObject);
   const fieldPositions = generateFieldPositions(gridSize, spacing);
   const canvasRef = useRef();
@@ -55,7 +57,7 @@ const Scene = ({
       onPointerMissed={() => setSelectedObject(null)}
       shadows
       gl={{ powerPreference: 'high-performance', antialias: true }}
-      camera={{ position: cameraPosition, fov: fov }} // Set initial FOV
+      camera={{ position: cameraPosition, fov: fov }}
       className="w-full h-full"
       style={{ position: 'absolute', top: 0, left: 0 }}
     >
@@ -99,7 +101,7 @@ const Scene = ({
       {/* {fieldPositions.map((position, index) => (
         <GreenField key={index} position={position} />
       ))} */}
-      <Suspense fallback={null}>
+      <Suspense fallback={isLoading ? <LoadingScreen onLoadingComplete={() => setIsLoading(false)} /> : null}>
         <SceneCG />
         <VanModel
           products={products}
