@@ -1,18 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { ChevronLeft, Camera, Save, ShoppingCart, X, Upload } from 'lucide-react';
-import { motion, useMotionValue, useTransform, animate } from 'framer-motion';
-import {useProductStore} from '../store/productStore';
+import { ChevronLeft, Camera, Save, ShoppingCart, X } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { useProductStore } from '../store/productStore';
 import { useBuildStore } from '../store/buildStore';
 import toast from 'react-hot-toast';
+import { IconButton } from './ui/IconButton';
+import { Tooltip } from './ui/Tooltip';
+import { PriceTag } from './navbar/PriceTag';
+import { BuildDropdown } from './navbar/BuildDropdown';
+import { PresetDropdown } from './navbar/PresetDropdown';
+import { presets } from '../data/presets'; // Move presets to a separate file
 
-// Reusable button component
-const IconButton = ({ icon: Icon, onClick }) => (
-  <button onClick={onClick} className="p-2 rounded-full hover:bg-gray-100 relative">
-    <Icon className="h-5 w-5 text-gray-700" />
-  </button>
-);
-
-// Animation configurations
 const springConfig = {
   type: "spring",
   stiffness: 100,
@@ -20,74 +18,69 @@ const springConfig = {
   duration: 0.8
 };
 
-const PriceTag = () => {
-  const total = useProductStore((state) => state.getTotalPrice());
-  const count = useMotionValue(0);
-  const rounded = useTransform(count, (latest) => latest.toFixed(2));
-  
-  useEffect(() => {
-    const animation = animate(count, total, {
-      duration: 0.8,
-      ease: "easeOut"
-    });
-    return animation.stop;
-  }, [total]);
-
-  return (
-    <motion.div 
-      className="bg-black text-white px-4 py-2 rounded-full flex items-center gap-2"
-      initial={{ scale: 1 }}
-      animate={{ scale: [1, 1.1, 1] }}
-      transition={{ duration: 0.3 }}
-      key={total}
-    >
-      <span className="text-sm">$</span>
-      <motion.span className="font-medium">{rounded}</motion.span>
-    </motion.div>
-  );
-};
-
-const Navbar = ({ toggleSidebar, isSidebarOpen, cameraConfig, setCameraConfig }) => {
+export const Navbar = ({ toggleSidebar, isSidebarOpen, cameraConfig, setCameraConfig }) => {
   const [title, setTitle] = useState('Untitled Design');
   const [isEditing, setIsEditing] = useState(false);
+  const [savedBuilds, setSavedBuilds] = useState([]);
   const vanProducts = useProductStore(state => state.vanProducts);
   const productInstances = useBuildStore(state => state.productInstances);
   const quantity = useProductStore((state) => state.vanProducts.length);
 
+  useEffect(() => {
+    loadSavedBuilds();
+  }, []);
+
+  const loadSavedBuilds = () => {
+    const builds = JSON.parse(localStorage.getItem('builds') || '[]');
+    setSavedBuilds(builds.sort((a, b) => b.timestamp - a.timestamp));
+  };
+
   const handleSaveBuild = () => {
     const buildData = {
-      cameraConfig: cameraConfig,
-      vanProducts,
-      productInstances,
+      title,
+      timestamp: Date.now(),
+      data: { cameraConfig, vanProducts, productInstances }
     };
-    localStorage.setItem('savedBuild', JSON.stringify(buildData));
+
+    const existingBuilds = JSON.parse(localStorage.getItem('builds') || '[]');
+    const updatedBuilds = [buildData, ...existingBuilds];
+    localStorage.setItem('builds', JSON.stringify(updatedBuilds));
+    setSavedBuilds(updatedBuilds);
     toast.success("Build saved successfully!");
   };
 
-  const handleLoadBuild = () => {
-    const savedData = localStorage.getItem('savedBuild');
-    if (savedData) {
-      const buildData = JSON.parse(savedData);
-      // update camera config
-      setCameraConfig(buildData.cameraConfig);
-      // update vanProducts in productStore
-      const setVanProducts = useProductStore.getState().setVanProducts;
-      setVanProducts(buildData.vanProducts);
-      // Ensure loaded products are visible in the Van
-      const setProductVisibility = useProductStore.getState().setProductVisibility;
-      buildData.vanProducts.forEach(product => setProductVisibility(product.id, true));
-      // update productInstances in buildStore
-      const setLoadedProductInstances = useBuildStore.getState().setLoadedProductInstances;
-      setLoadedProductInstances(buildData.productInstances);
-      toast.success("Build loaded successfully!");
-    } else {
-      toast.error("No saved build found");
-    }
+  const handleLoadBuild = (build) => {
+    const { data } = build;
+    setCameraConfig(data.cameraConfig);
+    useProductStore.getState().setVanProducts(data.vanProducts);
+    data.vanProducts.forEach(product => 
+      useProductStore.getState().setProductVisibility(product.id, true)
+    );
+    useBuildStore.getState().setLoadedProductInstances(data.productInstances);
+    setTitle(build.title);
+    toast.success("Build loaded successfully!");
+  };
+
+  const handleDeleteBuild = (timestamp) => {
+    const updatedBuilds = savedBuilds.filter(build => build.timestamp !== timestamp);
+    localStorage.setItem('builds', JSON.stringify(updatedBuilds));
+    setSavedBuilds(updatedBuilds);
+    toast.success("Build deleted successfully!");
+  };
+
+  const handleLoadPreset = (preset) => {
+    const { data } = preset;
+    setCameraConfig(data.cameraConfig);
+    useProductStore.getState().setVanProducts(data.vanProducts);
+    data.vanProducts.forEach(product => 
+      useProductStore.getState().setProductVisibility(product.id, true)
+    );
+    useBuildStore.getState().setLoadedProductInstances(data.productInstances);
+    toast.success(`Preset "${preset.title}" loaded successfully!`);
   };
 
   return (
-    <div className="w-full  h-16 bg-white border-b border-gray-200 flex items-center justify-between px-4 fixed top-0 left-0 z-20">
-      {/* Left section */}
+    <div className="w-full h-16 bg-white border-b border-gray-200 flex items-center justify-between px-4 fixed top-0 left-0 z-20">
       <div className="flex items-center gap-6">
         <img src="/Logo/logo.svg" alt="IKEA" className="h-8 w-auto" />
         <motion.div 
@@ -95,14 +88,16 @@ const Navbar = ({ toggleSidebar, isSidebarOpen, cameraConfig, setCameraConfig })
           animate={{ paddingLeft: isSidebarOpen ? '10rem' : '1rem' }}
           transition={springConfig}
         >
-          <motion.button 
-            onClick={toggleSidebar} 
-            className="flex items-center justify-center h-10 w-10 rounded-full hover:bg-[#F5C34B] border-2 border-gray-100"
-            animate={{ rotate: isSidebarOpen ? 0 : 180 }}
-            transition={springConfig}
-          >
-            <ChevronLeft className="h-6 w-6 text-gray-700" />
-          </motion.button>
+          <Tooltip content={isSidebarOpen ? "Hide Sidebar" : "Show Sidebar"}>
+            <motion.button 
+              onClick={toggleSidebar} 
+              className="flex items-center justify-center h-10 w-10 rounded-full hover:bg-[#F5C34B] border-2 border-gray-100"
+              animate={{ rotate: isSidebarOpen ? 0 : 180 }}
+              transition={springConfig}
+            >
+              <ChevronLeft className="h-6 w-6 text-gray-700" />
+            </motion.button>
+          </Tooltip>
           <input
             type="text"
             value={title}
@@ -116,13 +111,17 @@ const Navbar = ({ toggleSidebar, isSidebarOpen, cameraConfig, setCameraConfig })
         </motion.div>
       </div>
 
-      {/* Right section */}
       <div className="flex items-center gap-4">
-        <IconButton icon={Camera} />
-        <IconButton icon={Save} onClick={handleSaveBuild} />
-        <IconButton icon={Upload} onClick={handleLoadBuild} />
+        <IconButton icon={Camera} tooltip="Take Screenshot" />
+        <IconButton icon={Save} onClick={handleSaveBuild} tooltip="Save Current Build" />
+        <PresetDropdown presets={presets} onLoad={handleLoadPreset} />
+        <BuildDropdown 
+          builds={savedBuilds}
+          onLoad={handleLoadBuild}
+          onDelete={handleDeleteBuild}
+        />
         <div className="relative">
-          <IconButton icon={ShoppingCart} />
+          <IconButton icon={ShoppingCart} tooltip="Shopping Cart" />
           {quantity > 0 && (
             <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 bg-red-500 text-white rounded-full text-xs w-4 h-4 flex items-center justify-center">
               {quantity}
@@ -130,10 +129,8 @@ const Navbar = ({ toggleSidebar, isSidebarOpen, cameraConfig, setCameraConfig })
           )}
         </div>
         <PriceTag />
-        <IconButton icon={X} />
+        <IconButton icon={X} tooltip="Close Editor" />
       </div>
     </div>
   );
 };
-
-export default Navbar;
