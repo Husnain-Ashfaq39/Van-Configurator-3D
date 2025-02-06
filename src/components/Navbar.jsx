@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { ChevronLeft, Camera, Save, ShoppingCart, X } from 'lucide-react';
+import { ChevronLeft, Camera, Save, ShoppingCart, X, Upload } from 'lucide-react';
 import { motion, useMotionValue, useTransform, animate } from 'framer-motion';
 import {useProductStore} from '../store/productStore';
+import { useBuildStore } from '../store/buildStore';
+import toast from 'react-hot-toast';
 
 // Reusable button component
 const IconButton = ({ icon: Icon, onClick }) => (
@@ -45,12 +47,43 @@ const PriceTag = () => {
   );
 };
 
-const Navbar = ({ toggleSidebar, isSidebarOpen }) => {
+const Navbar = ({ toggleSidebar, isSidebarOpen, cameraConfig, setCameraConfig }) => {
   const [title, setTitle] = useState('Untitled Design');
   const [isEditing, setIsEditing] = useState(false);
-
-  // Retrieve the quantity of products in the cart (vanProducts) from the global store.
+  const vanProducts = useProductStore(state => state.vanProducts);
+  const productInstances = useBuildStore(state => state.productInstances);
   const quantity = useProductStore((state) => state.vanProducts.length);
+
+  const handleSaveBuild = () => {
+    const buildData = {
+      cameraConfig: cameraConfig,
+      vanProducts,
+      productInstances,
+    };
+    localStorage.setItem('savedBuild', JSON.stringify(buildData));
+    toast.success("Build saved successfully!");
+  };
+
+  const handleLoadBuild = () => {
+    const savedData = localStorage.getItem('savedBuild');
+    if (savedData) {
+      const buildData = JSON.parse(savedData);
+      // update camera config
+      setCameraConfig(buildData.cameraConfig);
+      // update vanProducts in productStore
+      const setVanProducts = useProductStore.getState().setVanProducts;
+      setVanProducts(buildData.vanProducts);
+      // Ensure loaded products are visible in the Van
+      const setProductVisibility = useProductStore.getState().setProductVisibility;
+      buildData.vanProducts.forEach(product => setProductVisibility(product.id, true));
+      // update productInstances in buildStore
+      const setLoadedProductInstances = useBuildStore.getState().setLoadedProductInstances;
+      setLoadedProductInstances(buildData.productInstances);
+      toast.success("Build loaded successfully!");
+    } else {
+      toast.error("No saved build found");
+    }
+  };
 
   return (
     <div className="w-full  h-16 bg-white border-b border-gray-200 flex items-center justify-between px-4 fixed top-0 left-0 z-20">
@@ -86,7 +119,8 @@ const Navbar = ({ toggleSidebar, isSidebarOpen }) => {
       {/* Right section */}
       <div className="flex items-center gap-4">
         <IconButton icon={Camera} />
-        <IconButton icon={Save} />
+        <IconButton icon={Save} onClick={handleSaveBuild} />
+        <IconButton icon={Upload} onClick={handleLoadBuild} />
         <div className="relative">
           <IconButton icon={ShoppingCart} />
           {quantity > 0 && (

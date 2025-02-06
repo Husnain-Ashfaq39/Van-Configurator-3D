@@ -46,6 +46,7 @@ const Product = ({ productId, view, modelPath, scale, initialPosition, dimension
       {instances.map((instance) => (
         <ProductInstance
           key={instance.id}
+          productId={productId}
           id={instance.id}
           initialPosition={instance.position}
           view={view}

@@ -5,11 +5,12 @@ import useDraggable from './useDraggable';
 import useHighlightOnDrag from './useHighlightOnDrag';
 import useClickOutside from './useClickOutside';
 import { useFrame } from '@react-three/fiber';
+import { useBuildStore } from '../store/buildStore'; // Import the buildStore
 
 // Global cache for processed GLTF scenes keyed by gltfPath
 const sceneCache = {};
 
-const useInstanceLogic = (gltfPath, initialPosition, view, vanBounds, isPlaying, yAxisMove = false) => {
+const useInstanceLogic = (productId, instanceId, gltfPath, initialPosition, view, vanBounds, isPlaying, yAxisMove = false) => {
   const { scene, animations, loading } = useGLTF(gltfPath, true, true);
   const mixer = useRef();
   const [position, setPosition] = useState(initialPosition);
@@ -25,7 +26,10 @@ const useInstanceLogic = (gltfPath, initialPosition, view, vanBounds, isPlaying,
     position,
     vanBounds,
     (newX, newZ) => {
-      setPosition(prev => [newX, prev[1], newZ]);
+      const newPos = [newX, position[1], newZ];
+      setPosition(newPos);
+      // Update the position in the store
+      useBuildStore.getState().updateInstancePosition(productId, instanceId, newPos);
     },
     { enabled: view !== 'default' }
   );
@@ -131,9 +135,13 @@ const useInstanceLogic = (gltfPath, initialPosition, view, vanBounds, isPlaying,
       if (!isHovered) return; 
       const moveAmount = 0.01;
       if (event.key === "ArrowUp") {
-        setPosition((prevPos) => [prevPos[0], prevPos[1] + moveAmount, prevPos[2]]);
+        const newPos = [position[0], position[1] + moveAmount, position[2]];
+        setPosition(newPos);
+        useBuildStore.getState().updateInstancePosition(productId, instanceId, newPos);
       } else if (event.key === "ArrowDown") {
-        setPosition((prevPos) => [prevPos[0], prevPos[1] - moveAmount, prevPos[2]]);
+        const newPos = [position[0], position[1] - moveAmount, position[2]];
+        setPosition(newPos);
+        useBuildStore.getState().updateInstancePosition(productId, instanceId, newPos);
       }
     };
 
@@ -141,7 +149,7 @@ const useInstanceLogic = (gltfPath, initialPosition, view, vanBounds, isPlaying,
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [isHovered, yAxisMove]);
+  }, [isHovered, yAxisMove, position, productId, instanceId]);
 
   const resetAnimation = () => {
     if (mixer.current) {

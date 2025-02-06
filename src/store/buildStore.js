@@ -18,5 +18,14 @@ export const useBuildStore = create((set) => ({
   // Action: Set instances for a specific product id
   setInstances: (productId, instances) => set((state) => ({
     productInstances: { ...state.productInstances, [productId]: instances }
-  }))
+  })),
+  // Action: Update the position of a specific instance
+  updateInstancePosition: (productId, instanceId, newPosition) => set((state) => ({
+    productInstances: {
+      ...state.productInstances,
+      [productId]: state.productInstances[productId].map(instance =>
+        instance.id === instanceId ? { ...instance, position: newPosition } : instance
+      )
+    }
+  })),
 }));

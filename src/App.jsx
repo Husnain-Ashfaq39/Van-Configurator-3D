@@ -17,13 +17,25 @@ const App = () => {
   const [isViewSelectorOpen, setIsViewSelectorOpen] = useState(false);
   const [fov, setFov] = useState(50); // Default FOV
 
+  const setCameraConfig = (config) => {
+    setCameraPosition(config.cameraPosition);
+    setLookAt(config.lookAt);
+    setView(config.view);
+    setFov(config.fov);
+  };
+
   // Retrieve the products from the global product store.
   const products = useProductStore((state) => state.products);
 
   return (
     <>
       <div className="flex h-screen bg-gray-100">
-        <Navbar toggleSidebar={() => setIsSidebarOpen((prev) => !prev)} isSidebarOpen={isSidebarOpen} />
+        <Navbar 
+          toggleSidebar={() => setIsSidebarOpen((prev) => !prev)} 
+          isSidebarOpen={isSidebarOpen}
+          cameraConfig={{ cameraPosition, lookAt, view, fov }}
+          setCameraConfig={setCameraConfig}
+        />
         <Sidebar isOpen={isSidebarOpen} />
         <div className={`flex-grow relative transition-all duration-300 ${isSidebarOpen ? 'ml-72' : 'ml-0'}`}>
           {/* Toggle Sidebar Button */}
@@ -59,16 +71,6 @@ const App = () => {
         </div>
       </div>
       <Toaster />
-      <BuildControls 
-        cameraPosition={cameraPosition} 
-        lookAt={lookAt} 
-        view={view} 
-        fov={fov}
-        setCameraPosition={setCameraPosition}
-        setLookAt={setLookAt}
-        setView={setView}
-        setFov={setFov}
-      />
     </>
   );
 };

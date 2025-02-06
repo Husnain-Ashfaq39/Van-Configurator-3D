@@ -68,10 +68,11 @@ const Sidebar = ({ isOpen }) => {
                     <div className="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center">
                       <button
                         onClick={() => {
-                          toggleProductVisibility(product.id);
                           if (product.visible) {
+                            toggleProductVisibility(product.id);
                             removeProductFromVan(product);
                           } else {
+                            toggleProductVisibility(product.id);
                             addProductToVan(product);
                           }
                         }}

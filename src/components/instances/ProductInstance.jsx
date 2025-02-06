@@ -20,7 +20,7 @@ const arrowVariants = {
   }
 };
 
-const ProductInstance = ({ id, initialPosition, view, onCopy, onRemove, modelPath, scale, dimensions, vanBounds, yAxisMove }) => {
+const ProductInstance = ({ productId, id, initialPosition, view, onCopy, onRemove, modelPath, scale, dimensions, vanBounds, yAxisMove }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [hasShownToast, setHasShownToast] = useState(false);
   
@@ -41,7 +41,7 @@ const ProductInstance = ({ id, initialPosition, view, onCopy, onRemove, modelPat
     handleCloseMenu,
     isAnimationComplete,
     resetAnimation,
-  } = useInstanceLogic(modelPath, initialPosition, view, vanBounds, isPlaying, yAxisMove);
+  } = useInstanceLogic(productId, id, modelPath, initialPosition, view, vanBounds, isPlaying, yAxisMove);
 
   useEffect(() => {
     if (yAxisMove && !hasShownToast && view !== 'default') {
@@ -69,7 +69,7 @@ const ProductInstance = ({ id, initialPosition, view, onCopy, onRemove, modelPat
 
   const handlePlayAnimation = () => {
     console.log('Playing animation');
-   setIsPlaying((prevIsPlaying) => !prevIsPlaying);
+    setIsPlaying((prevIsPlaying) => !prevIsPlaying);
   };
 
   if (isLoading) {
