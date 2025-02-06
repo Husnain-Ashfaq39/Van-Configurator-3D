@@ -18,7 +18,7 @@ const springConfig = {
   duration: 0.8
 };
 
-export const Navbar = ({ toggleSidebar, isSidebarOpen, cameraConfig, setCameraConfig }) => {
+const Navbar = ({ toggleSidebar, isSidebarOpen, cameraConfig, setCameraConfig }) => {
   const [title, setTitle] = useState('Untitled Design');
   const [isEditing, setIsEditing] = useState(false);
   const [savedBuilds, setSavedBuilds] = useState([]);
@@ -134,3 +134,5 @@ export const Navbar = ({ toggleSidebar, isSidebarOpen, cameraConfig, setCameraCo
     </div>
   );
 };
+
+export default Navbar;
