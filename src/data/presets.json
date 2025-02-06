@@ -1,0 +1,75 @@
+[
+    {
+      "title": "Untitled Design",
+      "timestamp": 1738859774579,
+      "previewImage": "/path/to/preview-image.jpg",
+      "data": {
+        "cameraConfig": {
+          "cameraPosition": [
+            -5,
+            0.3,
+            0
+          ],
+          "lookAt": [
+            0,
+            0,
+            0
+          ],
+          "view": "side",
+          "fov": 50
+        },
+        "vanProducts": [
+          {
+            "id": "round_table",
+            "modelPath": "/Round-Table.glb",
+            "scale": [
+              0.7,
+              0.7,
+              0.7
+            ],
+            "initialPosition": [
+              0,
+              -0.8,
+              0
+            ],
+            "name": "Round Table",
+            "price": 180,
+            "image": "https://example.com/round-table-image.jpg",
+            "description": "A stylish round table",
+            "isFavorite": false,
+            "dimensions": {
+              "width": 1,
+              "height": 1,
+              "depth": 1
+            },
+            "vanBounds": {
+              "x": [
+                -0.5,
+                0.5
+              ],
+              "z": [
+                -2.5,
+                0.06
+              ]
+            },
+            "yAxisMove": false,
+            "visible": false,
+            "quantity": 1
+          }
+        ],
+        "productInstances": {
+          "round_table": [
+            {
+              "id": "04c280bc-e9f3-4dbb-a936-ab40d63ad976",
+              "position": [
+                0,
+                -0.8,
+                0
+              ]
+            }
+          ]
+        }
+      }
+    }
+    
+  ]

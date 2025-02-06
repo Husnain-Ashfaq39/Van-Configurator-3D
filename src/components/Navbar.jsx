@@ -8,8 +8,10 @@ import { IconButton } from './ui/IconButton';
 import { Tooltip } from './ui/Tooltip';
 import { PriceTag } from './navbar/PriceTag';
 import { BuildDropdown } from './navbar/BuildDropdown';
-import { PresetDropdown } from './navbar/PresetDropdown';
-import { presets } from '../data/presets'; // Move presets to a separate file
+import PresetDropdown from './navbar/PresetDropdown';
+import { saveAs } from 'file-saver';
+
+import presetsData from '../data/presets.json';
 
 const springConfig = {
   type: "spring",
@@ -22,6 +24,8 @@ const Navbar = ({ toggleSidebar, isSidebarOpen, cameraConfig, setCameraConfig })
   const [title, setTitle] = useState('Untitled Design');
   const [isEditing, setIsEditing] = useState(false);
   const [savedBuilds, setSavedBuilds] = useState([]);
+  const [presets, setPresets] = useState(presetsData);
+
   const vanProducts = useProductStore(state => state.vanProducts);
   const productInstances = useBuildStore(state => state.productInstances);
   const quantity = useProductStore((state) => state.vanProducts.length);
@@ -76,7 +80,24 @@ const Navbar = ({ toggleSidebar, isSidebarOpen, cameraConfig, setCameraConfig })
       useProductStore.getState().setProductVisibility(product.id, true)
     );
     useBuildStore.getState().setLoadedProductInstances(data.productInstances);
-    toast.success(`Preset "${preset.title}" loaded successfully!`);
+    setTitle(preset.title);
+    toast.success("Preset loaded successfully!");
+  };
+
+  const handleSavePreset = () => {
+    const presetData = {
+      title,
+      timestamp: Date.now(),
+      data: { cameraConfig, vanProducts, productInstances }
+    };
+    const updatedPresets = [presetData, ...presets];
+    setPresets(updatedPresets);
+
+    const json = JSON.stringify(updatedPresets, null, 2);
+    const blob = new Blob([json], { type: 'application/json;charset=utf-8' });
+    saveAs(blob, 'preset.json');
+
+    toast.success("Preset saved and downloaded successfully!");
   };
 
   return (
@@ -114,11 +135,16 @@ const Navbar = ({ toggleSidebar, isSidebarOpen, cameraConfig, setCameraConfig })
       <div className="flex items-center gap-4">
         <IconButton icon={Camera} tooltip="Take Screenshot" />
         <IconButton icon={Save} onClick={handleSaveBuild} tooltip="Save Current Build" />
-        <PresetDropdown presets={presets} onLoad={handleLoadPreset} />
+        
         <BuildDropdown 
           builds={savedBuilds}
           onLoad={handleLoadBuild}
           onDelete={handleDeleteBuild}
+        />
+        <PresetDropdown 
+          presets={presets} 
+          onLoad={handleLoadPreset} 
+          onSave={handleSavePreset}
         />
         <div className="relative">
           <IconButton icon={ShoppingCart} tooltip="Shopping Cart" />
