@@ -93,11 +93,25 @@ const Navbar = ({ toggleSidebar, isSidebarOpen, cameraConfig, setCameraConfig })
     const updatedPresets = [presetData, ...presets];
     setPresets(updatedPresets);
 
+    // Download JSON preset
     const json = JSON.stringify(updatedPresets, null, 2);
-    const blob = new Blob([json], { type: 'application/json;charset=utf-8' });
-    saveAs(blob, 'preset.json');
+    const jsonBlob = new Blob([json], { type: 'application/json;charset=utf-8' });
+    saveAs(jsonBlob, 'preset.json');
 
-    toast.success("Preset saved and downloaded successfully!");
+    // Capture and download snapshot from the canvas
+    const canvas = document.querySelector('canvas');
+    if (canvas) {
+      canvas.toBlob((blob) => {
+        if (blob) {
+          saveAs(blob, 'preset.png');
+          toast.success('Preset and snapshot saved and downloaded successfully!');
+        } else {
+          toast.error('Failed to capture snapshot.');
+        }
+      }, 'image/png');
+    } else {
+      toast.error('Canvas not found for snapshot capture.');
+    }
   };
 
   return (

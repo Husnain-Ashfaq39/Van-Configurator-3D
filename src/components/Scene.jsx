@@ -56,7 +56,7 @@ const Scene = ({
       ref={canvasRef}
       onPointerMissed={() => setSelectedObject(null)}
       shadows
-      gl={{ powerPreference: 'high-performance', antialias: true }}
+      gl={{ powerPreference: 'high-performance', antialias: true, preserveDrawingBuffer: true }}
       camera={{ position: cameraPosition, fov: fov }}
       className="w-full h-full"
       style={{ position: 'absolute', top: 0, left: 0 }}
