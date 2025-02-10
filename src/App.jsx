@@ -7,7 +7,6 @@ import ViewSelector from './components/ViewSelector';
 import Navbar from './components/Navbar';
 import { Toaster } from 'react-hot-toast';
 import {useProductStore} from './store/productStore';
-import BuildControls from './components/BuildControls';
 
 const App = () => {
   const [cameraPosition, setCameraPosition] = useState([5, 2, 5]);

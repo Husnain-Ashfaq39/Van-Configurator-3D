@@ -1,4 +1,3 @@
-
 export const productConfig = {
    
     sliding_drawer: {
@@ -207,6 +206,32 @@ export const productConfig = {
       isFavorite: false,
       dimensions: { width: 0.85, height: 0.85, depth: 0.85 },
       vanBounds: { x: [-0.3, 0.3], z: [-2.3, 0.2] },
+      yAxisMove: false
+    },
+    chair: { // New product added
+      modelPath: "/Chair.glb",
+      scale: [0.3, 0.3, 0.3],
+      initialPosition: [0, -0.9, 0],
+      name: 'Chair',
+      price: 150,
+      image: 'https://example.com/chair-image.jpg',
+      description: 'A comfortable chair',
+      isFavorite: false,
+      dimensions: { width: 0.5, height: 0.5, depth: 0.5 },
+      vanBounds: { x: [-0.4, 0.4], z: [-2.0, 0.2] },
+      yAxisMove: false
+    },
+    portable_toilet: { // New product added
+      modelPath: "/portable-toilet.glb",
+      scale: [0.8, 0.8, 0.8],
+      initialPosition: [0, -0.5, 0],
+      name: 'Portable Toilet',
+      price: 250,
+      image: 'https://example.com/portable-toilet-image.jpg',
+      description: 'A portable toilet',
+      isFavorite: false,
+      dimensions: { width: 0.5, height: 0.5, depth: 0.5 },
+      vanBounds: { x: [-0.5, 0.5], z: [-2.5, 0.2] },
       yAxisMove: false
     }
 };
