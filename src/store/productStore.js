@@ -83,3 +83,22 @@ export const useProductStore = create((set, get) => ({
   // Computed getter for the quantity of products added.
   getQuantity: () => get().vanProducts.reduce((total, product) => total + product.quantity, 0)
 }));
+
+if (import.meta.hot) {
+  import.meta.hot.accept('../data/productConfig', (newModule) => {
+    const newProductConfig = newModule.productConfig;
+    useProductStore.setState((state) => ({
+      products: Object.entries(newProductConfig).map(([id, config]) => {
+        const oldProduct = state.products.find((p) => p.id === id);
+        return {
+          id,
+          ...config,
+          visible: oldProduct ? oldProduct.visible : true,
+          isFavorite: oldProduct ? oldProduct.isFavorite : false,
+          initialPosition: config.initialPosition || [0, 0, 0],
+        };
+      }),
+    }));
+    console.log('ProductConfig updated via HMR with merged state');
+  });
+}

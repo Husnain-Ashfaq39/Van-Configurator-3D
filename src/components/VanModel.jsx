@@ -3,7 +3,6 @@ import React, { useRef, useEffect, useState } from 'react';
 import { useGLTF } from '@react-three/drei';
 
 import PreLoader from './preLoader'; // Ensure correct casing
-import { productConfig } from '../data/productConfig'; // Import productConfig
 import Product from './products/Product'; // Import Product component
 
 
@@ -11,7 +10,7 @@ const VanModel = ({
   products,
   view,
 }) => {
-  const { scene: vanScene } = useGLTF('/parent_Setting_van/Van.glb');
+  const { scene: vanScene } = useGLTF('/parent_Setting_van/untitled2.glb');
   const vanRef = useRef();
 
   const hidePartsByView = {
@@ -123,20 +122,17 @@ const VanModel = ({
       <primitive ref={vanRef} object={vanScene} />
 
       {products.map(product => {
-        const config = productConfig[product.id];
-        if (!config) return null;
-        
         return (
           <Product
             key={product.id}
             productId={product.id}
             view={view}
-            modelPath={config.modelPath}
-            scale={config.scale}
-            initialPosition={config.initialPosition}
-            dimensions={config.dimensions}
-            vanBounds={config.vanBounds}
-            yAxisMove={config.yAxisMove}
+            modelPath={product.modelPath}
+            scale={product.scale}
+            initialPosition={product.initialPosition}
+            dimensions={product.dimensions}
+            vanBounds={product.vanBounds}
+            yAxisMove={product.yAxisMove}
           />
         );
       })}
