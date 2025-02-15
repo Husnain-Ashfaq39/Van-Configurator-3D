@@ -14,7 +14,10 @@ const useInstanceLogic = (productId, instanceId, gltfPath, initialPosition, view
   const { scene, animations, loading } = useGLTF(gltfPath, true, true);
   const mixer = useRef();
   const [position, setPosition] = useState(initialPosition);
-  const [rotationY, setRotationY] = useState(0);
+  const [rotationY, setRotationY] = useState(() => {
+    const instance = useBuildStore.getState().productInstances[productId]?.find(inst => inst.id === instanceId);
+    return instance?.rotation ?? 0;
+  });
   const [showRotateButton, setShowRotateButton] = useState(false);
   const [showBigDot, setShowBigDot] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
@@ -161,6 +164,10 @@ const useInstanceLogic = (productId, instanceId, gltfPath, initialPosition, view
       setIsAnimationComplete(false);
     }
   };
+
+  useEffect(() => {
+    useBuildStore.getState().updateInstanceRotation(productId, instanceId, rotationY);
+  }, [rotationY, productId, instanceId]);
 
   return {
     clonedScene,

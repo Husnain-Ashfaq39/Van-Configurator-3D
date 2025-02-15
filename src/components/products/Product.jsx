@@ -10,7 +10,7 @@ const Product = ({ productId, view, modelPath, scale, initialPosition, dimension
 
   useEffect(() => {
     if (!productInstances[productId] || productInstances[productId].length === 0) {
-      setInstances(productId, [{ id: uuidv4(), position: initialPosition }]);
+      setInstances(productId, [{ id: uuidv4(), position: initialPosition, rotation: 0 }]);
     }
   }, [productId, productInstances, initialPosition, setInstances]);
 

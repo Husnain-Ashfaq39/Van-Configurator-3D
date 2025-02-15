@@ -28,4 +28,13 @@ export const useBuildStore = create((set) => ({
       )
     }
   })),
+  // NEW: Action to update the rotation of an instance
+  updateInstanceRotation: (productId, instanceId, newRotation) => set((state) => ({
+    productInstances: {
+      ...state.productInstances,
+      [productId]: state.productInstances[productId]?.map(inst =>
+        inst.id === instanceId ? { ...inst, rotation: newRotation } : inst
+      )
+    }
+  })),
 })); 
