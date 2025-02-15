@@ -119,7 +119,7 @@ export const productConfig = {
     },
     sink_with_cabinet: {
       modelPath: "/SinkwithCabinet.glb",
-      scale: [0.62, 0.62, 0.62],
+      scale: [0.6, 0.6, 0.6],
       initialPosition: [0, -0.8, 0],
       name: 'Sink with Cabinet',
       price: 350,
@@ -223,7 +223,7 @@ export const productConfig = {
     },
     sink_with_cabinet_new: { // New product added
       modelPath: "/Sink-withCabinet.glb",
-      scale: [0.62, 0.62, 0.62],
+      scale: [0.55, 0.55, 0.55],
       initialPosition: [0, -0.8, 0],
       name: 'Sink with Cabinet New',
       price: 350,
