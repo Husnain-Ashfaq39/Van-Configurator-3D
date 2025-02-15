@@ -41,7 +41,7 @@ export const productConfig = {
     },
     full_bed: {
       modelPath: "/Full-Bed.glb",
-      scale: [0.6, 0.57, 0.57],
+      scale: [0.57, 0.57, 0.57],
       initialPosition: [0, -0.8, 0],
       name: 'Full Bed',
       price: 500,
@@ -49,7 +49,7 @@ export const productConfig = {
       description: 'Comfortable full-size bed',
       isFavorite: false,
       dimensions: { width: 0.57, height: 0.57, depth: 0.57 },
-      vanBounds: { x: [-0.45, 0.25], z: [-2, 0] },
+      vanBounds: { x: [-0.45, 0.25], z: [-2.2, 0.2] },
       yAxisMove: false
     },
     washroom: {
@@ -205,7 +205,7 @@ export const productConfig = {
       description: 'A comfortable chair',
       isFavorite: false,
       dimensions: { width: 0.5, height: 0.5, depth: 0.5 },
-      vanBounds: { x: [-0.4, 0.4], z: [-2.0, 0.2] },
+      vanBounds: { x: [-0.55, 0.55], z: [-2.0, 0.2] },
       yAxisMove: false
     },
     portable_toilet: { // New product added
