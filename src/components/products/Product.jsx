@@ -15,10 +15,6 @@ const Product = ({ productId, view, modelPath, scale, initialPosition, dimension
   }, [productId, productInstances, initialPosition, setInstances]);
 
   const { vanProducts, addProductToVan, removeProductFromVan, toggleProductVisibility } = useProductStore();
-  console.log("productInstances: " + JSON.stringify(productInstances));
-  console.log('break');
-  
-  console.log("vanProducts: " + JSON.stringify(vanProducts));
   
 
   const handleCopy = (id, currentPosition) => {
