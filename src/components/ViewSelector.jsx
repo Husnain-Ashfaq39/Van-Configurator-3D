@@ -1,7 +1,7 @@
 // ViewSelector.jsx
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight, Video, X, ZoomIn, ZoomOut } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Video, X } from 'lucide-react';
 
 const ViewSelector = ({
   setCameraPosition,
@@ -9,7 +9,9 @@ const ViewSelector = ({
   setView,
   setFov,
   isOpen,
-  setIsOpen
+  setIsOpen,
+  zoomLevel,
+  setZoomLevel
 }) => {
 
   const views = [
@@ -97,12 +99,8 @@ const ViewSelector = ({
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [zoomLevel, setZoomLevel] = useState(1);
   const [baseCameraPosition, setBaseCameraPosition] = useState(views[0].position);
   const [baseLookAt, setBaseLookAt] = useState(views[0].lookAt);
-
-  const minZoomLevel = 0.5;
-  const maxZoomLevel = 2;
 
   const handleViewChange = (viewData) => {
     if (viewData.view === 'top') {
@@ -170,14 +168,6 @@ const ViewSelector = ({
     setCameraPosition(newCameraPosition);
   }, [baseCameraPosition, baseLookAt, zoomLevel, setCameraPosition]);
 
-  const zoomIn = () => {
-    setZoomLevel(prev => Math.max(prev * 0.9, minZoomLevel));
-  };
-
-  const zoomOut = () => {
-    setZoomLevel(prev => Math.min(prev * 1.1, maxZoomLevel));
-  };
-
   // Determine the currently visible views in the slider
   const visibleViews = [...views.slice(currentIndex), ...views.slice(0, currentIndex)].slice(0, 5);
 
@@ -210,7 +200,7 @@ const ViewSelector = ({
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: index * 0.1 }}
                       className="relative group flex-shrink-0"
-                      style={{ width: '192px', flexBasis: '192px' }} // Adjust width as needed
+                      style={{ width: '192px', flexBasis: '192px' }}
                     >
                       <button
                         onClick={() => handleViewChange(viewData)}
@@ -240,24 +230,6 @@ const ViewSelector = ({
                   className="p-2 rounded-full hover:bg-gray-100"
                 >
                   <ChevronRight className="w-6 h-6" />
-                </button>
-              </div>
-
-              {/* Zoom Controls */}
-              <div className="flex justify-center mt-4 gap-2">
-                <button 
-                  onClick={zoomIn}
-                  className="p-2 rounded-full hover:bg-gray-100"
-                  aria-label="Zoom In"
-                >
-                  <ZoomIn className="w-6 h-6" />
-                </button>
-                <button 
-                  onClick={zoomOut}
-                  className="p-2 rounded-full hover:bg-gray-100"
-                  aria-label="Zoom Out"
-                >
-                  <ZoomOut className="w-6 h-6" />
                 </button>
               </div>
             </div>
