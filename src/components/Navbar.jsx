@@ -20,6 +20,40 @@ const springConfig = {
   duration: 0.8
 };
 
+// Utility function to capture and save canvas snapshot
+const captureCanvasSnapshot = async (fileName, onSuccess, onError) => {
+  const canvas = document.querySelector('canvas');
+  if (!canvas) {
+    toast.error('Canvas not found for snapshot capture.');
+    onError?.();
+    return;
+  }
+
+  return new Promise((resolve) => {
+    canvas.toBlob((blob) => {
+      if (blob) {
+        saveAs(blob, fileName);
+        toast.success(onSuccess || 'Snapshot saved successfully!');
+        resolve(true);
+      } else {
+        toast.error('Failed to capture snapshot.');
+        onError?.();
+        resolve(false);
+      }
+    }, 'image/png');
+  });
+};
+
+// Utility function to load build data
+const loadBuildData = (data, setCameraConfig) => {
+  setCameraConfig(data.cameraConfig);
+  useProductStore.getState().setVanProducts(data.vanProducts);
+  data.vanProducts.forEach(product => 
+    useProductStore.getState().setProductVisibility(product.id, true)
+  );
+  useBuildStore.getState().setLoadedProductInstances(data.productInstances);
+};
+
 const Navbar = ({ toggleSidebar, isSidebarOpen, cameraConfig, setCameraConfig }) => {
   const [title, setTitle] = useState('Untitled Design');
   const [isEditing, setIsEditing] = useState(false);
@@ -54,13 +88,7 @@ const Navbar = ({ toggleSidebar, isSidebarOpen, cameraConfig, setCameraConfig })
   };
 
   const handleLoadBuild = (build) => {
-    const { data } = build;
-    setCameraConfig(data.cameraConfig);
-    useProductStore.getState().setVanProducts(data.vanProducts);
-    data.vanProducts.forEach(product => 
-      useProductStore.getState().setProductVisibility(product.id, true)
-    );
-    useBuildStore.getState().setLoadedProductInstances(data.productInstances);
+    loadBuildData(build.data, setCameraConfig);
     setTitle(build.title);
     toast.success("Build loaded successfully!");
   };
@@ -73,18 +101,12 @@ const Navbar = ({ toggleSidebar, isSidebarOpen, cameraConfig, setCameraConfig })
   };
 
   const handleLoadPreset = (preset) => {
-    const { data } = preset;
-    setCameraConfig(data.cameraConfig);
-    useProductStore.getState().setVanProducts(data.vanProducts);
-    data.vanProducts.forEach(product => 
-      useProductStore.getState().setProductVisibility(product.id, true)
-    );
-    useBuildStore.getState().setLoadedProductInstances(data.productInstances);
+    loadBuildData(preset.data, setCameraConfig);
     setTitle(preset.title);
     toast.success("Preset loaded successfully!");
   };
 
-  const handleSavePreset = () => {
+  const handleSavePreset = async () => {
     const presetData = {
       title,
       timestamp: Date.now(),
@@ -98,20 +120,16 @@ const Navbar = ({ toggleSidebar, isSidebarOpen, cameraConfig, setCameraConfig })
     const jsonBlob = new Blob([json], { type: 'application/json;charset=utf-8' });
     saveAs(jsonBlob, 'preset.json');
 
-    // Capture and download snapshot from the canvas
-    const canvas = document.querySelector('canvas');
-    if (canvas) {
-      canvas.toBlob((blob) => {
-        if (blob) {
-          saveAs(blob, 'preset.png');
-          toast.success('Preset and snapshot saved and downloaded successfully!');
-        } else {
-          toast.error('Failed to capture snapshot.');
-        }
-      }, 'image/png');
-    } else {
-      toast.error('Canvas not found for snapshot capture.');
-    }
+    // Capture and save snapshot
+    await captureCanvasSnapshot(
+      'preset.png',
+      'Preset and snapshot saved and downloaded successfully!'
+    );
+  };
+
+  const handleTakeSnapshot = async () => {
+    const fileName = `${title.toLowerCase().replace(/\s+/g, '-')}.png`;
+    await captureCanvasSnapshot(fileName);
   };
 
   return (
@@ -147,7 +165,7 @@ const Navbar = ({ toggleSidebar, isSidebarOpen, cameraConfig, setCameraConfig })
       </div>
 
       <div className="flex items-center gap-4">
-        <IconButton icon={Camera} tooltip="Take Screenshot" />
+        <IconButton icon={Camera} onClick={handleTakeSnapshot} tooltip="Take Screenshot" />
         <IconButton icon={Save} onClick={handleSaveBuild} tooltip="Save Current Build" />
         
         <BuildDropdown 
