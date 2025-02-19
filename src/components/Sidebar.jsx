@@ -21,7 +21,18 @@ const Sidebar = ({ isOpen }) => {
   });
 
   return (
-    <div className="fixed top-0 mt-14 left-0 h-screen z-10">
+    <motion.div 
+      className="fixed left-0 h-screen z-10"
+      animate={{ 
+        top: 56, // Height of navbar (64px) - 8px for spacing
+      }}
+      transition={{
+        type: 'spring',
+        stiffness: 100,
+        damping: 20,
+        duration: 0.8,
+      }}
+    >
       <AnimatePresence mode="wait">
         {isOpen && (
           <motion.div
@@ -114,7 +125,7 @@ const Sidebar = ({ isOpen }) => {
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
+    </motion.div>
   );
 };
 

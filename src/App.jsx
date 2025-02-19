@@ -1,7 +1,7 @@
 // App.jsx
 import { useState } from 'react';
 import { FiMenu } from 'react-icons/fi';
-import { ZoomIn, ZoomOut } from 'lucide-react';
+import { ZoomIn, ZoomOut, FastForward } from 'lucide-react';
 import { motion, animate } from 'framer-motion';
 import Scene from './components/Scene';
 import Sidebar from './components/Sidebar';
@@ -15,13 +15,17 @@ const App = () => {
   const [lookAt, setLookAt] = useState([0, 0, 0]);
   const [view, setView] = useState('default');
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isNavbarVisible, setIsNavbarVisible] = useState(true);
+  const [toggleState, setToggleState] = useState(0); // 0: all visible, 1: sidebar hidden, 2: both hidden, 3: navbar visible
   const [isViewSelectorOpen, setIsViewSelectorOpen] = useState(false);
   const [fov, setFov] = useState(50); // Default FOV
   const [zoomLevel, setZoomLevel] = useState(1);
   const [isZooming, setIsZooming] = useState(false);
+  const [isInnerZooming, setIsInnerZooming] = useState(false);
 
   const minZoomLevel = 0.2;
   const maxZoomLevel = 4;
+  const maxInnerZoomDistance = 20;
 
   const setCameraConfig = (config) => {
     setCameraPosition(config.cameraPosition);
@@ -46,6 +50,75 @@ const App = () => {
     });
   };
 
+  const handleInnerZoom = () => {
+    if (isInnerZooming) {
+      setIsInnerZooming(false);
+      return;
+    }
+    setIsInnerZooming(true);
+    const initialInnerZoomPos = cameraPosition;
+
+    const moveIteration = (startPos) => {
+      const [cx, cy, cz] = startPos;
+      const dx = lookAt[0] - cx;
+      const dy = lookAt[1] - cy;
+      const dz = lookAt[2] - cz;
+      const distance = Math.sqrt(dx * dx + dy * dy + dz * dz);
+      const ndx = dx / distance;
+      const ndy = dy / distance;
+      const ndz = dz / distance;
+
+      let lastValue = 0;
+      animate(0, 1.5, {
+        duration: 5,
+        ease: 'linear',
+        onUpdate: (latest) => {
+          const delta = latest - lastValue;
+          lastValue = latest;
+          setCameraPosition(prev => [prev[0] + delta * ndx, prev[1] + delta * ndy, prev[2] + delta * ndz]);
+        },
+        onComplete: () => {
+          const traveled = Math.sqrt(
+            Math.pow(cameraPosition[0] - initialInnerZoomPos[0], 2) +
+            Math.pow(cameraPosition[1] - initialInnerZoomPos[1], 2) +
+            Math.pow(cameraPosition[2] - initialInnerZoomPos[2], 2)
+          );
+          if (!isInnerZooming || traveled >= maxInnerZoomDistance) {
+            setIsInnerZooming(false);
+          } else {
+            moveIteration(cameraPosition);
+          }
+        }
+      });
+    };
+
+    moveIteration(cameraPosition);
+  };
+
+  const handleToggle = () => {
+    setToggleState((prev) => (prev + 1) % 4);
+    
+    // Update sidebar and navbar visibility based on toggle state
+    switch ((toggleState + 1) % 4) {
+      case 0: // Both visible
+        setIsSidebarOpen(true);
+        setIsNavbarVisible(true);
+        break;
+      case 1: // Sidebar hidden
+        setIsSidebarOpen(false);
+        setIsNavbarVisible(true);
+        break;
+      case 2: // Both hidden
+        setIsSidebarOpen(false);
+        setIsNavbarVisible(false);
+        break;
+      case 3: // Only navbar visible
+        setIsSidebarOpen(false);
+        setIsNavbarVisible(true);
+        break;
+    }
+  };
+
   // Retrieve the products from the global product store.
   const products = useProductStore((state) => state.products);
 
@@ -53,22 +126,15 @@ const App = () => {
     <>
       <div className="flex h-screen bg-gray-100">
         <Navbar 
-          toggleSidebar={() => setIsSidebarOpen((prev) => !prev)} 
+          toggleSidebar={handleToggle}
           isSidebarOpen={isSidebarOpen}
+          isNavbarVisible={isNavbarVisible}
           cameraConfig={{ cameraPosition, lookAt, view, fov }}
           setCameraConfig={setCameraConfig}
         />
         <Sidebar isOpen={isSidebarOpen} />
         <div className={`flex-grow relative transition-all duration-300 ${isSidebarOpen ? 'ml-72' : 'ml-0'}`}>
-          {/* Toggle Sidebar Button */}
-          {!isSidebarOpen && (
-            <button
-              onClick={() => setIsSidebarOpen(true)}
-              className="absolute top-4 left-4 z-10 p-2 bg-white rounded-full shadow-md hover:bg-gray-100 transition-colors"
-            >
-              <FiMenu />
-            </button>
-          )}
+         
 
           {/* Scene Container */}
           <div className={`w-full h-full transition-all duration-300 ${isSidebarOpen || isViewSelectorOpen ? 'p-4' : 'p-0'}`}>
@@ -106,6 +172,17 @@ const App = () => {
               aria-label="Zoom Out"
             >
               <ZoomOut className="w-5 h-5" />
+            </motion.button>
+            <motion.button 
+              onClick={handleInnerZoom}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+              className={`p-1.5 bg-white rounded-full shadow-md transition-opacity ${
+                isInnerZooming ? 'bg-green-200' : ''
+              }`}
+              aria-label="Inner Zoom"
+            >
+              <FastForward className="w-5 h-5" />
             </motion.button>
           </div>
 
